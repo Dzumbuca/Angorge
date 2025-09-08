@@ -1,0 +1,2325 @@
+/* Reset básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+    padding-top: 70px;
+    /* Ajusta este valor conforme a altura da navbar */
+}
+
+/* Navbar */
+.navbar {
+    width: 100%;
+    background-color: white;
+    padding: 24px 20px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: fixed;
+    /* Agora fixo no topo */
+    top: 0;
+    /* Colado no topo */
+    left: 0;
+    /* Colado à esquerda */
+    z-index: 1000;
+    /* Mantém por cima de outros elementos */
+}
+
+/* Logo */
+.logo img {
+    height: 40px;
+    width: auto;
+}
+
+/* Menu links (desktop) */
+.nav-links {
+    display: flex;
+    gap: 32px;
+    list-style: none;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: #333;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    font-size: 16px;
+    letter-spacing: 0.2px;
+    padding: 12px 0;
+    position: relative;
+    transition: all 0.3s ease;
+    display: block;
+}
+
+/* Seta acima do link (apontando para baixo) */
+.nav-links a::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-top: 8px solid #e5c535;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.nav-links a:hover::after,
+.nav-links .active::after {
+    opacity: 1;
+    visibility: visible;
+}
+
+.nav-links a:hover {
+    color: #e5c535;
+    font-weight: 600;
+}
+
+.nav-links .active {
+    color: #e5c535;
+    font-weight: 600;
+}
+
+/* Hamburger button */
+.hamburger {
+    display: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+/* Overlay escuro (global) */
+.overlay {
+    position: fixed;
+    top: 70px;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.4s ease;
+}
+
+.overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Botão de fechar */
+.close-menu {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    color: #333;
+    cursor: pointer;
+    display: none;
+    z-index: 1000;
+}
+
+.nav-links.show+.close-menu {
+    display: block;
+}
+
+/* Hero Section */
+.hero {
+    min-height: 85vh;
+    background-image: url('Imagem/Sem-Título-1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+}
+
+.hero-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    gap: 40px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+    overflow: visible;
+}
+
+/* Texto */
+.hero-text {
+    flex: 1;
+    padding-right: 40px;
+    position: relative;
+}
+
+.subtitle {
+    font-size: 19px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-top: 60px;
+    opacity: 0.9;
+}
+
+.hero-text h1 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    line-height: 1.3;
+    margin-bottom: 50px;
+    margin-top: 30px;
+    color: white;
+}
+
+/* Botão de seta */
+.arrow-btn {
+    background: black;
+    color: white;
+    width: 50px;
+    height: 50px;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 1;
+    margin-left: 20px;
+}
+
+/* Linha abaixo do botão */
+.full-width-divider {
+    position: absolute;
+    top: 69%;
+    left: 30px;
+    width: 50vw;
+    height: 1px;
+    background-color: rgba(13, 69, 254, 0.2);
+    border-top: 1px solid rgba(31, 130, 170);
+    z-index: -1;
+}
+
+.arrow-btn:hover {
+    background: #005b9c;
+}
+
+.arrow-btn i {
+    font-size: 20px;
+}
+
+/* Cards de opções */
+.options {
+    display: flex;
+    gap: 30px;
+    margin-top: 40px;
+    justify-content: flex-start;
+}
+
+.option-card {
+    display: flex;
+    align-items: center;
+    background: white;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+    flex: 1;
+    cursor: pointer;
+    max-width: 300px;
+}
+
+.option-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.option-card img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.option-card span {
+    font-size: 16px;
+    font-weight: 800;
+    color: #000000;
+    line-height: 1.4;
+}
+
+.arrow-down img {
+    width: 0.9rem;
+    height: 0.9rem;
+    vertical-align: middle;
+    margin-top: 60px;
+}
+
+.arrow-down {
+    margin-left: auto;
+    color: #0084d5;
+    font-size: 18px;
+}
+
+.arrow-down i {
+    font-size: 16px;
+}
+
+/* Imagem no hero */
+.hero-image {
+    flex: 1;
+    text-align: right;
+    margin-left: 40px;
+}
+
+.hero-image img {
+    width: 800px;
+    height: auto;
+    border-radius: 10px;
+    object-fit: cover;
+    display: block;
+    margin-top: 40px;
+}
+
+/* Animação de entrada */
+.hero-text,
+.hero-image {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 1s ease, transform 0.6s ease;
+}
+
+.hero-text.visible,
+.hero-image.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Mobile styles - ÚNICO bloco */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .nav-links {
+        position: fixed;
+        top: 70px;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: calc(100vh - 70px);
+        flex-direction: column;
+        background-color: white;
+        padding: 0;
+        list-style: none;
+        visibility: hidden;
+        transition: right 0.4s ease;
+        z-index: 999;
+        box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-links.show {
+        right: 0;
+        visibility: visible;
+    }
+
+    .nav-links li {
+        margin: 0;
+        border-bottom: 1px solid #eee;
+    }
+
+    .nav-links a {
+        font-family: 'Inter', sans-serif;
+        font-size: 16px;
+        font-weight: 500;
+        color: #333;
+        text-decoration: none;
+        display: block;
+        padding: 16px 20px;
+        transition: color 0.3s ease;
+    }
+
+    .nav-links a:hover {
+        color: #007BFF;
+    }
+
+    .nav-links .active {
+        color: #e5c535;
+    }
+
+    /* Hero Section (mobile) */
+    .hero-content {
+        flex-direction: column;
+        text-align: center;
+        align-items: center;
+        gap: 0px;
+        padding: 0px 0px;
+    }
+
+    .hero-text {
+        padding-right: 0;
+        order: 1;
+    }
+
+    .subtitle {
+        font-size: 10px;
+        margin-top: 90px;
+    }
+
+    .hero-text h1 {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    .arrow-btn {
+        order: 2;
+        margin-left: 0;
+        display: none;
+    }
+
+    .full-width-divider {
+        top: 100%;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100vw;
+        z-index: 0;
+        display: none;
+    }
+
+    .options {
+        display: none;
+    }
+
+    .hero-image {
+        order: 4;
+        text-align: center;
+    }
+
+    .hero-image img {
+        max-width: 386px;
+        margin-top: 90px;
+    }
+
+    .navbar {
+        padding: 16px 20px;
+    }
+
+    .logo img {
+        height: 36px;
+    }
+}
+
+
+
+/* Secção de experiência */
+
+.experience-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0px 0px 0px;
+
+}
+
+.experience-section {
+    padding: 80px 0;
+    background-color: #f9f9f9;
+}
+
+.experience-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.experience-content h2 {
+    font-size: 34px;
+    font-weight: 600;
+    color: #333;
+    width: 100%;
+    margin-bottom: 10px;
+    margin: 0 auto;
+}
+
+.subtitle-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    max-width: 600px;
+    width: 100%;
+}
+
+.subtitle2 {
+    font-size: 20px;
+    color: #0084d5;
+    padding: 0 0 10px 10px;
+    /* Remove espaço de cima */
+    font-weight: 600;
+    /* Mais peso na fonte */
+    text-transform: none;
+}
+
+.arrow-down2 {
+    width: 40px;
+    height: 40px;
+    background-color: #e0e0e0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+}
+
+.arrow-down2 i {
+    color: #0084d5;
+    font-size: 16px;
+}
+
+.arrow-down2:hover {
+    background-color: #ccc;
+}
+
+@media (max-width: 768px) {
+    .experience-content {
+        text-align: center;
+        padding: 0 20px;
+        align-items: center;
+        /* Centraliza conteúdo */
+    }
+
+    .experience-header {
+        flex-direction: column;
+        /* Coloca h2 e seta em coluna */
+        align-items: center;
+        gap: 15px;
+        /* Espaço entre o h2 e a seta */
+    }
+
+    .subtitle-container {
+        display: none;
+        /* Some com o subtítulo no mobile */
+    }
+
+    .arrow-down2 {
+        margin: 0;
+        /* Remove margens extras */
+    }
+
+    .experience-content h2 {
+        font-size: 1.8rem;
+        text-align: center;
+    }
+}
+
+/* Seção de serviços */
+.services-section {
+    padding: 10px 10px;
+    background-color: #f9f9f9;
+    margin-top: 0;
+}
+
+/* Container dos cards */
+.services-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 40px;
+    /* Espaçamento entre os cards */
+}
+
+/* Card individual */
+.service-card {
+    flex: 1 1 30%;
+    /* ou ajusta conforme a quantidade de cards por linha */
+    text-align: left;
+    border: 1px solid #ddd;
+    padding: 30px;
+    /* respiro interno maior */
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: none;
+    /* se não quer sombra */
+    transition: all 0.3s ease;
+    margin: 0;
+    /* continua colado com outros cards */
+}
+
+.service-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: #007BFF;
+}
+
+/* Ícone */
+.service-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+    display: block;
+    margin-left: 0;
+}
+
+/* Título */
+.service-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 12px;
+}
+
+/* Texto */
+.service-description {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.arrow-right {
+    width: 20px;
+    height: 20px;
+    color: #007BFF;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.arrow-right:hover {
+    color: #0056b3;
+}
+
+section,
+.service-card,
+.team-content,
+.experience-content h2,
+.subtitle2,
+.feature-img-card {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+section,
+.service-card,
+.team-content,
+.experience-content h2,
+.subtitle2,
+.feature-img-card {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+/* Força o h2 a aparecer quando tiver .animate */
+.experience-content h2.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+
+
+
+@media (max-width: 768px) {
+    .services-content {
+        flex-direction: column;
+        gap: 20px;
+        /* Espaço entre os cards */
+        align-items: center;
+        /* Centraliza os cards */
+    }
+
+    .service-card {
+        max-width: 90%;
+        /* Faz os cards ocuparem quase toda a largura */
+    }
+}
+
+/* ===============================
+   SEÇÃO DE EQUIPA - PREMIUM
+=================================*/
+
+/* 🔹 Container Principal */
+.team-section {
+    padding: 120px 125px;
+    /* maior espaçamento vertical */
+    background-color: var(--section-bg);
+    font-family: 'Inter', sans-serif;
+}
+
+/* 🔹 Layout da Secção */
+.team-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* melhor distribuição */
+    gap: 80px;
+    /* espaço amplo entre imagem e texto */
+}
+
+/* ===============================
+   IMAGEM
+=================================*/
+.team-image {
+    width: 500px;
+    /* imagem maior */
+    height: 360px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    position: relative;
+    flex: 0 0 auto;
+
+    /* sombra mais profunda */
+    transition: transform 0.3s ease;
+}
+
+.team-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    /* pequeno canto superior esquerdo */
+    border-top-right-radius: 10px;
+    /* pequeno canto superior direito */
+    border-bottom-left-radius: 10px;
+    /* pequeno canto inferior esquerdo */
+    border-bottom-right-radius: 140px;
+    /* canto inferior direito maior */
+
+}
+
+/* efeito hover na imagem */
+.team-image:hover {
+    transform: scale(1.03);
+    /* leve zoom */
+}
+
+/* ===============================
+   TEXTO
+=================================*/
+.team-text {
+    flex: 1;
+    padding: 30px 0;
+}
+
+/* Título */
+.team-text h2 {
+    font-size: 38px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 20px;
+}
+
+/* Subtítulo */
+.team-text .subtitle {
+    font-size: 20px;
+    color: #666;
+    margin-bottom: 25px;
+    font-weight: 500;
+    text-transform: none;
+    display: block;
+    display: none;
+}
+
+/* Parágrafo */
+.team-text p {
+    font-size: 17px;
+    color: #555;
+    line-height: 1.9;
+    margin-bottom: 30px;
+}
+
+.learn-more-btn {
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #007BFF;
+    /* azul do texto */
+    background-color: transparent;
+    /* fundo transparente */
+    border: 2px solid #007BFF;
+    /* borda azul */
+    border-radius: 8px;
+    /* cantos arredondados */
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    /* espaço entre texto e seta */
+    transition: all 0.3s ease;
+}
+
+/* efeito hover elegante */
+.learn-more-btn:hover {
+    background-color: #007BFF;
+    color: white;
+    border-color: #007BFF;
+
+}
+
+/* efeito clique */
+.learn-more-btn:active {
+    transform: translateY(-1px);
+}
+
+/* efeito ripple suave ao clicar */
+.learn-more-btn::after {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s;
+    border-radius: 12px;
+    content: "→";
+    font-weight: 600;
+    transition: transform 0.3s ease;
+}
+
+.learn-more-btn:active::after {
+    opacity: 1;
+    transition: 0s;
+}
+
+/* ===============================
+   RESPONSIVIDADE
+=================================*/
+@media (max-width: 1200px) {
+    .team-content {
+        gap: 50px;
+    }
+
+    .team-image {
+        width: 420px;
+        height: 300px;
+    }
+}
+
+@media (max-width: 992px) {
+    .team-content {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+    }
+
+    .team-image {
+        width: 80%;
+        height: auto;
+        border-radius: var(--border-radius);
+    }
+
+    .team-text {
+        padding-top: 1px;
+        text-align: left;
+        /* garante que todo o conteúdo fica à esquerda */
+    }
+}
+
+@media (max-width: 576px) {
+    .team-section {
+        padding: 60px 0px;
+    }
+
+    .team-text h2 {
+        font-size: 20px;
+        text-align: left;
+        /* Alinha o texto à esquerda */
+    }
+
+    .team-text .subtitle {
+        font-size: 14px;
+    }
+
+    .team-text p {
+        font-size: 13px;
+        line-height: 1.7;
+        text-align: left;
+    }
+
+    .learn-more-btn {
+        padding: 14px 28px;
+        font-size: 15px;
+        display: inline-flex;
+        /* mantém o alinhamento do conteúdo interno */
+        margin-left: 0;
+        /* coloca o botão à esquerda */
+    }
+}
+
+
+
+/* ===============================
+   SEÇÃO DE ESTATÍSTICAS
+===============================*/
+
+.stats-section {
+    padding: 170px 20px;
+    background-image: url('Imagem/happy-afro-american-businessman-sitting-his-desk-typing.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+/* Conteúdo */
+.stats-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0px;
+    position: relative;
+    z-index: 2;
+    padding: 10px;
+
+}
+
+/* Cards */
+.stat-card {
+    padding: 30px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 2px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Primeiro card: fundo branco */
+.stat-card:first-child {
+    background: white;
+    color: #333;
+    text-align: left;
+    box-shadow: none;
+    padding: 30px;
+
+}
+
+/* Outros cards: fundo transparente */
+.stat-card:not(:first-child) {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    text-align: center;
+}
+
+/* Hover para os cards transparentes */
+.stat-card:not(:first-child):hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Números e texto */
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.stat-text {
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* ===============================
+   RESPONSIVIDADE
+===============================*/
+@media (max-width: 992px) {
+    .stats-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+    }
+
+    .stat-number {
+        font-size: 2.2rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .stats-content {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .stat-card {
+        padding: 20px;
+    }
+
+    .stat-card:first-child,
+    .stat-card:not(:first-child) {
+        text-align: center;
+    }
+
+    .stat-number {
+        font-size: 1.4rem;
+    }
+
+    .stat-text {
+        font-size: 14px;
+    }
+}
+
+
+
+
+/* seção soçução */
+
+.solucao-header2 {
+    display: flex;
+    justify-content: space-between;
+    /* botão continua à direita */
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
+
+}
+
+.solucao {
+    padding: 80px 0;
+    background-color: #f9f9f9;
+}
+
+.solucao-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.solucao-content h2 {
+    font-size: 30px;
+    font-weight: 600;
+    color: #333;
+    width: 35%;
+    /* limita a largura do H2 */
+    margin: 0;
+    word-wrap: break-word;
+    /* garante que quebre linhas */
+}
+
+
+.botao {
+    width: 40px;
+    height: 40px;
+    background-color: #e0e0e0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+}
+
+.botao i {
+    color: #0084d5;
+    font-size: 16px;
+}
+
+.botao:hover {
+    background-color: #ccc;
+}
+
+
+/* =====================
+   Responsivo para mobile
+===================== */
+@media (max-width: 768px) {
+    .solucao-header2 {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        gap: 10px;
+        /* espaço entre h2 e botão */
+    }
+
+    .solucao-content h2 {
+        font-size: 24px;
+        flex: 1;
+        /* ocupa todo o espaço disponível */
+        margin: 0;
+    }
+
+    .botao {
+        /* fica na direita naturalmente */
+        flex-shrink: 0;
+        /* impede que o botão encolha */
+    }
+}
+
+
+/* ==========================
+   Seção de Serviços Profissional
+========================== */
+.section-features-img {
+    flex: 1;
+    text-align: left;
+    /* Borda mais leve */
+    padding: 10px 30px;
+    /* Mais espaço interno */
+    /* Fundo branco puro */
+    box-shadow: none;
+    /* Sem sombra */
+    transition: all 0.3s ease;
+    position: relative;
+    /* Para futuros elementos decorativos */
+}
+
+
+.features-img-grid {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 40px;
+
+}
+
+.feature-img-card {
+    position: relative;
+    /* necessário para o nó */
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+
+}
+
+.feature-img-card {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.6s ease-out;
+    border: 1px solid #ddd;
+}
+
+.feature-img-card.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.feature-img-card:hover {
+    transform: translateY(-5px) scale(1.02);
+    border-color: #007BFF;
+    /* Realce da borda */
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.15);
+    /* sombra sutil azul */
+}
+
+.feature-img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+}
+
+.feature-img-card:hover .feature-img {
+    transform: scale(1.05);
+}
+
+.feature-img-card::before {
+    content: '';
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    width: 12px;
+    height: 12px;
+    background-color: #007BFF;
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    z-index: 2;
+    /* garante que fique acima do card */
+}
+
+.feature-img-card:hover::before {
+    opacity: 1;
+    transform: scale(1.5);
+    /* efeito de crescimento sutil */
+}
+
+.feature-img-content {
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    text-align: left;
+}
+
+.feature-img-title {
+    font-size: 20px;
+    /* Título maior */
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 12px;
+}
+
+.feature-img-desc {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.7;
+    /* Mais legível */
+    margin-bottom: 20px;
+}
+
+.arrow-img-icon {
+
+    color: #007bff;
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+    display: block;
+    margin-right: auto;
+    /* Empurra para a esquerda */
+    margin-left: 0;
+    /* Garante que não tenha espaço à esquerda */
+}
+
+.arrow-img-icon:hover {
+    color: #0056b3;
+    transform: translateX(6px);
+}
+
+
+
+/*==========================
+   Responsivo - Mobile
+========================== */
+@media (max-width: 768px) {
+
+    .features-img-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        padding: 0 15px;
+    }
+
+    .feature-img-card {
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .feature-img {
+        height: 180px;
+        /* reduz altura da imagem para mobile */
+    }
+
+    .feature-img-content {
+        padding: 15px;
+        gap: 10px;
+    }
+
+    .feature-img-title {
+        font-size: 18px;
+    }
+
+    .feature-img-desc {
+        font-size: 14px;
+        line-height: 1.5;
+        margin-bottom: 15px;
+    }
+
+    .arrow-img-icon {
+        width: 50px;
+        height: 50px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .feature-img {
+        height: 150px;
+    }
+
+    .feature-img-title {
+        font-size: 16px;
+    }
+
+    .feature-img-desc {
+        font-size: 13px;
+    }
+
+    .arrow-img-icon {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+
+/* Seção de equipa com fundo de imagem */
+.section-experts-bg {
+    margin-top: 120px;
+    /* aumenta o espaço acima da seção */
+    padding: 150px 0;
+    background-image: url('Imagem/Sem-Título-1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    position: relative;
+}
+
+.experts-bg-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+    position: relative;
+    z-index: 2;
+
+}
+
+.experts-bg-text {
+    flex: 1;
+    text-align: left;
+}
+
+.experts-bg-text h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.experts-bg-subtitle {
+    font-size: 16px;
+    color: #e0e0e0;
+    margin-bottom: 20px;
+}
+
+.btn-experts-bg {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+
+}
+
+.btn-experts-bg:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.experts-bg-images {
+    display: flex;
+    gap: 20px;
+    position: relative;
+}
+
+.expert-bg-img {
+    width: 300px;
+    /* fixa largura */
+    height: 450px;
+    /* fixa altura */
+    object-fit: cover;
+    /* mantém proporção, corta o excesso */
+    flex-shrink: 0;
+    margin-top: -220px;
+    /* sobe a imagem */
+    z-index: 2;
+    border-radius: 16px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.expert-bg-card {
+    flex: 1;
+    background: #fff;
+    border-radius: 16px;
+    padding-top: 170px;
+    /* espaço para a imagem “saltar” */
+    padding-bottom: 0px;
+    padding-left: 20px;
+    padding-right: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    text-align: center;
+
+}
+
+
+.expert-bg-img:hover {
+    transform: translateY(-5px);
+    /* efeito de “levantar” */
+
+}
+
+/* ==========================
+   Versão Mobile (com imagens na mesma linha)
+========================== */
+@media (max-width: 768px) {
+    .section-experts-bg {
+        margin-top: 60px;
+        padding: 60px 0;
+    }
+
+    .experts-bg-container {
+        flex-direction: column;
+        /* texto em cima, imagens embaixo */
+        align-items: center;
+        gap: 20px;
+        padding: 0 10px;
+    }
+
+    .experts-bg-text {
+        text-align: center;
+    }
+
+    .experts-bg-text h2 {
+        font-size: 1.5rem;
+    }
+
+    .experts-bg-subtitle {
+        font-size: 14px;
+    }
+
+    .experts-bg-images {
+        flex-direction: row;
+        /* imagens na mesma linha */
+        justify-content: center;
+        flex-wrap: wrap;
+        /* permite quebrar linha se faltar espaço */
+        gap: 10px;
+    }
+
+    .expert-bg-img {
+        width: 150px;
+        /* reduz tamanho */
+        height: 220px;
+        margin-top: 0px;
+
+    }
+
+    .expert-bg-card {
+        padding: 0px;
+        padding-top: 0px;
+        width: 20%;
+        min-height: auto;
+
+
+
+    }
+
+    .btn-experts-bg {
+        width: 100%;
+        max-width: 220px;
+    }
+}
+
+
+/* ==========================
+   Tablet (769px - 1199px)
+========================== */
+@media (max-width: 1199px) {
+    .experts-bg-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .experts-bg-images {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .expert-bg-img {
+        width: 180px;
+        height: 260px;
+    }
+
+    .experts-bg-text h2 {
+        font-size: 2rem;
+    }
+}
+
+/* ==========================
+   Mobile (até 768px)
+========================== */
+@media (max-width: 768px) {
+    .section-experts-bg {
+        margin-top: 60px;
+        padding: 60px 0;
+    }
+
+    .experts-bg-container {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+        padding: 0 10px;
+    }
+
+    .experts-bg-text {
+        text-align: center;
+    }
+
+    .experts-bg-text h2 {
+        font-size: 1.5rem;
+    }
+
+    .experts-bg-subtitle {
+        font-size: 14px;
+    }
+
+    .experts-bg-images {
+        flex-direction: row;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .expert-bg-img {
+        width: 150px;
+        height: 220px;
+    }
+
+    .expert-bg-card {
+        padding: 0;
+        width: 40%;
+        min-height: auto;
+    }
+
+    .btn-experts-bg {
+        width: 100%;
+        max-width: 220px;
+    }
+}
+
+
+
+/* Seção de contato */
+.contact-section {
+    position: relative;
+    padding: 120px 0;
+    /* antes 80px, menos espaço vertical */
+    background-image: url('Imagem/OJO4YQ0.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+    color: black;
+    z-index: 1;
+
+}
+
+.contact-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.86);
+    /* imagem com 14% de visibilidade */
+    z-index: -1;
+}
+
+.contact-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    width: 37%;
+}
+
+.contact-content h2 {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 0;
+    /* sem espaço embaixo */
+}
+
+.contact-content .subtitle {
+    font-size: 24px;
+    color: #333;
+    margin-top: 5px;
+    margin-bottom: 20px;
+    text-transform: none;
+    font-weight: 100;
+    /* leve */
+}
+
+.highlight {
+    color: #007698;
+    font-weight: 600;
+}
+
+.contact-btn {
+    background: transparent;
+    color: #007698;
+    border: 1px solid #007698;
+    padding: 15px 20px;
+    font-size: 16px;
+    font-weight: 520;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.contact-btn:hover {
+    background: rgba(0, 123, 255, 0.1);
+    border-color: #007698;
+    color: #007698;
+}
+
+.contact-content .description {
+    font-size: 14px;
+    color: #999;
+    margin: 20px auto;
+    width: 70%;
+    text-align: center;
+    display: block;
+}
+
+/* =========================
+   Responsividade
+========================= */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .contact-content {
+        width: 60%;
+        /* ocupa mais espaço */
+    }
+
+    .contact-content h2 {
+        font-size: 28px;
+    }
+
+    .contact-content .subtitle {
+        font-size: 20px;
+    }
+
+    .contact-content .description {
+        width: 85%;
+        font-size: 13px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .contact-section {
+        padding: 80px 0;
+        /* menos espaço em mobile */
+    }
+
+    .contact-content {
+        width: 90%;
+        padding: 0 10px;
+    }
+
+    .contact-content h2 {
+        font-size: 24px;
+    }
+
+    .contact-content .subtitle {
+        font-size: 18px;
+    }
+
+    .contact-btn {
+        width: 100%;
+        /* botão grande em mobile */
+        justify-content: center;
+    }
+}
+
+/* Mobile pequeno */
+@media (max-width: 480px) {
+    .contact-section {
+        padding: 60px 0;
+    }
+
+    .contact-content h2 {
+        font-size: 22px;
+    }
+
+    .contact-content .subtitle {
+        font-size: 16px;
+    }
+
+    .contact-content .description {
+        font-size: 12px;
+    }
+}
+
+/* ===========================
+   RODAPÉ ESTILIZADO (Texto à esquerda)
+=========================== */
+.footer-section {
+    padding: 150px 0 30px;
+    background-color: white;
+    color: #333;
+    border-top: 0px solid #ddd;
+    font-family: 'Inter', sans-serif;
+}
+
+.footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-wrap: wrap;
+    /* Responsivo */
+    gap: 40px;
+    justify-content: space-between;
+    align-items: flex-start;
+    text-align: left;
+    /* Força alinhamento à esquerda */
+}
+
+.footer-logo {
+    flex: 1 1 250px;
+}
+
+.logo-img {
+    width: 180px;
+    height: auto;
+    margin-bottom: 10px;
+    transition: transform 0.3s ease;
+}
+
+.logo-img:hover {
+    transform: scale(1.05);
+}
+
+.company-info {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.6;
+    max-width: 280px;
+}
+
+.footer-info {
+    flex: 2 1 500px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    justify-content: flex-start;
+    text-align: left;
+    /* Sempre à esquerda */
+}
+
+.footer-address,
+.footer-hours {
+    flex: 1 1 200px;
+}
+
+.footer-address h3,
+.footer-hours h3 {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: #222;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.footer-address p,
+.footer-hours p {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 8px;
+}
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 40px auto 0;
+    padding: 0 20px;
+    text-align: center;
+    /* Também à esquerda */
+    border-top: 0px solid #ddd;
+    padding-top: 20px;
+}
+
+.footer-bottom p {
+    font-size: 13px;
+    color: #888;
+    margin: 5px 0;
+}
+
+/* Botão Scroll para Topo */
+#scrollTopBtn {
+    display: none;
+    /* Esconde até rolar a página */
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    background-color: #007698;
+    color: #fff;
+    border: none;
+    outline: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+#scrollTopBtn:hover {
+    background-color: #333;
+    transform: scale(1.1);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Seção Sobre Nós */
+.about-section {
+    z-index: 1;
+    /* 🔥 Mantém a seção numa camada acima */
+    width: 100%;
+    padding: 10;
+    margin: 0;
+    background: url('Imagem/Sem-Título-1.png') center/cover no-repeat;
+    position: relative;
+}
+
+/* Conteúdo flexível, mas agora sem fundo quadrado */
+.about-content {
+    display: flex;
+    flex-direction: row;
+    /* Texto à esquerda, imagem à direita */
+    justify-content: space-between;
+    align-items: stretch;
+    /* Mesma altura para texto e imagem */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Texto simples, sem fundo quadrado */
+.about-text {
+    flex: 1;
+    padding: 60px 60px 60px 150px;
+    /* 🔥 Mais espaço só no lado esquerdo */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about-text h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+}
+
+.about-text .title {
+    font-size: 32PX;
+    font-weight: 400;
+    margin-bottom: 20px;
+    line-height: 1.4;
+    width: 50%;
+}
+
+/* Botão redondo */
+.about-btn {
+    background: #e5c535;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+    bottom: -25px;
+    /* 🔥 metade para fora da seção */
+    left: 130px;
+    /* 🔥 Mantém o botão na esquerda */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    /* 🔥 Garante que ele fica em cima da próxima seção */
+}
+
+.about-btn:hover {
+    background: #d4b82a;
+}
+
+/* Imagem no canto direito sem borda */
+.about-image {
+    flex: 1;
+    width: 100%;
+    height: auto;
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+    /* Manda o conteúdo para a direita */
+}
+
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Cobre tudo sem distorcer */
+    display: block;
+}
+
+/* Palavra em laranja */
+.highlight {
+    color: orange;
+    /* 🔥 Troca a cor aqui se quiser outro tom */
+    font-weight: 600;
+    /* opcional: destaque extra */
+}
+
+
+/* Telemóveis (até 768px) */
+@media (max-width: 768px) {
+    .about-section {
+        padding-top: 30px;
+        /* 🔥 Dá respiro só em cima */
+    }
+
+    .about-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .about-text {
+        padding: 30px 20px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .about-text h2,
+    .about-text .title {
+        width: 100%;
+    }
+
+    .about-text .title {
+        font-size: 20px;
+        width: 70%;
+
+
+    }
+
+
+
+    about-text .title {
+        font-size: 20px;
+    }
+
+    .about-image {
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .about-image img {
+        width: 100%;
+        height: auto;
+    }
+
+    .about-btn {
+        background: #e5c535;
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: absolute;
+        bottom: -25px;
+        left: 80px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* Seção de missão */
+.mission-section {
+    padding: 120px 0;
+    background-color: #f9f9f9;
+}
+
+.mission-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.mission-text {
+    flex: 1;
+}
+
+.mission-text h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.mission-line {
+    width: 150px;
+    height: 0.7px;
+    background-color: #007BFF;
+    margin-top: 10px;
+}
+
+.mission-description {
+    flex: 2;
+    font-size: 16px;
+    color: #666;
+    line-height: 1.5;
+
+}
+
+.mission-description p {
+    margin-bottom: 20px;
+    width: 90%;
+}
+
+/* Responsividade */
+
+/* Tablets (até 1024px) */
+@media (max-width: 1024px) {
+    .mission-section {
+        padding: 80px 0;
+        /* menos espaço */
+    }
+
+    .mission-content {
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+        /* mantém à esquerda */
+        text-align: left;
+        /* garante texto à esquerda */
+    }
+
+    .mission-text h2 {
+        font-size: 1.8rem;
+    }
+
+    .mission-description p {
+        width: 100%;
+        /* ocupa a largura toda */
+    }
+
+    .mission-line {
+        margin: 10px 0;
+        /* linha encostada à esquerda */
+    }
+}
+
+/* Telemóveis (até 768px) */
+@media (max-width: 768px) {
+    .mission-section {
+        padding: 60px 0;
+    }
+
+    .mission-content {
+        padding: 0 15px;
+    }
+
+    .mission-text h2 {
+        font-size: 1.5rem;
+    }
+
+    .mission-description {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+}
+
+
+
+
+/* ===============================
+   SEÇÃO DE EQUIPA - PRO TEAM
+=================================*/
+
+/* 🔹 Container Principal */
+.pro-team-section {
+    padding-top: 10px;
+    /* antes 120px */
+    padding-bottom: 80px;
+    /* ajusta se quiser espaço em baixo */
+    padding-left: 125px;
+    padding-right: 125px;
+    margin-top: 0 !important;
+    /* garante que não tem margem extra */
+    background-color: var(--section-bg);
+    font-family: 'Inter', sans-serif;
+}
+
+/* 🔹 Layout da Secção */
+.pro-team-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+}
+
+/* ===============================
+   IMAGEM
+=================================*/
+.pro-team-photo {
+    width: 500px;
+    height: 360px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    position: relative;
+    flex: 0 0 auto;
+    transition: transform 0.3s ease;
+}
+
+.pro-team-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 140px;
+}
+
+.pro-team-photo:hover {
+    transform: scale(1.03);
+}
+
+/* ===============================
+   TEXTO
+=================================*/
+.pro-team-details {
+    flex: 1;
+    padding: 30px 0;
+}
+
+.pro-team-details h2 {
+    font-size: 38px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 20px;
+}
+
+.pro-team-subtitle {
+    font-size: 20px;
+    color: #666;
+    margin-bottom: 25px;
+    font-weight: 500;
+    display: none;
+}
+
+.pro-team-text {
+    font-size: 17px;
+    color: #555;
+    line-height: 1.9;
+    margin-bottom: 30px;
+}
+
+.pro-team-btn {
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #007BFF;
+    background-color: transparent;
+    border: 2px solid #007BFF;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.pro-team-btn:hover {
+    background-color: #007BFF;
+    color: white;
+    border-color: #007BFF;
+}
+
+.pro-team-btn:active {
+    transform: translateY(-1px);
+}
+
+.pro-team-btn::after {
+    content: "→";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s ease;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.pro-team-btn:active::after {
+    opacity: 1;
+    transition: 0s;
+}
+
+/* ===============================
+   RESPONSIVIDADE
+=================================*/
+@media (max-width: 1200px) {
+    .pro-team-wrapper {
+        gap: 50px;
+    }
+
+    .pro-team-photo {
+        width: 420px;
+        height: 300px;
+    }
+}
+
+@media (max-width: 992px) {
+    .pro-team-wrapper {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+    }
+
+    .pro-team-photo {
+        width: 80%;
+        height: auto;
+        border-radius: var(--border-radius);
+    }
+
+    .pro-team-details {
+        padding-top: 1px;
+        text-align: left;
+    }
+}
+
+@media (max-width: 576px) {
+    .pro-team-section {
+        padding: 60px 0px;
+    }
+
+    .pro-team-details h2 {
+        font-size: 20px;
+        text-align: left;
+    }
+
+    .pro-team-subtitle {
+        font-size: 14px;
+    }
+
+    .pro-team-text {
+        font-size: 13px;
+        line-height: 1.7;
+        text-align: left;
+    }
+
+    .pro-team-btn {
+        padding: 14px 28px;
+        font-size: 15px;
+        margin-left: 0;
+    }
+}

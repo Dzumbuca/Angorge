@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sobre Nós - ANGORGE LDA</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="Imagem/Imagem WhatsApp 2025-09-02 às 21.26.28_bb567b5e.jpg" alt="ANGORGE LDA" />
+        </div>
+
+        <div class="hamburger" onclick="toggleMenu()">
+            <span>☰</span>
+        </div>
+
+        <ul class="nav-links" id="navLinks">
+            <li><a href="index.html">Início</a></li>
+            <li><a href="sobre.html" class="active">Sobre</a></li>
+            <li><a href="#">Serviços</a></li>
+            <li><a href="#">Formação</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+
+        <div class="overlay" id="overlay"></div>
+        <div class="close-menu" onclick="toggleMenu()">
+            <span>✕</span>
+        </div>
+    </nav>
+
+    <section class="about-section">
+        <div class="about-content">
+            <div class="about-text">
+                <h2>Sobre Nós</h2>
+                <p class="title">
+                    Empresa certificada pela OCPA com mais de 10 anos de
+                    <span class="highlight">experiência</span>
+                </p>
+                <button class="about-btn">
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+            </div>
+            <div class="about-image">
+                <img src="Imagem/front-view-woman-working-as-economist.jpg" alt="Equipa de especialistas"
+                    loading="lazy">
+            </div>
+        </div>
+    </section>
+
+
+    <section class="mission-section">
+        <div class="mission-content">
+            <div class="mission-text">
+                <h2>A nossa missão é transformar o seu negócio</h2>
+                <div class="mission-line"></div>
+            </div>
+            <div class="mission-description">
+                <p>A ANGORGE – Gestão, Contabilidade e Consultoria, Lda. é uma empresa certificada pela OCPA com mais de
+                    10 anos de experiência no mercado angolano. Nosso compromisso é apoiar Pequenas, Médias e Grandes
+                    Empresas com serviços de excelência em contabilidade, consultoria, gestão e formação profissional.
+                </p>
+                <p>Nossa missão é prestar serviços de excelência com agilidade e rigor, valorizando nossos clientes e
+                    profissionais, sempre com ética e inovação. Queremos ser referência nacional em contabilidade,
+                    consultoria, formação e gestão de negócios, destacando-nos pela excelência e compromisso com
+                    resultados.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-section">
+        <div class="team-content">
+            <div class="team-image">
+                <img src="Imagem/mulher de azul.png" alt="Equipa de especialistas" loading="lazy">
+            </div>
+            <div class="team-text">
+                <h2>
+                    A nossa equipa de especialistas está pronta para apoiar <span class="highlight">o crescimento da sua
+                        empresa</span>
+                </h2>
+                <p class="subtitle">
+                    Contabilidade, consultoria, formação e gestão com excelência e ética
+                </p>
+                <p>
+                    Contamos com profissionais certificados pela OCPA, especializados em oferecer soluções sob medida
+                    para Pequenas, Médias e Grandes Empresas. Trabalhamos com contabilidade, fiscalidade, recursos
+                    humanos
+                    e formação profissional, garantindo eficiência, confiança e resultados consistentes para o seu
+                    negócio.
+                </p>
+                <button class="learn-more-btn">Saiba mais →</button>
+
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- JavaScript -->
+    <script src="script.js" defer></script>
+
+</body>
+
+</html>

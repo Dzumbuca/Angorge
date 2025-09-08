@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ANGORGE LDA - Menu Responsivo</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="Imagem/Imagem WhatsApp 2025-09-02 às 21.26.28_bb567b5e.jpg"
+                alt="ANGORGE LDA - Prestação de Serviço" />
+        </div>
+
+        <!-- Botão hamburguer para mobile -->
+        <div class="hamburger" onclick="toggleMenu()">
+            <span>☰</span>
+        </div>
+
+        <!-- Menu de navegação -->
+        <ul class="nav-links" id="navLinks">
+            <li><a href="#" class="active">Início</a></li>
+            <li><a href="sobre.html">Sobre</a></li>
+            <li><a href="#">Serviços</a></li>
+            <li><a href="#">Formação</a></li>
+            <li><a href="#">Contacto</a></li>
+        </ul>
+
+        <!-- Overlay escuro -->
+        <div class="overlay" id="overlay"></div>
+
+        <!-- Botão de fechar -->
+        <div class="close-menu" onclick="toggleMenu()">
+            <span>✕</span>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <p class="subtitle">GESTÃO, CONTABILIDADE E CONSULTORIA</p>
+                <h1>Soluções integradas<br>para o crescimento<br>sustentável do seu<br>negócio</h1>
+                <button class="arrow-btn" aria-label="Próximo">
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+
+                <div class="full-width-divider"></div>
+
+
+                <div class="options">
+                    <div class="option-card">
+                        <img src="Imagem/indivudal.png" alt="Cliente Individual">
+                        <span>Clientes Individuais</span>
+                        <span class="arrow-down">
+                            <img src="Icone/Arrow 2.svg" alt="Seta">
+                        </span>
+                    </div>
+                    <div class="option-card">
+                        <img src="Imagem/empresa.png" alt="Empresa">
+                        <span>Empresas</span>
+                        <span class="arrow-down">
+                            <img src="Icone/Arrow 2.svg" alt="Seta">
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="Imagem/central.png" alt="Profissional de negócios" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <section class="experience-section">
+        <div class="experience-content">
+            <div class="experience-header">
+                <h2>Mais de 10 anos de experiência</h2>
+                <div class="arrow-down2">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+            </div>
+            <div class="subtitle-container">
+                <span class="subtitle2">Soluções rápidas e eficazes</span>
+            </div>
+        </div>
+    </section>
+
+    <section class="services-section">
+        <div class="services-content">
+            <div class="service-card">
+                <img src="Icone/accounting-svgrepo-com.svg" alt="Contabilidade" class="service-icon">
+                <h3 class="service-title">Contabilidade & Fiscalidade</h3>
+                <p class="service-description">Contabilização do IVA, balanços, declarações fiscais, conformidade legal
+                </p>
+                <div class="arrow-right"><i class="fas fa-arrow-right"></i></div>
+            </div>
+            <div class="service-card">
+                <img src="Icone/management-svgrepo-com.svg" alt="Consultoria" class="service-icon">
+                <h3 class="service-title">Consultoria de Gestão</h3>
+                <p class="service-description">Estratégias para eficiência operacional, análise financeira e crescimento
+                    sustentável</p>
+                <div class="arrow-right"><i class="fas fa-arrow-right"></i></div>
+            </div>
+            <div class="service-card">
+                <img src="Icone/professional-advance-svgrepo-com.svg" alt="Formação" class="service-icon">
+                <h3 class="service-title">Formação Profissional</h3>
+                <p class="service-description">Cursos em Excel Avançado, Primavera ERP, RH, Contabilidade Geral e
+                    Analítica</p>
+                <div class="arrow-right"><i class="fas fa-arrow-right"></i></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="team-section">
+        <div class="team-content">
+            <div class="team-image">
+                <img src="Imagem/mulher de azul.png" alt="Equipa de especialistas" loading="lazy">
+            </div>
+            <div class="team-text">
+                <h2>
+                    A nossa equipa de especialistas está pronta para apoiar <span class="highlight">o crescimento da sua
+                        empresa</span>
+                </h2>
+                <p class="subtitle">
+                    Contabilidade, consultoria, formação e gestão com excelência e ética
+                </p>
+                <p>
+                    Contamos com profissionais certificados pela OCPA, especializados em oferecer soluções sob medida
+                    para Pequenas, Médias e Grandes Empresas. Trabalhamos com contabilidade, fiscalidade, recursos
+                    humanos
+                    e formação profissional, garantindo eficiência, confiança e resultados consistentes para o seu
+                    negócio.
+                </p>
+                <button class="learn-more-btn">Saiba mais →</button>
+
+            </div>
+        </div>
+    </section>
+
+
+    <section class="stats-section">
+        <div class="stats-content">
+            <!-- Primeiro card grande -->
+            <div class="stat-card">
+                <div class="stat-number">Mais de 10 anos de experiência</div>
+
+            </div>
+
+            <!-- Card superior direito -->
+            <div class="stat-card">
+                <div class="stat-number" data-target="600">0</div>
+                <div class="stat-text">Clientes atendidos</div>
+            </div>
+
+            <!-- Card inferior direito esquerdo -->
+            <div class="stat-card">
+                <div class="stat-number" data-target="9000">0</div>
+                <div class="stat-text">Faturas processadas</div>
+            </div>
+
+            <!-- Card inferior direito direito -->
+            <div class="stat-card">
+                <div class="stat-number" data-target="50000">0</div>
+                <div class="stat-text">Valores fiscalizados</div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="solucao">
+        <div class="solucao-content">
+            <div class="solucao-header2">
+                <h2>Soluções integradas para o seu negócio</h2>
+                <div class="botao">
+                    <i class="fas fa-arrow-down"></i>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+
+    <section class="section-features-img">
+        <div class="features-img-grid">
+            <div class="feature-img-card">
+                <img src="Imagem/industrial-designer-working-3d-model.jpg" alt="Contabilidade" class="feature-img">
+                <div class="feature-img-content">
+                    <h3 class="feature-img-title">Contabilidade & Fiscalidade</h3>
+                    <p class="feature-img-desc">Contabilização do IVA, balanços, declarações fiscais, conformidade legal
+                    </p>
+                    <div class="arrow-img-icon">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="feature-img-card">
+                <img src="Imagem/portrait-happy-casual-man-modern-office.jpg" alt="Consultoria" class="feature-img">
+                <div class="feature-img-content">
+                    <h3 class="feature-img-title">Consultoria de Gestão</h3>
+                    <p class="feature-img-desc">Estratégias para eficiência operacional, análise financeira e
+                        crescimento sustentável</p>
+                    <div class="arrow-img-icon">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="feature-img-card">
+                <img src="Imagem/businessman-working-laptop.jpg" alt="Formação" class="feature-img">
+                <div class="feature-img-content">
+                    <h3 class="feature-img-title">Formação Profissional</h3>
+                    <p class="feature-img-desc">Cursos em Excel Avançado, Primavera ERP, RH, Contabilidade Geral e
+                        Analítica</p>
+                    <div class="arrow-img-icon">
+                        <i class="fas fa-arrow-right"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section-experts-bg">
+        <div class="experts-bg-container">
+            <div class="experts-bg-text">
+                <h2>A nossa equipa de especialistas</h2>
+                <p class="experts-bg-subtitle">Profissionais certificados pela OCPA com mais de 10 anos de experiência
+                </p>
+                <button class="btn-experts-bg">Saiba mais</button>
+            </div>
+            <div class="experts-bg-images">
+                <div class="expert-bg-card">
+                    <img src="Imagem/central.png" alt="Especialista 1" class="expert-bg-img">
+                </div>
+                <div class="expert-bg-card">
+                    <img src="Imagem/empresa.png" alt="Especialista 2" class="expert-bg-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contact-section">
+        <div class="contact-content">
+            <h2>Fale connosco</h2>
+            <p class="subtitle">Estamos à disposição para <span class="highlight">ajudar o seu negócio</span></p>
+            <button class="contact-btn">
+                Agende uma reunião gratuita
+                <i class="fas fa-arrow-right"></i>
+            </button>
+            <p class="description">Marque uma reunião gratuita e descubra como podemos agregar valor ao crescimento da
+                sua empresa.</p>
+        </div>
+    </section>
+
+    <footer class="footer-section">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="Imagem/Imagem WhatsApp 2025-09-02 às 21.26.28_bb567b5e.jpg" alt="ANGORGE LDA"
+                    class="logo-img">
+                <p class="company-info">Empresa certificada pela OCPA com mais de 10 anos de experiência</p>
+            </div>
+            <div class="footer-info">
+                <div class="footer-address">
+                    <h3>Endereço</h3>
+                    <p>Avenida 4 de Fevereiro,<br>Nº 1234, 7º Andar, Sala 705<br>Praia, Luanda</p>
+                </div>
+                <div class="footer-hours">
+                    <h3>Horários</h3>
+                    <p>Seg – Sex: 08:00 – 18:00<br>Sábado: 08:30 – 13:00<br>Domingo: Fechado</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 ANGORGE – Todos os direitos reservados</p>
+            <p>Desenvolvido pela BlackMachine</p>
+        </div>
+    </footer>
+
+
+
+    <!-- JavaScript -->
+    <script src="script.js" defer></script>
+
+    <!-- Botão Scroll para Topo -->
+    <button id="scrollTopBtn" title="Voltar ao topo">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+
+</body>
+
+</html>
