@@ -1,0 +1,473 @@
+/* === PÁGINA DE TREINAMENTO === */
+
+.pagina-treinamento {
+    background-color: #fff;
+}
+
+.treinamento-banner {
+    display: flex;
+    align-items: center;
+
+    padding: 10px 0px 0px 60px;
+    /* top right bottom left */
+    background: url('../Imagem/Sem-Título-1.png') center/cover no-repeat;
+    position: relative;
+    color: white;
+}
+
+.treinamento-banner-content {
+    flex: 1;
+
+}
+
+.treinamento-tipo {
+    background-color: #E88031;
+    color: #000;
+    font-size: 0.875rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    display: inline-block;
+    margin-bottom: 0.75rem;
+}
+
+.treinamento-titulo {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin: 0.5rem 0 1rem 0;
+    line-height: 1.2;
+    width: 60%;
+}
+
+.treinamento-meta {
+    font-size: 0.875rem;
+    opacity: 0.9;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.treinamento-meta span {
+    margin-right: 0.5rem;
+}
+
+.treinamento-banner-image {
+    width: 600px;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+.treinamento-banner-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+    display: block;
+
+}
+
+
+.treinamento-container {
+    padding: 4rem 2rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.treinamento-main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+.treinamento-descricao {
+    font-size: 14px;
+    line-height: 1.6;
+    color: #737373;
+    margin-bottom: 2rem;
+}
+
+.treinamento-descricao h3 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.treinamento-descricao ul {
+
+    margin: 0.5rem 0;
+}
+
+.treinamento-descricao li {
+    margin-bottom: 0.5rem;
+}
+
+.treinamento-cta {
+    margin-top: 1rem;
+    text-align: left;
+}
+
+.treinamento-sidebar .treinamento-cta {
+    text-align: center;
+    /* garante alinhamento */
+}
+
+.btn-enviar {
+    display: inline-block;
+    background: #0077b6;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 2px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.3s;
+
+}
+
+.btn-enviar:hover {
+    background: #005f8c;
+}
+
+.treinamento-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    width: 300px;
+}
+
+.sidebar-box {
+    background: #E88031;
+    padding: 40px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    margin-bottom: 1.5rem;
+
+
+}
+
+.sidebar-box h4 {
+    font-size: 16px;
+
+    color: #ffffff;
+    border-bottom: 1px solid #F78834;
+    padding-bottom: 0.5rem;
+}
+
+.sidebar-box ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+
+
+}
+
+.sidebar-box li {
+
+    padding: 10px;
+    /* remove padding lateral */
+    border-bottom: 1px solid #f48e40;
+    text-align: left;
+    /* garante que alinha sempre à esquerda */
+    font-size: 14px;
+    color: #ffffff;
+
+}
+
+.sidebar-box li a {
+    color: #333;
+    text-decoration: none;
+    font-size: 0.875rem;
+    display: block;
+    padding: 0.5rem 0;
+    transition: color 0.2s;
+
+}
+
+.sidebar-box li a:hover {
+    color: #007698;
+    padding-left: 0.5rem;
+}
+
+.sidebar-box li:last-child {
+    border-bottom: none;
+    /* remove a linha do último item */
+}
+
+/* === NOVOS ESTILOS PARA TREINAMENTO (APENAS O QUE FALTA) === */
+
+/* Ícones nas listas - check azul */
+.treinamento-descricao ul li i.fas.fa-check-circle {
+    color: #0077b6;
+    font-size: 0.9rem;
+    margin-right: 0.5rem;
+    vertical-align: top;
+    position: relative;
+    top: 0.1em;
+}
+
+/* Alinhamento de ícones com texto */
+.treinamento-descricao ul li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    line-height: 1.6;
+}
+
+/* Botões do currículo */
+.curriculo-btn {
+    background: #f1f5f9;
+    border: none;
+    padding: 30px;
+    border-radius: 6px;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+    position: relative;
+    font-size: 16px;
+    display: block;
+    /* garante que o botão fica numa linha só */
+    width: 100%;
+    text-align: left;
+}
+
+.conteudo-curriculo {
+    display: none;
+    /* começa escondido */
+    margin-top: 0.5rem;
+    /* espaço abaixo do botão */
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: #333;
+    clear: both;
+    /* força sempre ficar embaixo */
+}
+
+.curriculo-lista li {
+    display: block;
+    /* cada item ocupa a largura toda */
+}
+
+.curriculo-lista li.ativo .conteudo-curriculo {
+    display: block;
+}
+
+.curriculo-btn:hover {
+    background: #e2e8f0;
+}
+
+.curriculo-btn.ativo {
+    background: #E88031;
+    color: white;
+}
+
+.curriculo-btn::after {
+    content: "▼";
+    position: absolute;
+    right: 1rem;
+    font-size: 0.8rem;
+    color: #64748b;
+    transition: transform 0.3s ease;
+}
+
+.curriculo-btn.ativo::after {
+    transform: rotate(180deg);
+    color: white;
+}
+
+/* Nota abaixo do currículo */
+.nota-curriculo {
+    font-size: 0.8125rem;
+    color: #64748b;
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+/* Títulos das seções (Sobre o curso, O que vai aprender...) */
+.treinamento-descricao h3 {
+    font-size: 16px;
+    color: #000000;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.treinamento-descricao p {
+    font-size: 14px;
+
+}
+
+/* Espaçamento entre seções */
+.treinamento-descricao>div {
+    margin-bottom: 2rem;
+}
+
+/* Estilo dos pontos azuis no sidebar (Este curso inclui) */
+.sidebar-box ul li i.fas.fa-dot-circle {
+    color: #0077b6;
+    font-size: 0.6rem;
+    margin-right: 0.5rem;
+    vertical-align: middle;
+}
+
+/* Garantir alinhamento no sidebar */
+.sidebar-box ul {
+    margin: 0.5rem 0;
+}
+
+
+
+
+
+/* Responsive: ajustes em mobile */
+@media (max-width: 768px) {
+    .treinamento-titulo {
+        width: 100%;
+        font-size: 2rem;
+    }
+
+    .treinamento-main {
+        grid-template-columns: 1fr;
+    }
+
+    .treinamento-sidebar {
+        width: auto;
+    }
+}
+
+
+
+/* === FORÇAR STACK VERTICAL SÓ PARA A LISTA DO CURRÍCULO === */
+.treinamento-descricao .curriculo-lista li {
+    /* override ao display:flex global; empilha conteúdos verticalmente */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    /* botão ocupa a largura toda */
+    gap: 0.5rem;
+}
+
+/* garante que o botão ocupa 100% e fica numa linha própria */
+.treinamento-descricao .curriculo-lista .curriculo-btn {
+    display: block;
+    width: 100%;
+    text-align: left;
+}
+
+/* esconder/mostrar com max-height (suave) — evita usar `display` para animação */
+.treinamento-descricao .curriculo-lista .conteudo-curriculo {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.32s ease, padding 0.32s ease;
+    padding: 0 0;
+    color: #333;
+    font-size: 0.95rem;
+    line-height: 1.45;
+}
+
+/* quando o li tem .ativo, o conteúdo expande */
+.treinamento-descricao .curriculo-lista li.ativo .conteudo-curriculo {
+    max-height: 500px;
+    /* suficiente para o teu texto; aumenta se precisares */
+    padding-top: 0.5rem;
+}
+
+/* === Modal de inscrição - estilo seguindo padrão dos formulários === */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal.hidden {
+    display: none;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 400px;
+    width: 90%;
+    position: relative;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+}
+
+/* Botão fechar */
+.modal-content .fechar {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+    transition: color 0.3s;
+}
+
+.modal-content .fechar:hover {
+    color: #007bff;
+}
+
+/* Título do modal */
+.modal-content h3 {
+    margin-bottom: 16px;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Inputs e textarea seguindo padrão do form-group */
+#formInscricao input,
+#formInscricao textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin-bottom: 12px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+#formInscricao input:focus,
+#formInscricao textarea:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.2);
+}
+
+
+/* Botão enviar seguindo padrão */
+#formInscricao button {
+    background: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: background 0.3s;
+    width: 100%;
+}
+
+#formInscricao button:hover {
+    background: #0056b3;
+}
+
+/* Mensagem de feedback */
+#mensagemInscricao {
+    margin-top: 12px;
+    font-size: 14px;
+    color: #333;
+}

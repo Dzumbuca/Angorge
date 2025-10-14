@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Artigo - Administração</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashbord.css">
+    <link rel="stylesheet" href="css/editar-artigo.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="meu-logo">
+                <a href="index.html" target="_blank">
+                    <img src="Icone/Ativo 1 2.png" alt="ANGORGE LDA">
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashbord.html" class="nav-item"><i class="fas fa-home"></i></a>
+                <a href="cursos.html" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+                <a href="artigos.html" class="nav-item active"><i class="fas fa-file-alt"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-text">
+                    <h1>Editar Artigo</h1>
+                    <p>Atualize as informações do artigo abaixo.</p>
+                </div>
+            </header>
+
+            <div class="form-wrapper">
+                <div class="current-image">
+                    <a href="" target="_blank" id="linkImagem">
+                        <img id="previewImg" src="https://via.placeholder.com/800x500?text=Artigo" alt="Imagem Atual">
+                    </a>
+                    <button class="btn-change">Trocar Imagem</button>
+                    <input type="file" id="imagemArtigo" accept="image/*" hidden>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Título</label>
+                        <input type="text" id="titulo">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select id="categoria" name="categoria">
+                            <option value="">Selecione</option>
+                            <option value="gestao">Gestão</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="financas">Finanças</option>
+                            <option value="tecnologia">Tecnologia</option>
+                            <option value="educacao">Educação</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Autor</label>
+                        <input type="text" id="autor" name="autor">
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Publicação</label>
+                        <input type="date" id="dataPublicacao" name="data">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="descricao" rows="6"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="status" value="Publicado"> Publicado</label>
+                        <label><input type="radio" name="status" value="Rascunho"> Rascunho</label>
+                        <label><input type="radio" name="status" value="Agendado"> Agendado</label>
+                    </div>
+                </div>
+                <div id="artigo-message" class="message-box"></div>
+
+
+                <div class="action-buttons">
+                    <button id="btn-salvar-artigo" class="btn-save">Salvar Alterações</button>
+                    <button class="btn-cancel">Cancelar</button>
+                    <button class="btn-delete">Excluir</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const artigoId = urlParams.get("id");
+        if (!artigoId) window.location.href = "artigos.html";
+
+        const titulo = document.getElementById("titulo");
+        const categoria = document.getElementById("categoria");
+        const autor = document.getElementById("autor");
+        const dataPub = document.getElementById("dataPublicacao");
+        const descricao = document.getElementById("descricao");
+        const statusRadios = document.getElementsByName("status");
+        const previewImg = document.getElementById("previewImg");
+        const linkImg = document.getElementById("linkImagem");
+        const imgInput = document.getElementById("imagemArtigo");
+
+        const btnSalvar = document.getElementById("btn-salvar-artigo");
+        const btnExcluir = document.querySelector(".btn-delete");
+
+        // Carregar dados
+        async function carregarArtigo() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get("id");
+
+            try {
+                const res = await fetch(`http://localhost:5000/api/artigos/${id}`);
+                const art = await res.json();
+
+                // Preenche os campos do formulário
+                document.getElementById("descricao").value = art.descricao || "";
+                document.getElementById("titulo").value = art.titulo || "";
+                document.getElementById("autor").value = art.autor || "";
+                document.getElementById("categoria").value = art.categoria || "";
+
+                // 📅 Corrigir data
+                if (art.dataPublicacao) {
+                    const data = new Date(art.dataPublicacao);
+                    document.getElementById("dataPublicacao").value = data.toISOString().split("T")[0];
+                }
+
+                // 📌 Corrigir status
+                if (art.status) {
+                    document.querySelectorAll("input[name='status']").forEach(radio => {
+                        radio.checked = (radio.value === art.status);
+                    });
+                }
+                // imagem
+                if (art.imagem) {
+                    previewImg.src = `http://localhost:5000${art.imagem}`;
+                    linkImg.href = previewImg.src;
+                } else {
+                    previewImg.src = "https://via.placeholder.com/800x500";
+                    linkImg.href = "#";
+                }
+
+
+                console.log("[DEBUG] Artigo carregado:", art);
+            } catch (error) {
+                console.error("Erro ao carregar artigo:", error);
+            }
+        }
+
+
+        // Salvar
+        btnSalvar.addEventListener("click", async () => {
+            const fd = new FormData();
+            fd.append("titulo", titulo.value);
+            fd.append("categoria", categoria.value);
+            fd.append("autor", autor.value);
+            fd.append("dataPublicacao", dataPub.value);
+            fd.append("descricao", descricao.value);
+
+            const statusSel = Array.from(statusRadios).find(r => r.checked);
+            if (statusSel) fd.append("status", statusSel.value);
+            if (imgInput.files[0]) fd.append("imagem", imgInput.files[0]);
+
+            try {
+                const res = await fetch(`http://localhost:5000/api/artigos/${artigoId}`, {
+                    method: "PUT",
+                    body: fd
+                });
+                const data = await res.json();
+
+                if (res.ok) {
+                    alert(data.message);
+
+                    // 👉 Redireciona para a página de listagem
+                    window.location.href = "artigo.html";
+                } else {
+                    alert(data.error || "Erro ao atualizar");
+                }
+            } catch (error) {
+                console.error("Erro ao atualizar artigo:", error);
+                alert("Erro ao atualizar artigo");
+            }
+        });
+        // Trocar imagem
+        document.querySelector(".btn-change").addEventListener("click", () => imgInput.click());
+        imgInput.addEventListener("change", () => {
+            const file = imgInput.files[0];
+            if (file) {
+                previewImg.src = URL.createObjectURL(file);
+                linkImg.href = previewImg.src;
+            }
+        });
+
+        // Excluir
+        btnExcluir.addEventListener("click", async () => {
+            if (!confirm("Deseja realmente excluir este artigo?")) return;
+            try {
+                const res = await fetch(`http://localhost:5000/api/artigos/${artigoId}`, { method: "DELETE" });
+                const data = await res.json();
+                alert(data.message);
+                window.location.href = "artigos.html";
+            } catch {
+                alert("Erro ao excluir");
+            }
+        });
+
+        carregarArtigo();
+    </script>
+</body>
+
+</html>

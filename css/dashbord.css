@@ -1,0 +1,1972 @@
+/* Admin Layout */
+.admin-layout {
+    display: flex;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 80px;
+    background-color: #007698;
+    color: white;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    /* centraliza horizontalmente */
+
+    padding-top: 50px;
+    /* adiciona espaço entre topo da sidebar e conteúdo */
+}
+
+.meu-logo a {
+    display: block;
+    /* link ocupa só o tamanho da imagem */
+    margin: 0;
+    padding: 0;
+}
+
+.meu-logo {
+    margin: 0 0 40px 0;
+    /* corrigi o typo */
+    padding: 0;
+    line-height: 0;
+}
+
+
+.meu-logo img {
+    display: block;
+    /* remove gap de linha-base */
+    width: 40px;
+    /* largura desejada */
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.nav-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 70px;
+    /* Se quiser que o menu fique fixo embaixo, use margin-top: auto */
+    /* margin-top: auto; */
+    /* descomente se quiser empurrar o menu pro final */
+}
+
+.nav-item {
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.nav-item:hover {
+    color: #e5c535;
+}
+
+/* Main Content */
+.main-content {
+    flex: 1;
+    background-color: #f0f2f5;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* ========================= */
+/* RESPONSIVO */
+@media (max-width: 768px) {
+    .admin-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        flex-direction: row;
+        justify-content: space-between;
+        /* mantém menu à direita */
+        align-items: center;
+        /* centraliza verticalmente */
+        padding: 10px 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    .nav-menu {
+        flex-direction: row;
+        gap: 20px;
+    }
+
+    .meu-logo {
+        margin: 0;
+        /* garante centralização */
+    }
+
+
+    .main-content {
+        padding: 10px;
+    }
+
+    /* Opcional: esconder menu e mostrar botão hamburger */
+    .sidebar.collapsed .nav-menu {
+        display: none;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    /* muda de center para topo */
+    margin-bottom: 40px;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.header h1 {
+    font-size: 40px;
+    font-weight: 600;
+    margin-bottom: 5px;
+    /* espaço abaixo do h1 */
+}
+
+.header p {
+    font-size: 20px;
+    color: #666;
+    margin: 0;
+    /* tira margens do p */
+}
+
+.user-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+
+
+.user-header img {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+}
+
+.user-header span {
+    font-size: 16px;
+    color: #333;
+}
+
+.user-header i {
+    font-size: 20px;
+    /* tamanho maior, mais visível */
+    color: #000000;
+    margin-right: 35px;
+    /* afasta o ícone da imagem e do texto */
+    cursor: pointer;
+    /* indica que é clicável */
+}
+
+/* ========================= */
+/* RESPONSIVO */
+@media (max-width: 1024px) {
+    .header h1 {
+        font-size: 32px;
+    }
+
+    .header p {
+        font-size: 18px;
+    }
+
+    .user-header i {
+        margin-right: 25px;
+        font-size: 18px;
+    }
+
+    .user-header img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .user-header span {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start;
+        /* mantém topo */
+        gap: 15px;
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 28px;
+    }
+
+    .header p {
+        font-size: 16px;
+    }
+
+    .user-header {
+        gap: 8px;
+        flex-wrap: wrap;
+        /* evita overflow */
+    }
+
+    .user-header i {
+        margin-right: 15px;
+        font-size: 16px;
+    }
+
+    .user-header img {
+        width: 25px;
+        height: 25px;
+    }
+
+    .user-header span {
+        font-size: 14px;
+    }
+}
+
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 24px;
+    }
+
+    .header p {
+        font-size: 14px;
+    }
+
+    .user-header i {
+        margin-right: 10px;
+        font-size: 14px;
+    }
+
+    .user-header img {
+        width: 22px;
+        height: 22px;
+    }
+
+    .user-header span {
+        font-size: 12px;
+    }
+}
+
+
+
+
+
+
+
+
+/* Dashboard Cards */
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    /* cards maiores */
+    gap: 25px;
+    padding: 20px;
+}
+
+.header h1 {
+    font-size: 48px;
+    /* maior que antes */
+    font-weight: 700;
+    /* mais robusto */
+    letter-spacing: 1px;
+    /* elegância */
+    color: #007698;
+    /* azul escuro, ou tua cor de destaque */
+    margin-bottom: 10px;
+    /* espaço até o <p> */
+    line-height: 1.2;
+    /* evita quebrar linha desnecessária */
+
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 60px 40px;
+    /* mais espaçamento interno */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.card.active {
+    background: #e5c535;
+    color: #fff;
+}
+
+/* Título do card */
+.card h3 {
+    font-size: 16px;
+    /* mais legível */
+    font-weight: 300;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    color: inherit;
+    /* mantém cor do card ativo */
+}
+
+/* Número principal */
+.card .number {
+    font-size: 92px;
+    /* ajustado para ficar proporcional */
+    font-weight: 700;
+    margin: 0;
+    color: inherit;
+    /* mantém cor do card ativo */
+}
+
+/* Texto secundário dentro do card */
+.card p {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.5;
+    margin-top: 10px;
+}
+
+/* ========================= */
+/* RESPONSIVO */
+
+/* Tablets e telas médias */
+@media (max-width: 1024px) {
+    .card {
+        padding: 50px 30px;
+    }
+
+    .card .number {
+        font-size: 72px;
+    }
+
+    .card h3 {
+        font-size: 14px;
+    }
+
+    .card p {
+        font-size: 0.9rem;
+    }
+}
+
+/* Mobile padrão */
+@media (max-width: 768px) {
+    .header {
+        flex-direction: row;
+        /* mantém elementos na mesma linha */
+        align-items: flex-start;
+        /* topo do container */
+    }
+
+    .user-header {
+        margin-left: auto;
+        /* continua no canto direito */
+        margin-top: 0;
+        /* tira qualquer espaçamento em cima */
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+    }
+
+    .dashboard-cards {
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 20px;
+        padding: 15px;
+    }
+
+    .card {
+        padding: 40px 20px;
+    }
+
+    .card .number {
+        font-size: 60px;
+    }
+
+    .card h3 {
+        font-size: 13px;
+    }
+
+    .card p {
+        font-size: 0.85rem;
+    }
+}
+
+/* Mobile pequeno */
+@media (max-width: 480px) {
+    .user-header {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .dashboard-cards {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 10px;
+    }
+
+    .card {
+        padding: 30px 15px;
+    }
+
+    .card .number {
+        font-size: 48px;
+    }
+
+    .card h3 {
+        font-size: 12px;
+    }
+
+    .card p {
+        font-size: 0.8rem;
+    }
+}
+
+
+
+
+
+
+
+
+/* Container principal */
+.content-wrapper {
+    padding: 20px;
+}
+
+/* Cabeçalho da seção */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.content-header h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+}
+
+.content-header p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+/* Botão Adicionar */
+.btn-add {
+    background-color: #007698;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-add:hover {
+    background-color: #005b7a;
+}
+
+/* ========================= */
+/* RESPONSIVO */
+
+/* Tablets e telas médias */
+@media (max-width: 1024px) {
+    .content-wrapper {
+        padding: 15px;
+    }
+
+    .content-header h2 {
+        font-size: 24px;
+    }
+
+    .content-header p {
+        font-size: 13px;
+    }
+
+    .btn-add {
+        padding: 8px 16px;
+        font-size: 14px;
+    }
+}
+
+/* Mobile padrão */
+@media (max-width: 768px) {
+
+    .content-wrapper {
+        padding: 10px;
+    }
+
+    .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .content-header h2 {
+        font-size: 20px;
+    }
+
+    .content-header p {
+        font-size: 12px;
+    }
+
+    .btn-add {
+        padding: 8px 14px;
+        font-size: 13px;
+        width: 100%;
+        /* botão ocupa toda largura */
+        justify-content: center;
+    }
+}
+
+/* Mobile pequeno */
+@media (max-width: 480px) {
+    .content-wrapper {
+        padding: 8px;
+    }
+
+    .content-header h2 {
+        font-size: 18px;
+    }
+
+    .content-header p {
+        font-size: 11px;
+    }
+
+    .btn-add {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+}
+
+
+
+
+
+/* Tabela de Cursos */
+.courses-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.courses-table th {
+    text-align: left;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #555;
+    font-size: 14px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.courses-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    font-size: 14px;
+}
+
+/* Coluna Nome com imagem */
+.courses-table td:first-child {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.course-image-placeholder {
+    width: 40px;
+    height: 40px;
+    background: #e0e0e0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #666;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.status-disponivel {
+    background: #d4f7d4;
+    color: #0a6d0a;
+}
+
+.status-em-breve {
+    background: #fff9d4;
+    color: #8a6d00;
+}
+
+.status-encerrado {
+    background: #e6e6e6;
+    color: #666;
+}
+
+/* Ações (Editar / Excluir) */
+.actions-menu {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007698;
+    font-size: 16px;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.action-btn:hover {
+    color: #005b7a;
+}
+
+/* ========================= */
+/* RESPONSIVO TABELA DE CURSOS */
+
+/* Tablets e telas médias */
+@media (max-width: 1024px) {
+
+    .courses-table th,
+    .courses-table td {
+        padding: 12px 15px;
+        font-size: 13px;
+    }
+
+    .course-image-placeholder {
+        width: 35px;
+        height: 35px;
+        font-size: 11px;
+    }
+
+    .status-badge {
+        padding: 3px 8px;
+        font-size: 11px;
+    }
+
+    .action-btn {
+        font-size: 14px;
+        padding: 3px;
+    }
+}
+
+/* Mobile padrão */
+@media (max-width: 768px) {
+    .courses-table {
+        display: block;
+        /* torna a tabela scrollável */
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .courses-table th,
+    .courses-table td {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    .course-image-placeholder {
+        width: 30px;
+        height: 30px;
+        font-size: 10px;
+    }
+
+    .status-badge {
+        padding: 2px 6px;
+        font-size: 10px;
+    }
+
+    .action-btn {
+        font-size: 14px;
+        padding: 2px;
+    }
+}
+
+/* Mobile pequeno */
+@media (max-width: 480px) {
+
+    .courses-table th,
+    .courses-table td {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .course-image-placeholder {
+        width: 25px;
+        height: 25px;
+        font-size: 9px;
+    }
+
+    .status-badge {
+        padding: 2px 5px;
+        font-size: 9px;
+    }
+
+    .action-btn {
+        font-size: 12px;
+        padding: 2px;
+    }
+}
+
+
+
+/* Paginação */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 0;
+}
+
+.pagination button {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.pagination button.active {
+    background: #007698;
+    color: white;
+    border-color: #007698;
+}
+
+.pagination button:hover:not(.active) {
+    background: #f0f2f5;
+}
+
+@media (max-width: 480px) {
+    .pagination button {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+}
+
+
+
+
+
+
+
+
+
+/* Container principal */
+.form-wrapper {
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Título da página */
+.form-wrapper h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.form-wrapper p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Upload de Imagem */
+.upload-section {
+    margin-bottom: 30px;
+}
+
+.upload-section label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.upload-area {
+    width: 100%;
+    height: 150px;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-area:hover {
+    border-color: #007698;
+    background: #f0f7ff;
+}
+
+.upload-area i {
+    font-size: 32px;
+    color: #999;
+    margin-bottom: 8px;
+}
+
+.upload-area p {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 8px 0;
+    text-align: center;
+}
+
+.upload-area small {
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.upload-area input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Linhas do formulário */
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #007698;
+    box-shadow: 0 0 0 2px rgba(0, 118, 152, 0.1);
+}
+
+/* Radio Buttons */
+.radio-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #007698;
+}
+
+/* Botão Publicar */
+.btn-publish {
+    background-color: #007698;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 200px;
+    margin-top: 20px;
+    align-self: flex-start;
+}
+
+.btn-publish:hover {
+    background-color: #005b7a;
+}
+
+/* Container principal */
+.form-wrapper {
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Título da página */
+.form-wrapper h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.form-wrapper p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Informações do Curso (leitura) */
+.course-info {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #555;
+}
+
+.course-info p {
+    margin: 5px 0;
+}
+
+/* Upload de Imagem */
+.upload-section {
+    margin-bottom: 30px;
+}
+
+.upload-section label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.upload-area {
+    width: 100%;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    background: #fafafa;
+    position: relative;
+    overflow: hidden;
+}
+
+.current-image {
+    position: relative;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+}
+
+.current-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.current-image button.btn-change {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.upload-placeholder {
+    text-align: center;
+    padding: 15px;
+    border-top: 1px solid #ddd;
+    margin-top: 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.upload-placeholder:hover {
+    background: #f0f7ff;
+}
+
+.upload-placeholder i {
+    font-size: 32px;
+    color: #999;
+    margin-bottom: 8px;
+}
+
+.upload-placeholder p {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 8px 0;
+}
+
+.upload-placeholder small {
+    font-size: 12px;
+    color: #999;
+    margin-top: 8px;
+    display: block;
+}
+
+.upload-placeholder input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Linhas do formulário */
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #007698;
+    box-shadow: 0 0 0 2px rgba(0, 118, 152, 0.1);
+}
+
+/* Radio Buttons */
+.radio-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #007698;
+}
+
+/* Botões de Ação */
+.action-buttons {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+    flex-wrap: wrap;
+}
+
+.btn-save {
+    background-color: #007698;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-save:hover {
+    background-color: #005b7a;
+}
+
+.btn-cancel {
+    background: white;
+    color: #333;
+    border: 1px solid #ddd;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-cancel:hover {
+    background: #f0f2f5;
+    border-color: #ccc;
+}
+
+.btn-delete {
+    background: white;
+    color: #d9534f;
+    border: 1px solid #d9534f;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-delete:hover {
+    background: #f9e6e6;
+    color: #c9302c;
+    border-color: #c9302c;
+}
+
+.course-image {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Container principal */
+.content-wrapper {
+    padding: 20px;
+}
+
+/* Cabeçalho da seção */
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.content-header h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+}
+
+.content-header p {
+    font-size: 14px;
+    color: #666;
+    margin: 0;
+}
+
+/* Botão Adicionar */
+.btn-add {
+    background-color: #007698;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-add:hover {
+    background-color: #005b7a;
+}
+
+
+
+
+
+
+
+/* Tabela de Artigos */
+.articles-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.articles-table th {
+    text-align: left;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #555;
+    font-size: 14px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.articles-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    font-size: 14px;
+}
+
+/* Coluna Nome com imagem */
+.articles-table td:first-child {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.article-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    object-fit: cover;
+}
+
+.article-image-placeholder {
+    width: 40px;
+    height: 40px;
+    background: #e0e0e0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #666;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.status-publicado {
+    background: #d4f7d4;
+    color: #0a6d0a;
+}
+
+.status-rascunho {
+    background: #fff9d4;
+    color: #8a6d00;
+}
+
+.status-agendado {
+    background: #e6e6e6;
+    color: #666;
+}
+
+/* Ações (Editar / Excluir) */
+.actions-menu {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007698;
+    font-size: 16px;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.action-btn:hover {
+    color: #005b7a;
+}
+
+/* Paginação */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 0;
+}
+
+.pagination button {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.pagination button.active {
+    background: #007698;
+    color: white;
+    border-color: #007698;
+}
+
+.pagination button:hover:not(.active) {
+    background: #f0f2f5;
+}
+
+/* ========================= */
+/* RESPONSIVO TABELA DE ARTIGOS E PAGINAÇÃO */
+
+/* Tablets e telas médias */
+@media (max-width: 1024px) {
+
+    .articles-table th,
+    .articles-table td {
+        padding: 12px 15px;
+        font-size: 13px;
+    }
+
+    .article-image,
+    .article-image-placeholder {
+        width: 35px;
+        height: 35px;
+        font-size: 11px;
+    }
+
+    .status-badge {
+        padding: 3px 8px;
+        font-size: 11px;
+    }
+
+    .action-btn {
+        font-size: 14px;
+        padding: 3px;
+    }
+
+    .pagination button {
+        padding: 5px 10px;
+        font-size: 13px;
+    }
+}
+
+/* Mobile padrão */
+@media (max-width: 768px) {
+    .articles-table {
+        display: block;
+        /* permite scroll horizontal */
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .articles-table th,
+    .articles-table td {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    .article-image,
+    .article-image-placeholder {
+        width: 30px;
+        height: 30px;
+        font-size: 10px;
+    }
+
+    .status-badge {
+        padding: 2px 6px;
+        font-size: 10px;
+    }
+
+    .action-btn {
+        font-size: 13px;
+        padding: 2px;
+    }
+
+    .pagination button {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+}
+
+/* Mobile pequeno */
+@media (max-width: 480px) {
+
+    .articles-table th,
+    .articles-table td {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .article-image,
+    .article-image-placeholder {
+        width: 25px;
+        height: 25px;
+        font-size: 9px;
+    }
+
+    .status-badge {
+        padding: 2px 5px;
+        font-size: 9px;
+    }
+
+    .action-btn {
+        font-size: 12px;
+        padding: 2px;
+    }
+
+    .pagination button {
+        padding: 3px 6px;
+        font-size: 11px;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+/* Container principal */
+.form-wrapper {
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Título da página */
+.form-wrapper h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.form-wrapper p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Upload de Imagem */
+.upload-section {
+    margin-bottom: 30px;
+}
+
+.upload-section label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.upload-area {
+    width: 100%;
+    height: 150px;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #fafafa;
+    position: relative;
+    overflow: hidden;
+}
+
+.upload-area:hover {
+    border-color: #007698;
+    background: #f0f7ff;
+}
+
+.upload-area i {
+    font-size: 32px;
+    color: #999;
+    margin-bottom: 8px;
+}
+
+.upload-area p {
+    font-size: 14px;
+    color: #666;
+    margin: 0 0 8px 0;
+    text-align: center;
+}
+
+.upload-area small {
+    font-size: 12px;
+    color: #999;
+    text-align: center;
+    margin-top: 8px;
+}
+
+.upload-area input[type="file"] {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+/* Linhas do formulário */
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #007698;
+    box-shadow: 0 0 0 2px rgba(0, 118, 152, 0.1);
+}
+
+/* Radio Buttons */
+.radio-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #007698;
+}
+
+/* Botão Publicar */
+.btn-publish {
+    background-color: #007698;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 200px;
+    margin-top: 20px;
+    align-self: flex-start;
+}
+
+.btn-publish:hover {
+    background-color: #005b7a;
+}
+
+/* Container principal */
+.form-wrapper {
+    padding: 30px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Título da página */
+.form-wrapper h1 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.form-wrapper p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 30px;
+}
+
+/* Informações do Artigo (leitura) */
+.course-info {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 13px;
+    color: #555;
+}
+
+.course-info p {
+    margin: 5px 0;
+}
+
+/* Upload de Imagem */
+.current-image {
+    position: relative;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eee;
+}
+
+.current-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.current-image button.btn-change {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+/* Linhas do formulário */
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1;
+}
+
+.form-group label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: border-color 0.3s;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #007698;
+    box-shadow: 0 0 0 2px rgba(0, 118, 152, 0.1);
+}
+
+/* Radio Buttons */
+.radio-group {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+.radio-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #333;
+    cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    accent-color: #007698;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.message-box {
+    margin: 12px 0;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    display: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.message-box.success {
+    background-color: #e6f4ea;
+    color: #2f7a3e;
+    border: 1px solid #b9e1c6;
+}
+
+.message-box.error {
+    background-color: #fdecea;
+    color: #a94442;
+    border: 1px solid #f5c6cb;
+}
+
+.notification-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.notification-count {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #E8AD21;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 6px;
+    font-size: 12px;
+    display: none;
+}
+
+.notification-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 25px;
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 5px;
+    width: 220px;
+    max-height: 250px;
+    overflow-y: auto;
+    z-index: 1000;
+}
+
+.notification-dropdown ul {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+}
+
+.notification-dropdown li {
+    padding: 10px 15px;
+    font-size: 14px;
+    color: #333;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s ease;
+}
+
+.notification-dropdown li:last-child {
+    border-bottom: none;
+}
+
+/* Hover no item da notificação */
+.notification-dropdown li:hover {
+    background: #f9f9f9;
+}
+
+/* Animação ao abrir */
+.notification-dropdown.show {
+    display: block;
+    animation: fadeIn 0.25s ease forwards;
+}
+
+#notification-bell {
+    font-size: 20px;
+    color: #333;
+}
+
+
+.painel-comentarios {
+    margin-top: 30px;
+}
+
+.comentarios-admin {
+    display: flex;
+    flex-direction: column;
+    /* empilha os comentários */
+    gap: 15px;
+    /* espaço entre comentários */
+    margin-top: 10px;
+}
+
+.comentario-card {
+    border: 1px solid #ccc;
+    padding: 15px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.comentario-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.comentario-acoes {
+    text-align: right;
+    margin-top: 10px;
+}
+
+.comentario-acoes .btn-apagar {
+    padding: 5px 10px;
+    background-color: #e74c3c;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.comentario-acoes .btn-apagar:hover {
+    background-color: #c0392b;
+}

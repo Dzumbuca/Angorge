@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Área de Administração</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashbord.css">
+</head>
+
+<body>
+    <!-- Layout -->
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="meu-logo">
+                <a href="index.html" target="_blank">
+                    <img src="Icone/Ativo 1 2.png" alt="ANGORGE LDA">
+                </a>
+            </div>
+
+            <nav class="nav-menu">
+                <a href="dashbord.html" class="nav-item"><i class="fas fa-home"></i></a>
+                <a href="cursos.html" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+                <a href="artigo.html" class="nav-item"><i class="fas fa-file-edit"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-text">
+                    <h1>Dashboard</h1>
+                    <p>Olá Joaquim</p>
+                </div>
+                <div class="user-header">
+                    <div class="notification-wrapper">
+                        <i class="fas fa-bell" id="notification-bell"></i>
+                        <span class="notification-count" id="notification-count">0</span>
+                        <div class="notification-dropdown" id="notification-dropdown">
+                            <ul id="notification-list"></ul>
+                        </div>
+                    </div>
+                    <img src="Imagem/medium-shot-man-working-as-real-estate-agent.jpg" alt="Joaquim">
+                    <span class="user-name">Joaquim</span> <!-- Só o nome -->
+                </div>
+
+
+            </header>
+
+            <!-- Dashboard Cards -->
+            <div class="dashboard-cards">
+                <div class="card" id="cursos-card">
+                    <h3>CURSOS PUBLICADOS</h3>
+                    <p class="number">5</p>
+                </div>
+                <div class="card active" id="artigos-card">
+                    <h3>ARTIGOS PUBLICADOS</h3>
+                    <p class="number">5</p>
+                </div>
+                <div class="card" id="inscritos-card">
+                    <h3>INSCRITOS</h3>
+                    <p class="number">5</p>
+                </div>
+            </div>
+
+            <section class="painel-comentarios">
+                <h2>🗨️ Gestão de Comentários</h2>
+                <div class="comentarios-admin">
+                    <!-- Os comentários serão carregados aqui dinamicamente -->
+                </div>
+            </section>
+
+        </main>
+    </div>
+    <script src="js/navbar.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            // 1. Carregar notificações
+            const bell = document.getElementById("notification-bell");
+            const dropdown = document.getElementById("notification-dropdown");
+            const list = document.getElementById("notification-list");
+            const countBadge = document.getElementById("notification-count");
+
+            let notifications = [];
+            let readNotifications = parseInt(localStorage.getItem("readNotifications") || "0", 10);
+
+            function renderNotifications() {
+                list.innerHTML = "";
+                notifications.forEach(n => {
+                    const li = document.createElement("li");
+                    li.textContent = n;
+                    list.appendChild(li);
+                });
+
+                const unreadCount = notifications.length - readNotifications;
+                countBadge.textContent = unreadCount > 0 ? unreadCount : "";
+                countBadge.style.display = unreadCount > 0 ? "inline-block" : "none";
+            }
+
+            async function fetchNotifications() {
+                try {
+                    const res = await fetch("http://localhost:5000/api/notificacoes");
+                    if (!res.ok) throw new Error("Falha ao buscar notificações");
+                    const dados = await res.json();
+                    notifications = Array.isArray(dados) ? dados.map(n => n.texto || n) : [];
+                    renderNotifications();
+                } catch (err) {
+                    console.error("Erro ao buscar notificações:", err);
+                }
+            }
+
+            bell?.addEventListener("click", () => {
+                dropdown?.classList.toggle("show");
+                if (dropdown?.classList.contains("show")) {
+                    readNotifications = notifications.length;
+                    localStorage.setItem("readNotifications", readNotifications);
+                    renderNotifications();
+                }
+            });
+
+            await fetchNotifications();
+            setInterval(fetchNotifications, 15000);
+
+            // 2. Carregar comentários
+            const container = document.querySelector(".comentarios-admin");
+            if (!container) return;
+
+            container.innerHTML = "<p>🔄 A carregar comentários...</p>";
+
+            try {
+                const res = await fetch("http://localhost:5000/api/admin/comentarios");
+                if (!res.ok) throw new Error("Erro na resposta da API");
+                const comentarios = await res.json();
+
+                if (!Array.isArray(comentarios) || comentarios.length === 0) {
+                    container.innerHTML = "<p>📭 Nenhum comentário disponível.</p>";
+                    return;
+                }
+
+                container.innerHTML = comentarios.map(c => `
+            <div class="comentario-card">
+                <div class="comentario-header">
+                    <strong>${c.autor || "Anónimo"}</strong>
+                    <span>${new Date(c.dataComentario).toLocaleString("pt-PT")}</span>
+                </div>
+                <p>${c.texto || ""}</p>
+                <div class="comentario-acoes">
+                    <button class="btn-apagar" onclick="apagarComentarioAdmin('${c._id}')">🗑️ Apagar</button>
+                </div>
+            </div>
+        `).join("");
+            } catch (err) {
+                console.error("Erro ao carregar comentários:", err);
+                container.innerHTML = "<p>⚠️ Erro ao carregar comentários. Verifique a conexão com o servidor.</p>";
+            }
+        });
+
+        // Função de apagar (mantida fora do DOMContentLoaded)
+        async function apagarComentarioAdmin(comentarioId) {
+            try {
+                const url = new URL(`http://localhost:5000/api/comentarios/${comentarioId}`);
+                url.searchParams.append("autor", "admin");
+                url.searchParams.append("isAdmin", "true");
+
+                const res = await fetch(url.toString(), { method: "DELETE" });
+                const data = await res.json();
+
+                if (res.ok) {
+                    // Recarregar os comentários após apagar
+                    document.querySelector(".comentarios-admin").innerHTML = "<p>🔄 A atualizar...</p>";
+                    setTimeout(() => {
+                        const event = new Event("DOMContentLoaded");
+                        // Melhor: chamar diretamente a função de recarga
+                        location.reload(); // ou reimplementar carregarComentariosAdmin isolada
+                    }, 500);
+                } else {
+                    alert(data.error || "⚠️ Erro ao apagar comentário.");
+                }
+            } catch (err) {
+                console.error("Erro ao apagar comentário:", err);
+                alert("❌ Falha na ligação ao servidor.");
+            }
+        }
+    </script>
+
+</body>
+
+</html>

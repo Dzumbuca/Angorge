@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adicionar Novo Artigo - Área de Administração</title>
+    <!-- Estilos globais -->
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashbord.css">
+    <!-- Estilo específico da página de novo artigo -->
+    <link rel="stylesheet" href="css/novo-artigo.css">
+</head>
+
+<body>
+    <!-- Layout -->
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="logo">
+                <img src="Icone/Ativo 1 2.png" alt="ANGORGE LDA">
+            </div>
+            <nav class="nav-menu">
+                <a href="dashbord.html" class="nav-item"><i class="fas fa-home"></i></a>
+                <a href="cursos.html" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+                <a href="artigo.html" class="nav-item active"><i class="fas fa-file-alt"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-text">
+                    <h1>Adicionar Novo Artigo</h1>
+                    <p>Preencha os campos abaixo para publicar um novo artigo.</p>
+                </div>
+                <div class="user-header">
+                    <i class="fas fa-bell"></i>
+                    <img src="Imagem/medium-shot-man-working-as-real-estate-agent.jpg" alt="Joaquim">
+                    <span>Joaquim</span>
+                </div>
+            </header>
+
+            <!-- Formulário de Novo Artigo -->
+            <div class="form-wrapper">
+                <!-- Upload de Imagem -->
+                <div class="upload-section">
+                    <label>Imagem do Artigo</label>
+                    <div class="upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Arraste ou clique para enviar</p>
+                        <small>Formatos aceitos: JPG, PNG, WebP | Recomendado: 800x500px</small>
+                        <input type="file" name="imagem" accept="image/*" hidden>
+                    </div>
+                </div>
+
+                <!-- Linha 1: Título + Categoria -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Título do Artigo</label>
+                        <input type="text" name="titulo" placeholder="Ex: Como Criar um Plano de Negócios Eficiente">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select name="categoria" id="categoria">
+                            <option value="">Selecione uma categoria</option>
+                            <option value="gestao">Gestão</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="financas">Finanças</option>
+                            <option value="tecnologia">Tecnologia</option>
+                            <option value="educacao">Educação</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+
+                    <!-- Novo input para colar categoria -->
+                    <div class="form-group">
+                        <label>Adicionar Categoria</label>
+                        <div style="display:flex; gap:8px;">
+                            <input type="text" id="nova-categoria" placeholder="Cole aqui a categoria">
+                            <button type="button" id="adicionar-categoria" class="btn-save">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Linha 2: Autor + Data de Publicação -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Autor</label>
+                        <input type="text" name="autor" placeholder="Ex: Joaquim Silva">
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Publicação</label>
+                        <input type="date" name="dataPublicacao" value="">
+                    </div>
+                </div>
+
+                <!-- Descrição -->
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea name="descricao" rows="6"
+                        placeholder="Escreva aqui o conteúdo do seu artigo..."></textarea>
+                </div>
+
+                <!-- Status -->
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="status" value="Publicado" checked> Publicado</label>
+                        <label><input type="radio" name="status" value="Rascunho"> Rascunho</label>
+                        <label><input type="radio" name="status" value="Agendado"> Agendado</label>
+                    </div>
+                </div>
+
+                <!-- Botão Publicar -->
+                <button class="btn-publish">Publicar Artigo</button>
+            </div>
+        </main>
+    </div>
+
+
+
+    <script>// Seletores
+        // Buscar o nome guardado
+        const user = localStorage.getItem("user");
+
+        if (user) {
+            document.querySelector(".user-header span").textContent = user;
+        } else {
+            window.location.href = "login.html";
+        }
+        const uploadArea = document.querySelector(".upload-area");
+        const fileInput = uploadArea.querySelector("input[type='file']");
+        const adicionarCategoriaBtn = document.getElementById("adicionar-categoria");
+        const novaCategoriaInput = document.getElementById("nova-categoria");
+        const categoriaSelect = document.getElementById("categoria");
+        const btnPublicar = document.querySelector(".btn-publish");
+
+        // Preview da imagem
+        uploadArea.addEventListener("click", () => fileInput.click());
+        fileInput.addEventListener("change", () => {
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = e => {
+                    uploadArea.innerHTML = `<img src="${e.target.result}" alt="Preview" style="width:100%;height:auto;border-radius:6px;">`;
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        });
+
+        // Adicionar nova categoria
+        adicionarCategoriaBtn.addEventListener("click", () => {
+            const valor = novaCategoriaInput.value.trim();
+            if (valor) {
+                const option = document.createElement("option");
+                option.value = valor.toLowerCase().replace(/\s+/g, '_');
+                option.textContent = valor;
+                option.selected = true;
+                categoriaSelect.appendChild(option);
+                novaCategoriaInput.value = "";
+            }
+        });
+
+        // Publicar artigo
+        btnPublicar.addEventListener("click", async () => {
+            const formData = new FormData();
+            const titulo = document.querySelector("input[name='titulo']").value.trim();
+            const categoria = categoriaSelect.value;
+            const autor = document.querySelector("input[name='autor']").value.trim();
+            const dataPublicacao = document.querySelector("input[name='dataPublicacao']").value;
+            const descricao = document.querySelector("textarea[name='descricao']").value.trim();
+            const status = document.querySelector("input[name='status']:checked").value;
+
+            if (!titulo || !descricao) {
+                alert("⚠️ Preencha os campos obrigatórios: Título e Descrição");
+                return;
+            }
+
+            formData.append("titulo", titulo);
+            formData.append("categoria", categoria);
+            formData.append("autor", autor);
+            formData.append("dataPublicacao", dataPublicacao);
+            formData.append("descricao", descricao);
+            formData.append("status", status);
+            if (fileInput.files[0]) formData.append("imagem", fileInput.files[0]);
+
+            try {
+                const res = await fetch("http://localhost:5000/api/artigos", {
+                    method: "POST",
+                    body: formData
+                });
+                const data = await res.json();
+                if (res.ok) {
+                    alert("✅ Artigo publicado com sucesso!");
+                    window.location.href = "artigo.html";
+                } else {
+                    alert(`❌ Erro: ${data.message || data.error}`);
+                }
+            } catch (err) {
+                console.error(err);
+                alert("❌ Erro ao publicar artigo");
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>

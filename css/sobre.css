@@ -1,0 +1,1302 @@
+/* Seção Sobre Nós */
+.about-section {
+    z-index: 1;
+    /* 🔥 Mantém a seção numa camada acima */
+    width: 100%;
+    padding: 10;
+    margin: 0;
+    background: url('../Imagem/Sem-Título-1.png') center/cover no-repeat;
+    position: relative;
+}
+
+/* Conteúdo flexível, mas agora sem fundo quadrado */
+.about-content {
+    display: flex;
+    flex-direction: row;
+    /* Texto à esquerda, imagem à direita */
+    justify-content: space-between;
+    align-items: stretch;
+    /* Mesma altura para texto e imagem */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Texto simples, sem fundo quadrado */
+.about-text {
+    flex: 1;
+    padding: 60px 60px 60px 150px;
+    /* 🔥 Mais espaço só no lado esquerdo */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.about-text h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: orange;
+}
+
+.about-text .title {
+    font-size: 32PX;
+    font-weight: 400;
+    margin-bottom: 20px;
+    line-height: 1.4;
+    width: 50%;
+}
+
+/* Botão redondo */
+.about-btn {
+    background: #e5c535;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+    bottom: -25px;
+    /* 🔥 metade para fora da seção */
+    left: 130px;
+    /* 🔥 Mantém o botão na esquerda */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    /* 🔥 Garante que ele fica em cima da próxima seção */
+}
+
+.about-btn:hover {
+    background: #d4b82a;
+}
+
+/* Imagem no canto direito sem borda */
+.about-image {
+    flex: 1;
+    width: 100%;
+    height: auto;
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+    /* Manda o conteúdo para a direita */
+}
+
+
+.about-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Cobre tudo sem distorcer */
+    display: block;
+}
+
+/* Palavra em laranja */
+.highlight {
+    color: rgb(255, 255, 255);
+    /* 🔥 Troca a cor aqui se quiser outro tom */
+    font-weight: 600;
+    /* opcional: destaque extra */
+}
+
+
+/* Telemóveis (até 768px) */
+@media (max-width: 768px) {
+    .about-section {
+        padding-top: 30px;
+        /* 🔥 Dá respiro só em cima */
+    }
+
+    .about-content {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .about-text {
+        padding: 30px 20px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .about-text h2,
+    .about-text .title {
+        width: 100%;
+    }
+
+    .about-text .title {
+        font-size: 20px;
+        width: 70%;
+
+
+    }
+
+
+
+    about-text .title {
+        font-size: 20px;
+    }
+
+    .about-image {
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .about-image img {
+        width: 100%;
+        height: auto;
+    }
+
+    .about-btn {
+        background: #e5c535;
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: absolute;
+        bottom: -25px;
+        left: 80px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+}
+
+
+
+/* Seção de missão */
+.mission-section {
+    padding: 120px 0;
+    background-color: #f9f9f9;
+}
+
+.mission-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+}
+
+.mission-text {
+    flex: 1;
+}
+
+.mission-text h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.mission-line {
+    width: 150px;
+    height: 0.7px;
+    background-color: #007BFF;
+    margin-top: 10px;
+}
+
+.mission-description {
+    flex: 2;
+    font-size: 16px;
+    color: #666;
+    line-height: 1.5;
+
+}
+
+.mission-description p {
+    margin-bottom: 20px;
+    width: 90%;
+}
+
+/* Responsividade */
+
+/* Tablets (até 1024px) */
+@media (max-width: 1024px) {
+    .mission-section {
+        padding: 80px 0;
+        /* menos espaço */
+    }
+
+    .mission-content {
+        flex-direction: column;
+        gap: 20px;
+        align-items: flex-start;
+        /* mantém à esquerda */
+        text-align: left;
+        /* garante texto à esquerda */
+    }
+
+    .mission-text h2 {
+        font-size: 1.8rem;
+    }
+
+    .mission-description p {
+        width: 100%;
+        /* ocupa a largura toda */
+    }
+
+    .mission-line {
+        margin: 10px 0;
+        /* linha encostada à esquerda */
+    }
+}
+
+/* Telemóveis (até 768px) */
+@media (max-width: 768px) {
+    .mission-section {
+        padding: 60px 24px;
+        /* 60px cima/baixo, 40px laterais */
+    }
+
+    .mission-content {
+        padding: 0 15px;
+    }
+
+    .mission-text h2 {
+        font-size: 1.5rem;
+    }
+
+    .mission-description {
+        font-size: 14px;
+        line-height: 1.6;
+    }
+}
+
+
+
+
+/* ===============================
+   SEÇÃO DE EQUIPA - PRO TEAM
+=================================*/
+
+/* 🔹 Container Principal */
+.pro-team-section {
+    padding-top: 10px;
+    /* antes 120px */
+    padding-bottom: 80px;
+    /* ajusta se quiser espaço em baixo */
+    padding-left: 125px;
+    padding-right: 125px;
+    margin-top: 0 !important;
+    /* garante que não tem margem extra */
+    background-color: var(--section-bg);
+    font-family: 'Inter', sans-serif;
+}
+
+/* 🔹 Layout da Secção */
+.pro-team-wrapper {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 80px;
+}
+
+/* ===============================
+   IMAGEM
+=================================*/
+.pro-team-photo {
+    width: 500px;
+    height: 360px;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    position: relative;
+    flex: 0 0 auto;
+    transition: transform 0.3s ease;
+}
+
+.pro-team-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 140px;
+}
+
+.pro-team-photo:hover {
+    transform: scale(1.03);
+}
+
+/* ===============================
+   TEXTO
+=================================*/
+.pro-team-details {
+    flex: 1;
+    padding: 30px 0;
+}
+
+.pro-team-details h2 {
+    font-size: 38px;
+    font-weight: 700;
+    color: #222;
+    margin-bottom: 20px;
+}
+
+.pro-team-subtitle {
+    font-size: 20px;
+    color: #666;
+    margin-bottom: 25px;
+    font-weight: 500;
+    display: none;
+}
+
+.pro-team-text {
+    font-size: 17px;
+    color: #555;
+    line-height: 1.9;
+    margin-bottom: 30px;
+}
+
+.pro-team-btn {
+    padding: 12px 28px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #007BFF;
+    background-color: transparent;
+    border: 2px solid #007BFF;
+    border-radius: 8px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.pro-team-btn:hover {
+    background-color: #007BFF;
+    color: white;
+    border-color: #007BFF;
+}
+
+.pro-team-btn:active {
+    transform: translateY(-1px);
+}
+
+.pro-team-btn::after {
+    content: "→";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background: rgba(255, 255, 255, 0.2);
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s ease;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+.pro-team-btn:active::after {
+    opacity: 1;
+    transition: 0s;
+}
+
+/* ===============================
+   RESPONSIVIDADE
+=================================*/
+@media (max-width: 1200px) {
+    .pro-team-wrapper {
+        gap: 50px;
+    }
+
+    .pro-team-photo {
+        width: 420px;
+        height: 300px;
+    }
+}
+
+@media (max-width: 992px) {
+    .pro-team-wrapper {
+        flex-direction: column;
+        text-align: center;
+        gap: 40px;
+    }
+
+    .pro-team-photo {
+        width: 80%;
+        height: auto;
+        border-radius: var(--border-radius);
+    }
+
+    .pro-team-details {
+        padding-top: 1px;
+        text-align: left;
+    }
+}
+
+@media (max-width: 576px) {
+    .pro-team-section {
+        padding: 60px 0px;
+    }
+
+    .pro-team-details h2 {
+        font-size: 20px;
+        text-align: left;
+    }
+
+    .pro-team-subtitle {
+        font-size: 14px;
+    }
+
+    .pro-team-text {
+        font-size: 13px;
+        line-height: 1.7;
+        text-align: left;
+    }
+
+    .pro-team-btn {
+        padding: 14px 28px;
+        font-size: 15px;
+        margin-left: 0;
+    }
+}
+
+
+
+/* Seção */
+.team-member-section {
+    padding: 120px 0;
+    background-color: #edf2f4;
+    /* Cinza premium */
+}
+
+/* Container flex para imagem à esquerda e texto à direita */
+.team-member-container {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    gap: 60px;
+    align-items: stretch;
+    /* Agora os dois quadros têm mesma altura */
+}
+
+/* Foto */
+.member-photo {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    border-radius: 20px;
+    overflow: visible;
+    /* Permite a imagem sair */
+    padding: 0;
+    background: white;
+
+}
+
+/* Imagem */
+.member-photo img {
+    width: 120%;
+    /* Imagem maior que o container */
+    max-width: none;
+    object-fit: cover;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    /* Base colada no fundo */
+    transform: translateX(-50%);
+    /* Apenas centraliza, não levanta a base */
+    border-radius: 20px;
+    height: 130%;
+    /* Faz a cabeça sair naturalmente */
+
+}
+
+
+/* Card de texto */
+.member-details {
+    flex: 1.2;
+    background: white;
+    border-radius: 20px;
+    padding: 50px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Centraliza o conteúdo */
+}
+
+/* Título */
+.member-details h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #007BFF;
+}
+
+/* Bio */
+.member-bio {
+    flex: 2;
+    font-size: 16px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.member-bio p {
+
+    margin-bottom: 20px;
+    width: 90%;
+
+
+}
+
+/* Social links */
+.social-links {
+    display: flex;
+    gap: 10px;
+}
+
+.social-link {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    background: #f5f5f5;
+    /* Fundo cinza clarinho */
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.social-link img {
+    width: 20px;
+    height: 20px;
+
+}
+
+.social-link:hover {
+    background: #005b9c;
+    color: white;
+    transform: scale(1.1);
+}
+
+.social-link:hover img {
+    filter: brightness(0) invert(1);
+    /* Deixa o ícone branco no hover */
+}
+
+
+/* =========================
+   🔥 RESPONSIVIDADE
+========================= */
+
+/* Tablets (até 1024px) */
+@media (max-width: 1024px) {
+    .team-member-container {
+        gap: 40px;
+        /* Menos espaço entre imagem e texto */
+        padding: 0 20px;
+        /* Menos margem lateral */
+    }
+
+    .member-photo img {
+        width: 110%;
+        /* Ajusta imagem */
+        height: auto;
+        /* Mantém proporção */
+    }
+
+    .member-details h2 {
+        font-size: 1.8rem;
+        /* Menor título */
+    }
+
+    .member-bio {
+        font-size: 14px;
+        /* Texto menor */
+        line-height: 1.6;
+        /* Espaçamento entre linhas */
+        font-weight: 300;
+        /* Peso médio */
+    }
+}
+
+/* Telemóveis (até 768px) */
+@media (max-width: 768px) {
+
+    .team-member-container {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-bottom: -90px;
+
+    }
+
+    .member-photo {
+        width: 90%;
+        margin: 0 auto 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        border-radius: 20px;
+
+
+    }
+
+    .member-details h2 {
+        font-size: 20px;
+        /* Menor título */
+        padding-bottom: 10px;
+    }
+
+    .member-photo img {
+        position: static;
+        /* 🔥 Nada de absolute */
+        width: 100%;
+        /* 🔥 Ocupa o container */
+        height: auto;
+        transform: none;
+        /* 🔥 Remove qualquer translate */
+        margin: 0 auto;
+        display: block;
+        /* 🔥 Força centralização */
+        border-radius: 20px;
+    }
+
+
+
+    .member-details {
+        width: 90%;
+        max-width: 500px;
+        padding: 30px;
+        text-align: left;
+        font-size: 12px;
+        margin-top: -40px;
+        /* 🔥 Sobe a seção */
+
+
+    }
+
+    .member-bio {
+        font-size: 12px;
+
+    }
+
+    .social-links {
+        justify-content: left;
+
+    }
+}
+
+
+/* Seção */
+.about-person {
+    padding: 120px 0;
+    background-color: #edf2f4;
+    /* Cinza premium */
+}
+
+/* Container flex para imagem à esquerda e texto à direita */
+.person-wrapper {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 40px;
+    display: flex;
+    gap: 60px;
+    align-items: stretch;
+    /* Agora os dois quadros têm mesma altura */
+}
+
+/* Foto */
+.person-image {
+    flex: 1;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    border-radius: 20px;
+    overflow: visible;
+    /* Permite a imagem sair */
+    padding: 0;
+    background: white;
+}
+
+/* Imagem */
+.person-image img {
+    width: 120%;
+    /* Imagem maior que o container */
+    max-width: none;
+    object-fit: cover;
+    position: absolute;
+    left: 50%;
+    bottom: 0;
+    /* Base colada no fundo */
+    transform: translateX(-50%);
+    /* Apenas centraliza, não levanta a base */
+    border-radius: 20px;
+    height: 130%;
+    /* Faz a cabeça sair naturalmente */
+}
+
+/* Card de texto */
+.person-content {
+    flex: 1.2;
+    background: white;
+    border-radius: 20px;
+    padding: 50px;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Centraliza o conteúdo */
+}
+
+/* Título */
+.person-content h2 {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 25px;
+    color: #007BFF;
+}
+
+/* Bio */
+.person-description {
+    flex: 2;
+    font-size: 16px;
+    color: #666;
+    line-height: 1.5;
+}
+
+.person-description p {
+    margin-bottom: 20px;
+    width: 90%;
+}
+
+/* Social links */
+.social-media {
+    display: flex;
+    gap: 10px;
+}
+
+.media-link {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 40px;
+    height: 40px;
+    margin: 5px;
+    background: #f5f5f5;
+    /* Fundo cinza clarinho */
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.media-link img {
+    width: 20px;
+    height: 20px;
+}
+
+.media-link:hover {
+    background: #005b9c;
+    color: white;
+    transform: scale(1.1);
+}
+
+.media-link:hover img {
+    filter: brightness(0) invert(1);
+    /* Deixa o ícone branco no hover */
+}
+
+
+/* =========================
+   🔥 RESPONSIVIDADE
+========================= */
+
+/* Tablets (até 1024px) */
+@media (max-width: 1024px) {
+    .person-wrapper {
+        gap: 40px;
+        /* Menos espaço entre imagem e texto */
+        padding: 0 20px;
+        /* Menos margem lateral */
+    }
+
+    .person-image img {
+        width: 110%;
+        /* Ajusta imagem */
+        height: auto;
+        /* Mantém proporção */
+    }
+
+    .person-content h2 {
+        font-size: 1.8rem;
+        /* Menor título */
+    }
+
+    .person-description {
+        font-size: 14px;
+        /* Texto menor */
+        line-height: 1.6;
+        /* Espaçamento entre linhas */
+        font-weight: 300;
+        /* Peso médio */
+    }
+}
+
+
+/* Telemóveis (até 768px) */
+@media (max-width: 768px) {
+    .person-wrapper {
+        flex-direction: column-reverse;
+        /* 🔥 Agora a imagem fica em cima do texto */
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin-top: -60px;
+        /* 🔥 Bem coladinha */
+    }
+
+    .person-image {
+        width: 90%;
+        margin: 0 auto 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: white;
+        border-radius: 20px;
+    }
+
+    .person-content h2 {
+        font-size: 20px;
+        /* Menor título */
+        padding-bottom: 10px;
+    }
+
+    .person-image img {
+        position: static;
+        /* 🔥 Nada de absolute */
+        width: 100%;
+        /* 🔥 Ocupa o container */
+        height: auto;
+        transform: none;
+        /* 🔥 Remove qualquer translate */
+        margin: 0 auto;
+        display: block;
+        /* 🔥 Força centralização */
+        border-radius: 20px;
+    }
+
+    .person-content {
+        width: 90%;
+        max-width: 500px;
+        padding: 30px;
+        text-align: left;
+        font-size: 12px;
+        margin-top: -40px;
+        /* 🔥 Sobe a seção */
+    }
+
+    .person-description {
+        font-size: 12px;
+    }
+
+    .social-media {
+        justify-content: left;
+    }
+}
+
+/* Seção de Valores */
+.values-section {
+    padding: 110px 0;
+    background-image: url('../Imagem/Sem-Título-1.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #333;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Overlay leve para melhorar o contraste */
+.values-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.25);
+    backdrop-filter: blur(2px);
+    z-index: 1;
+}
+
+.values-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.values-content h2 {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 70px;
+    color: white;
+    text-align: center;
+}
+
+.values-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    justify-items: center;
+}
+
+.value-card {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    padding: 30px 20px;
+    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    max-width: 280px;
+    width: 100%;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.value-card:hover {
+    transform: translateY(-5px);
+    background: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.3);
+}
+
+.value-icon {
+    width: 90px;
+    height: 90px;
+    border-radius: 50%;
+    background-color: rgba(232, 173, 33, 0.85);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+.value-icon img {
+    width: 50px;
+    height: auto;
+    filter: brightness(0) invert(1);
+    /* Converte ícones para branco */
+}
+
+.value-card h3 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.value-card p {
+    font-size: 14px;
+    color: #eee;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* --------- RESPONSIVO --------- */
+
+/* Tablets (até 992px) */
+@media (max-width: 992px) {
+
+    .values-section {
+        padding: 80px 0;
+    }
+
+    .values-content h2 {
+        font-size: 28px;
+        margin-bottom: 50px;
+    }
+
+    .values-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+    }
+
+    .value-card {
+        max-width: 260px;
+        /* um pouco mais estreito */
+        padding: 25px 18px;
+        backdrop-filter: blur(10px);
+    }
+
+    .value-icon {
+        width: 80px;
+        height: 80px;
+    }
+
+    .value-icon img {
+        width: 45px;
+    }
+
+    .value-card h3 {
+        font-size: 1.1rem;
+    }
+
+    .value-card p {
+        font-size: 13.5px;
+    }
+}
+
+/* Telemóveis (até 768px) */
+@media (max-width: 768px) {
+
+    .values-section {
+        padding: 60px 0;
+    }
+
+    .values-content {
+        padding: 0 15px;
+    }
+
+    .values-content h2 {
+        font-size: 26px;
+        margin-bottom: 40px;
+    }
+
+    .values-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        justify-items: center;
+    }
+
+    .value-card {
+        max-width: 85%;
+        /* ocupa menos largura */
+        padding: 22px 16px;
+        border-radius: 14px;
+    }
+
+    .value-icon {
+        width: 70px;
+        height: 70px;
+        margin-bottom: 15px;
+    }
+
+    .value-icon img {
+        width: 40px;
+    }
+
+    .value-card h3 {
+        font-size: 1.05rem;
+    }
+
+    .value-card p {
+        font-size: 13px;
+    }
+}
+
+/* Telemóveis pequenos (até 480px) */
+@media (max-width: 480px) {
+
+    .values-section {
+        padding: 50px 0;
+    }
+
+    .values-content h2 {
+        font-size: 22px;
+        margin-bottom: 35px;
+    }
+
+    .value-card {
+        max-width: 90%;
+        /* para não encostar nas bordas */
+        padding: 18px 14px;
+        border-radius: 12px;
+    }
+
+    .value-icon {
+        width: 60px;
+        height: 60px;
+    }
+
+    .value-icon img {
+        width: 35px;
+    }
+
+    .value-card h3 {
+        font-size: 1rem;
+    }
+
+    .value-card p {
+        font-size: 12.5px;
+        line-height: 1.4;
+    }
+}
+
+
+
+
+
+
+
+
+
+/* Seção de chamada para ação */
+
+
+.cta-section {
+    padding: 150px 0;
+    background-image: url('../Imagem/front-view-woman-working-as-economist.jpg');
+    background-size: cover;
+    background-position: center top;
+    /* JS vai alterar o "top" dinamicamente */
+    background-repeat: no-repeat;
+    /* REMOVA: background-attachment: fixed; */
+    color: white;
+    position: relative;
+    z-index: 1;
+    /* REMOVA overflow: hidden se existir — pode interferir */
+
+}
+
+/* Adiciona um overlay escuro por cima da imagem de fundo */
+.cta-section::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: -1;
+}
+
+.cta-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    text-align: center;
+    position: relative;
+    z-index: 2;
+}
+
+.cta-content h2 {
+    font-size: 2.5rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    line-height: 1.3;
+    width: 70%;
+    text-align: center;
+    margin-left: auto;
+    /* 🔥 Centraliza horizontalmente */
+    margin-right: auto;
+    /* 🔥 Centraliza horizontalmente */
+
+}
+
+
+.cta-btn {
+    background: transparent;
+    color: white;
+    border: 1px solid white;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.cta-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+
+
+/* 🔥 RESPONSIVIDADE CTA */
+
+/* Tablets (até 1024px) */
+@media (max-width: 1024px) {
+    .cta-section {
+        padding: 100px 0;
+        /* Menos altura */
+    }
+
+    .cta-content h2 {
+        font-size: 2rem;
+        /* Texto menor */
+        width: 80%;
+        /* Mais espaço */
+    }
+
+    .cta-btn {
+        padding: 8px 18px;
+        font-size: 15px;
+    }
+}
+
+/* Telemóveis (até 768px) */
+@media (max-width: 768px) {
+    .cta-section {
+        padding: 80px 0;
+        /* Ajusta altura */
+        background-attachment: scroll;
+        /* 🔥 Evita bug no mobile */
+    }
+
+    .cta-content {
+        padding: 0 10px;
+    }
+
+    .cta-content h2 {
+        font-size: 1.5rem;
+        /* Título menor */
+        width: 100%;
+        /* Ocupa a tela toda */
+    }
+
+    .cta-btn {
+        font-size: 14px;
+        padding: 8px 16px;
+    }
+}
+
+/* Smartphones pequenos (até 480px) */
+@media (max-width: 480px) {
+    .cta-section {
+        padding: 60px 0;
+        /* Ainda menos altura */
+    }
+
+    .cta-content h2 {
+        font-size: 1.3rem;
+        line-height: 1.4;
+    }
+
+    .cta-btn {
+        font-size: 13px;
+        padding: 6px 14px;
+    }
+}

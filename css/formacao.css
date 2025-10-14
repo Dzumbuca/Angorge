@@ -1,0 +1,700 @@
+/* Seção Sobre Nós */
+.company-section {
+    z-index: 1;
+    /* 🔥 Mantém a seção numa camada acima */
+    width: 100%;
+    padding: 0px;
+    margin: 0;
+    background: url('../Imagem/Sem-Título-1.png') center/cover no-repeat;
+    position: relative;
+}
+
+/* Conteúdo flexível, mas agora sem fundo quadrado */
+.company-container {
+    display: flex;
+    flex-direction: row;
+    /* Texto à esquerda, imagem à direita */
+    justify-content: space-between;
+    align-items: stretch;
+    /* Mesma altura para texto e imagem */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Texto simples, sem fundo quadrado */
+.company-textbox {
+    flex: 1;
+    padding: 60px 60px 60px 150px;
+    /* 🔥 Mais espaço só no lado esquerdo */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.company-textbox h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #e5c535;
+}
+
+.company-subtitle {
+    font-size: 32px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    line-height: 1.4;
+    width: 90%;
+}
+
+/* Botão redondo */
+.company-action {
+    background: #e5c535;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+    bottom: -25px;
+    /* 🔥 metade para fora da seção */
+    left: 130px;
+    /* 🔥 Mantém o botão na esquerda */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    /* 🔥 Garante que ele fica em cima da próxima seção */
+}
+
+.company-action:hover {
+    background: #d4b82a;
+}
+
+/* Imagem no canto direito sem borda */
+.company-visual {
+    flex: 1;
+    width: 100%;
+    height: auto;
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+    /* Manda o conteúdo para a direita */
+}
+
+.company-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Cobre tudo sem distorcer */
+    display: block;
+}
+
+
+
+
+
+/* Telemóveis médios (até 768px) */
+/* Telemóveis (até 768px) */
+@media (max-width: 768px) {
+    .company-section {
+        padding-top: 30px;
+        /* 🔥 Dá respiro só em cima */
+    }
+
+    .company-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .company-textbox {
+        padding: 30px 20px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .company-textbox h2,
+    .company-subtitle {
+        width: 100%;
+    }
+
+    .company-subtitle {
+        font-size: 20px;
+        width: 90%;
+    }
+
+    .company-visual {
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .company-visual img {
+        width: 100%;
+        height: auto;
+    }
+
+    .company-action {
+        background: #e5c535;
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: absolute;
+        bottom: -25px;
+        left: 80px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+}
+
+
+/* Telemóveis pequenos (até 480px) */
+@media (max-width: 480px) {
+    .company-textbox h2 {
+        font-size: 0.9rem;
+    }
+
+    .company-subtitle {
+        font-size: 20px;
+    }
+
+    .company-action {
+        width: 45px;
+        height: 45px;
+    }
+
+    .company-visual img {
+        max-height: 220px;
+    }
+}
+
+
+
+/* Seção de serviços */
+.services-section {
+    padding: 110px 0;
+    background-color: #f9f9f9;
+
+}
+
+.services-content {
+    max-width: 1200px;
+    margin-left: 120px;
+    /* 🔥 afasta do canto esquerdo */
+    padding: 0 40px;
+    text-align: left;
+    width: 50%;
+}
+
+.services-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.5;
+}
+
+.highlight {
+    color: #e5c535;
+}
+
+/* === Responsividade === */
+
+/* Tablets (até 1024px) */
+@media (max-width: 1024px) {
+    .services-content {
+        margin-left: 60px;
+        /* menos afastado */
+        width: 70%;
+        /* ocupa mais espaço */
+        padding: 0 20px;
+    }
+
+    .services-text {
+        font-size: 1.3rem;
+    }
+}
+
+/* Telemóveis médios (até 768px) */
+@media (max-width: 768px) {
+    .services-section {
+        padding: 60px 20px;
+        /* 🔥 menos espaço vertical e lateral */
+    }
+
+    .services-content {
+        margin-left: 0;
+        /* 🔥 remove margem lateral */
+        width: 100%;
+        /* ocupa toda a tela */
+        padding: 0 20px;
+        /* 🔥 respiro pequeno nas laterais */
+        text-align: left;
+    }
+
+    .services-text {
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+}
+
+/* Telemóveis pequenos (até 480px) */
+@media (max-width: 480px) {
+    .services-content {
+        padding: 0 15px;
+    }
+
+    .services-text {
+        font-size: 1rem;
+        line-height: 1.4;
+    }
+}
+
+
+/* SEÇÃO DE CURSOS */
+.secao-cursos {
+    padding: 0 20px;
+    background: #f8f9fa;
+    margin-top: 0;
+    margin-bottom: 40px;
+    max-width: 1200px;
+    /* limita a largura da seção */
+    margin-left: auto;
+    margin-right: auto;
+    /* centraliza a seção na página */
+}
+
+.secao-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.secao-header h2 {
+    font-size: 32px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.secao-header p {
+    font-size: 16px;
+    color: #666;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Container de múltiplos cursos */
+.container-cursos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 cards por linha */
+    gap: 20px;
+    /* espaçamento entre os cards */
+    justify-content: start;
+    /* cards começam à esquerda */
+    padding: 10px 0;
+}
+
+/* Responsividade */
+@media (max-width: 1024px) {
+    .container-cursos {
+        grid-template-columns: repeat(2, 1fr);
+        /* 2 cards por linha em tablets */
+    }
+}
+
+@media (max-width: 768px) {
+    .container-cursos {
+        padding: 5px;
+        grid-template-columns: 1fr;
+        /* antes era 20px dentro do .card-curso-conteudo */
+        width: 85%;
+        margin: 0 auto;
+        /* centraliza o container */
+
+
+
+    }
+
+
+
+
+
+
+}
+
+
+
+
+
+/* Card de curso */
+.card-curso {
+    width: 100%;
+    max-width: none;
+    /* ocupa toda a coluna */
+    border: 1px solid #007698;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    background: linear-gradient(135deg, #0091BA, #00607B);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 0;
+    text-align: left;
+    /* garante que o texto comece à esquerda */
+    position: relative;
+}
+
+.card-curso:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Imagem do card */
+.card-curso-imagem img {
+    width: 100%;
+    height: 220px;
+    /* altura fixa */
+    object-fit: cover;
+    display: block;
+}
+
+/* Conteúdo do card */
+.card-curso-conteudo {
+    padding: 20px;
+    text-align: left;
+    /* texto alinhado à esquerda */
+}
+
+
+
+
+/* Tipos de texto */
+.card-curso-categoria {
+    font-size: 14px;
+    color: #ffffff;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+/* Badge/Tipo sobre o card */
+.card-curso-tipo {
+    display: inline-block;
+    /* permite o fundo caber no texto */
+    background-color: #E8AD21;
+    /* fundo azul da marca */
+    color: #ffffff;
+    /* texto branco */
+    font-weight: 500;
+    font-size: 13px;
+    padding: 4px 10px;
+    /* espaçamento interno */
+    border-radius: 8px;
+    /* cantos arredondados */
+    position: absolute;
+    /* para sobrepor a imagem do card */
+    top: 15px;
+    /* distância do topo da imagem */
+    left: 15px;
+    /* distância da esquerda da imagem */
+    z-index: 2;
+    /* acima da imagem */
+    text-transform: uppercase;
+    /* opcional, mais chamativo */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    /* sombra leve */
+}
+
+.card-curso-titulo {
+    font-size: 20px;
+    font-weight: 600;
+    color: #ffffff;
+    margin: 10px 0 14px 0;
+    line-height: 1.3;
+}
+
+.card-curso-descricao {
+    font-size: 15px;
+    color: #ffffff;
+    margin-bottom: 20px;
+    line-height: 1.6;
+}
+
+/* Rodapé do card */
+.card-curso-rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #ffffff;
+    gap: 6px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+}
+
+/* Duração e status */
+.card-curso-duracao,
+.card-curso-status {
+    font-size: 12px;
+    color: #ffffff;
+}
+
+/* Ação do card */
+.card-curso-acao {
+    font-size: 12px;
+    color: #007698;
+    font-weight: 500;
+    position: relative;
+    padding-right: 16px;
+}
+
+.card-curso-acao::after {
+    content: "↗";
+    position: absolute;
+    right: 0;
+    font-size: 10px;
+}
+
+/* Link "Saiba Mais" no rodapé do card */
+.card-curso-rodape a {
+    color: #E8AD21;
+    /* cor da marca */
+    text-decoration: none;
+    /* remove underline padrão */
+    font-weight: 600;
+    /* deixa mais destacado */
+    transition: color 0.3s ease, transform 0.3s ease;
+    position: relative;
+}
+
+/* Setinha à direita do link */
+.card-curso-rodape a::after {
+    content: "↗";
+    /* seta Unicode */
+    margin-left: 5px;
+    font-size: 12px;
+    transition: transform 0.3s ease;
+}
+
+/* Efeito hover */
+.card-curso-rodape a:hover {
+    color: white;
+    /* muda cor ao passar o mouse */
+}
+
+.card-curso-rodape a:hover::after {
+    transform: translateX(3px);
+    /* anima a seta pra direita */
+}
+
+.blog-label {
+    color: #e5c535;
+    /* Cor laranja como no mockup */
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    display: block;
+    margin-bottom: 20px;
+}
+
+
+.pagina-blog .company-section h2 {
+    font-size: 40px;
+    width: 90%;
+}
+
+
+
+
+
+/* Estilo principal do card de artigo */
+/* Container de artigos */
+.container-artigos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: left;
+    /* centraliza os cards horizontalmente */
+    padding: 10px 10px 10px 150px;
+    /* espaço interno para não colar na borda da tela */
+}
+
+/* Card de artigo */
+.card-artigo {
+    width: calc(33.333% - 20px);
+    /* 3 cards por linha */
+    max-width: 100%;
+    border: 1px solid #007698;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    background: white;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: left;
+    margin: 0;
+}
+
+.card-artigo:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Imagem do artigo */
+.card-artigo-imagem img {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+}
+
+/* Conteúdo do artigo */
+.card-artigo-conteudo {
+    padding: 20px;
+    text-align: left;
+}
+
+/* Tipos de texto */
+.card-artigo-categoria {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+.card-artigo-titulo {
+    font-size: 20px;
+    font-weight: 600;
+    color: #000;
+    margin: 10px 0 14px 0;
+    line-height: 1.3;
+}
+
+.card-artigo-descricao {
+    font-size: 15px;
+    color: #555;
+    margin-bottom: 20px;
+    line-height: 1.6;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    /* número de linhas que queres mostrar */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Rodapé do card */
+.card-artigo-rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #666;
+    gap: 6px;
+    padding-top: 12px;
+    border-top: 1px solid #eee;
+}
+
+.card-artigo-data,
+.card-artigo-autor {
+    font-size: 12px;
+    color: #666;
+}
+
+.card-artigo-link {
+    font-size: 12px;
+    color: #007698;
+    font-weight: 500;
+    position: relative;
+    padding-right: 16px;
+    text-decoration: none;
+}
+
+.card-artigo-link::after {
+    content: "↗";
+    position: absolute;
+    right: 0;
+    font-size: 10px;
+}
+
+.card-artigo-link:hover {
+    text-decoration: underline;
+}
+
+/* === RESPONSIVO - CARDS DE ARTIGOS === */
+
+/* Tablets (até 1024px) */
+@media (max-width: 1024px) {
+    .container-artigos {
+        justify-content: center;
+        /* Centraliza os cards */
+        padding: 20px 40px;
+        /* Reduz o espaço lateral */
+    }
+
+    .card-artigo {
+        width: calc(50% - 20px);
+        /* 2 cards por linha */
+    }
+}
+
+/* Telemóveis (até 768px) */
+@media (max-width: 768px) {
+    .container-artigos {
+        flex-direction: column;
+        /* Empilha os cards */
+        align-items: center;
+        /* Centraliza verticalmente */
+        justify-content: center;
+        padding: 20px;
+        /* Dá um respiro equilibrado */
+        text-align: center;
+    }
+
+    .card-artigo {
+        width: 100%;
+        /* Ocupa toda a largura */
+        max-width: 500px;
+        /* Limita o tamanho */
+    }
+
+    .card-artigo-conteudo {
+        text-align: left;
+        /* Mantém o texto alinhado */
+    }
+}
+
+/* Telemóveis pequenos (até 480px) */
+@media (max-width: 480px) {
+    .container-artigos {
+        padding: 15px;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .card-artigo {
+        width: 100%;
+        max-width: 400px;
+        /* Evita que o card fique enorme */
+    }
+
+    .card-artigo-titulo {
+        font-size: 18px;
+    }
+
+    .card-artigo-descricao {
+        font-size: 14px;
+    }
+}

@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "categoria": "Contabilidade",
+        "modalidade": "Online",
+        "titulo": "Contabilidade Geral e Analítica",
+        "descricao": "Aprenda os princípios contabilísticos com casos reais e aplicados.",
+        "duracao": "40 horas",
+        "status": "disponivel"
+    },
+    {
+        "id": 2,
+        "categoria": "Contabilidade",
+        "modalidade": "Online",
+        "titulo": "Contabilidade Geral e Analítica",
+        "descricao": "Aprenda os princípios contabilísticos com casos reais e aplicados.",
+        "duracao": "40 horas",
+        "status": "disponivel"
+    },
+    {
+        "id": 3,
+        "categoria": "Contabilidade",
+        "modalidade": "Online",
+        "titulo": "Contabilidade Geral e Analítica",
+        "descricao": "Aprenda os princípios contabilísticos com casos reais e aplicados.",
+        "duracao": "40 horas",
+        "status": "disponivel"
+    }
+]

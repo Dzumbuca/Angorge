@@ -6,35 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sobre Nós - ANGORGE LDA</title>
     <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/sobre.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <!-- Local onde o menu vai aparecer -->
+    <div id="navbar-container"></div>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">
-            <img src="Imagem/Imagem WhatsApp 2025-09-02 às 21.26.28_bb567b5e.jpg" alt="ANGORGE LDA" />
-        </div>
-
-        <div class="hamburger" onclick="toggleMenu()">
-            <span>☰</span>
-        </div>
-
-        <ul class="nav-links" id="navLinks">
-            <li><a href="index.html">Início</a></li>
-            <li><a href="sobre.html" class="active">Sobre</a></li>
-            <li><a href="#">Serviços</a></li>
-            <li><a href="#">Formação</a></li>
-            <li><a href="#">Contacto</a></li>
-        </ul>
-
-        <div class="overlay" id="overlay"></div>
-        <div class="close-menu" onclick="toggleMenu()">
-            <span>✕</span>
-        </div>
-    </nav>
 
     <section class="about-section">
         <div class="about-content">
@@ -95,7 +75,117 @@
                     e formação profissional, garantindo eficiência, confiança e resultados consistentes para o seu
                     negócio.
                 </p>
-                <button class="learn-more-btn">Saiba mais →</button>
+                <button class="learn-more-btn">
+                    Saiba mais
+                    <i class="fas fa-arrow-right"></i>
+                </button>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="team-member-section">
+        <div class="team-member-container">
+            <!-- Imagem -->
+            <div class="member-photo">
+                <img src="Imagem/ca024ad9-2921-4851-b51c-ad501a8c9308.png" alt="Angelo Jorge" loading="lazy">
+            </div>
+
+            <!-- Texto -->
+            <div class="member-details">
+                <h2>Angelo Jorge</h2>
+                <p class="member-bio">
+                    Com mais de 10 anos de experiência no mercado angolano, Angelo Jorge lidera a
+                    ANGORGE – Gestão, Contabilidade e Consultoria, Lda. com compromisso absoluto com a satisfação do
+                    cliente, ética, transparência e inovação. Certificado pela OCPA, ele é especialista em gestão
+                    estratégica, contabilidade fiscal e formação profissional.
+                </p>
+                <p class="member-bio">
+                    Seu trabalho foca em apoiar Pequenas, Médias e Grandes Empresas com soluções
+                    personalizadas em contabilidade, fiscalidade, RH e formação profissional. Angelo acredita que o
+                    sucesso de uma empresa começa com informações financeiras confiáveis e estratégias eficazes para o
+                    crescimento sustentável.
+                </p>
+                <div class="social-links">
+                    <a href="#" class="social-link">
+                        <img src="Icone/facebook-svgrepo-com.svg" alt="Facebook" width="30">
+                    </a>
+                    <a href="#" class="social-link">
+                        <img src="Icone/linkedin-161-svgrepo-com.svg" alt="LinkedIn" width="30">
+                    </a>
+                    <a href="#" class="social-link">
+                        <img src="Icone/instagram-svgrepo-com.svg" alt="Instagram" width="30">
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="about-person">
+        <div class="person-wrapper">
+
+            <!-- Texto -->
+            <div class="person-content">
+                <h2>Teresa Smith</h2>
+                <p class="person-description">
+                    Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae; Donec velit
+                    neque, auctor sit amet aliquam vel, ullamcorper sit amet ligula.
+                </p>
+                <p class="person-description">
+                    Duis id tellus non leo porta ultricies efficitur non nunc. Suspendisse venenatis, lacus ac aliquam
+                    mollis, nisl risus maximus lectus, vitae faucibus lacus ante vel diam. Sed lectus purus, lobortis eu
+                    aliquet at, ullamcorper sed.
+                </p>
+                <div class="social-media">
+                    <a href="#" class="media-link">
+                        <img src="Icone/facebook-svgrepo-com.svg" alt="Facebook" width="30">
+                    </a>
+                    <a href="#" class="media-link">
+                        <img src="Icone/linkedin-161-svgrepo-com.svg" alt="LinkedIn" width="30">
+                    </a>
+                    <a href="#" class="media-link">
+                        <img src="Icone/instagram-svgrepo-com.svg" alt="Instagram" width="30">
+                    </a>
+                </div>
+            </div>
+
+            <!-- Imagem -->
+            <div class="person-image">
+                <img src="Imagem/20a60cfb-2ae1-4114-bde9-cd12fbcf6fbb.png" alt="Angelo Jorge" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <section class="values-section">
+        <div class="values-content">
+            <h2>Os nossos Valores</h2>
+            <div class="values-grid">
+
+                <div class="value-card">
+                    <div class="value-icon">
+                        <img src="Icone/Camadasss 1.png" alt="Compromisso" width="40">
+                    </div>
+                    <h3>Compromisso com a satisfação do cliente</h3>
+                    <p>Garantimos soluções personalizadas e atendimento de excelência</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="value-icon">
+                        <img src="Icone/Camadssssa 1.png" alt="Ética e Responsabilidade" width="40">
+                    </div>
+                    <h3>Ética, transparência e responsabilidade</h3>
+                    <p>Trabalhamos com integridade, respeitando as leis e normas fiscais</p>
+                </div>
+
+                <div class="value-card">
+                    <div class="value-icon">
+                        <img src="Icone/Caddddmada 1.png" alt="Inovação" width="40">
+                    </div>
+                    <h3>Inovação e soluções personalizadas</h3>
+                    <p>Adotamos tecnologias modernas para otimizar a gestão do seu negócio</p>
+                </div>
 
             </div>
         </div>
@@ -103,8 +193,50 @@
 
 
 
+
+
+
+    <section class="contact-section">
+        <div class="contact-content">
+            <h2>Fale connosco</h2>
+            <p class="subtitle">Estamos à disposição para <span class="highlight">ajudar o seu negócio</span></p>
+            <button class="contact-btn">
+                Agende uma reunião
+                <i class="fas fa-arrow-right"></i>
+            </button>
+
+        </div>
+    </section>
+
+
+    <footer class="footer-section">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img">
+                <p class="company-info">Empresa certificada pela OCPA com mais de 10 anos de experiência</p>
+            </div>
+            <div class="footer-info">
+                <div class="footer-address">
+                    <h3>Endereço</h3>
+                    <p>Avenida 4 de Fevereiro,<br>Nº 1234, 7º Andar, Sala 705<br>Praia, Luanda</p>
+                </div>
+                <div class="footer-hours">
+                    <h3>Horários</h3>
+                    <p>Seg – Sex: 08:00 – 18:00<br>Sábado: 08:30 – 13:00<br>Domingo: Fechado</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 ANGORGE – Todos os direitos reservados</p>
+            <p>Desenvolvido pela BlackMachine</p>
+        </div>
+    </footer>
+
+
+
     <!-- JavaScript -->
-    <script src="script.js" defer></script>
+    <script src="script.js"></script>
+    <script src="js/navbar.js"></script>
 
 </body>
 

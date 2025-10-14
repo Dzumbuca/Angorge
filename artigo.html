@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Artigos - Área de Administração</title>
+    <!-- Estilos globais -->
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <!-- Estilo específico da página de artigos -->
+    <link rel="stylesheet" href="css/dashbord.css">
+</head>
+
+<body>
+    <!-- Layout -->
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="meu-logo">
+                <a href="index.html" target="_blank">
+                    <img src="Icone/Ativo 1 2.png" alt="ANGORGE LDA">
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashbord.html" class="nav-item"><i class="fas fa-home"></i></a>
+                <a href="cursos.html" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+                <a href="artigos.html" class="nav-item active"><i class="fas fa-file-alt"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-text">
+
+                </div>
+                <div class="user-header">
+                    <i class="fas fa-bell"></i>
+                    <img src="Imagem/medium-shot-man-working-as-real-estate-agent.jpg" alt="Joaquim">
+                    <span>Joaquim</span>
+                </div>
+            </header>
+
+            <!-- Conteúdo Principal -->
+            <div class="content-wrapper">
+                <div class="content-header">
+                    <div>
+                        <h2>Artigos</h2>
+                        <p>Gerencie todos os artigos disponíveis no site.</p>
+                    </div>
+                    <a href="AdicionarArtigo.html" class="btn-add">
+                        <i class="fas fa-plus"></i> ADICIONAR
+                    </a>
+                </div>
+
+                <!-- Tabela de Artigos -->
+                <table class="articles-table">
+                    <thead>
+                        <tr>
+                            <th>Nome do Artigo</th>
+                            <th>Categoria</th>
+                            <th>Data de Publicação</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="articles-tbody">
+                        <tr>
+                            <td>Exemplo de Artigo</td>
+                            <td>Categoria X</td>
+                            <td>24/09/2025</td>
+                            <td>Publicado</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <button class="btn-save" title="Editar">
+                                        <i class="fas fa-edit"></i> Editar
+                                    </button>
+                                    <button class="btn-delete" title="Excluir">
+                                        <i class="fas fa-trash"></i> Eliminar
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <!-- Outras linhas de artigos podem ser adicionadas aqui -->
+                    </tbody>
+                </table>
+
+
+                <!-- Paginação -->
+                <div class="pagination" id="pagination-container">
+                    <!-- Botões de paginação serão gerados aqui -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+</body>
+
+
+
+<script>
+
+    // Buscar o nome guardado
+    const user = localStorage.getItem("user");
+
+    if (user) {
+        document.querySelector(".user-header span").textContent = user;
+    } else {
+        window.location.href = "login.html";
+    }
+
+
+    const articlesTbody = document.getElementById("articles-tbody");
+    const paginationContainer = document.getElementById("pagination-container");
+
+    let currentPage = 1;
+    const limit = 5;
+
+    // Função para carregar artigos
+    async function loadArticles(page = 1) {
+        try {
+            const res = await fetch(`http://localhost:5000/api/artigos?page=${page}&limit=${limit}`);
+            const data = await res.json();
+
+            articlesTbody.innerHTML = "";
+
+            data.artigos.forEach(article => {
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                <td>${article.titulo}</td>
+                <td>${article.categoria}</td>
+                <td>${new Date(article.createdAt).toLocaleDateString()}</td>
+                <td>${article.status}</td>
+                <td>
+                    <div class="actions-menu">
+                        <button class="action-btn edit-btn" title="Editar" onclick="editarArtigo('${article._id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn delete-btn" title="Excluir" onclick="excluirArtigo('${article._id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+                articlesTbody.appendChild(tr);
+            });
+
+            renderPagination(data.totalPages, page);
+
+        } catch (err) {
+            console.error("Erro ao carregar artigos:", err);
+        }
+    }
+
+    // Função para redirecionar para editar artigo
+    function editarArtigo(id) {
+        window.location.href = `EditarArtigo.html?id=${id}`;
+    }
+
+    // Função para excluir artigo
+    async function excluirArtigo(id) {
+        if (confirm("Deseja realmente deletar este artigo?")) {
+            try {
+                const res = await fetch(`http://localhost:5000/api/artigos/${id}`, {
+                    method: "DELETE",
+                });
+                const data = await res.json();
+                alert(data.message);
+                loadArticles(currentPage); // recarrega a lista
+            } catch (err) {
+                console.error("Erro ao excluir artigo:", err);
+            }
+        }
+    }
+
+    // Função para renderizar paginação
+    function renderPagination(totalPages, page) {
+        paginationContainer.innerHTML = "";
+        for (let i = 1; i <= totalPages; i++) {
+            const btn = document.createElement("button");
+            btn.textContent = i;
+            btn.className = i === page ? "active" : "";
+            btn.addEventListener("click", () => {
+                currentPage = i;
+                loadArticles(i);
+            });
+            paginationContainer.appendChild(btn);
+        }
+    }
+
+    // Inicializar
+    loadArticles(currentPage);
+
+
+
+
+</script>
+
+</html>

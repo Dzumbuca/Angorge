@@ -7,40 +7,15 @@
     <title>ANGORGE LDA - Menu Responsivo</title>
     <link rel="stylesheet" href="style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 </head>
 
 <body>
+    <!-- Local onde o menu vai aparecer -->
+    <div id="navbar-container"></div>
 
-    <!-- Navbar -->
-    <nav class="navbar">
-        <div class="logo">
-            <img src="Imagem/Imagem WhatsApp 2025-09-02 às 21.26.28_bb567b5e.jpg"
-                alt="ANGORGE LDA - Prestação de Serviço" />
-        </div>
 
-        <!-- Botão hamburguer para mobile -->
-        <div class="hamburger" onclick="toggleMenu()">
-            <span>☰</span>
-        </div>
 
-        <!-- Menu de navegação -->
-        <ul class="nav-links" id="navLinks">
-            <li><a href="#" class="active">Início</a></li>
-            <li><a href="sobre.html">Sobre</a></li>
-            <li><a href="#">Serviços</a></li>
-            <li><a href="#">Formação</a></li>
-            <li><a href="#">Contacto</a></li>
-        </ul>
-
-        <!-- Overlay escuro -->
-        <div class="overlay" id="overlay"></div>
-
-        <!-- Botão de fechar -->
-        <div class="close-menu" onclick="toggleMenu()">
-            <span>✕</span>
-        </div>
-    </nav>
 
     <!-- Hero Section -->
     <section class="hero">
@@ -49,27 +24,31 @@
                 <p class="subtitle">GESTÃO, CONTABILIDADE E CONSULTORIA</p>
                 <h1>Soluções integradas<br>para o crescimento<br>sustentável do seu<br>negócio</h1>
                 <button class="arrow-btn" aria-label="Próximo">
-                    <i class="fas fa-arrow-right"></i>
+                    <a href="sobre.html">
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
                 </button>
 
                 <div class="full-width-divider"></div>
 
 
                 <div class="options">
-                    <div class="option-card">
+
+                    <a href="servico.html" class="option-card">
                         <img src="Imagem/indivudal.png" alt="Cliente Individual">
                         <span>Clientes Individuais</span>
                         <span class="arrow-down">
                             <img src="Icone/Arrow 2.svg" alt="Seta">
                         </span>
-                    </div>
-                    <div class="option-card">
+                    </a>
+
+                    <a href="servico.html" class="option-card">
                         <img src="Imagem/empresa.png" alt="Empresa">
                         <span>Empresas</span>
                         <span class="arrow-down">
                             <img src="Icone/Arrow 2.svg" alt="Seta">
                         </span>
-                    </div>
+                    </a>
                 </div>
             </div>
             <div class="hero-image">
@@ -83,7 +62,9 @@
             <div class="experience-header">
                 <h2>Mais de 10 anos de experiência</h2>
                 <div class="arrow-down2">
-                    <i class="fas fa-arrow-down"></i>
+                    <a href="sobre.html">
+                        <i class="fas fa-arrow-down"></i>
+                    </a>
                 </div>
             </div>
             <div class="subtitle-container">
@@ -95,21 +76,21 @@
     <section class="services-section">
         <div class="services-content">
             <div class="service-card">
-                <img src="Icone/accounting-svgrepo-com.svg" alt="Contabilidade" class="service-icon">
+                <img src="Icone/Camada 21.png" alt="Contabilidade" class="service-icon">
                 <h3 class="service-title">Contabilidade & Fiscalidade</h3>
                 <p class="service-description">Contabilização do IVA, balanços, declarações fiscais, conformidade legal
                 </p>
                 <div class="arrow-right"><i class="fas fa-arrow-right"></i></div>
             </div>
             <div class="service-card">
-                <img src="Icone/management-svgrepo-com.svg" alt="Consultoria" class="service-icon">
+                <img src="Icone/networkinddg.png" alt="Consultoria" class="service-icon">
                 <h3 class="service-title">Consultoria de Gestão</h3>
                 <p class="service-description">Estratégias para eficiência operacional, análise financeira e crescimento
                     sustentável</p>
                 <div class="arrow-right"><i class="fas fa-arrow-right"></i></div>
             </div>
             <div class="service-card">
-                <img src="Icone/professional-advance-svgrepo-com.svg" alt="Formação" class="service-icon">
+                <img src="Icone/apresentacadddo.png" alt="Formação" class="service-icon">
                 <h3 class="service-title">Formação Profissional</h3>
                 <p class="service-description">Cursos em Excel Avançado, Primavera ERP, RH, Contabilidade Geral e
                     Analítica</p>
@@ -138,7 +119,10 @@
                     e formação profissional, garantindo eficiência, confiança e resultados consistentes para o seu
                     negócio.
                 </p>
-                <button class="learn-more-btn">Saiba mais →</button>
+                <button class="learn-more-btn">
+                    Saiba mais
+                    <i class="fas fa-arrow-right"></i>
+                </button>
 
             </div>
         </div>
@@ -146,11 +130,14 @@
 
 
     <section class="stats-section">
+        <!-- Fundo parallax controlado via JavaScript -->
+        <div class="stats-bg"></div>
+
+        <!-- Conteúdo sobreposto -->
         <div class="stats-content">
             <!-- Primeiro card grande -->
             <div class="stat-card">
                 <div class="stat-number">Mais de 10 anos de experiência</div>
-
             </div>
 
             <!-- Card superior direito -->
@@ -159,13 +146,13 @@
                 <div class="stat-text">Clientes atendidos</div>
             </div>
 
-            <!-- Card inferior direito esquerdo -->
+            <!-- Card inferior esquerdo -->
             <div class="stat-card">
                 <div class="stat-number" data-target="9000">0</div>
                 <div class="stat-text">Faturas processadas</div>
             </div>
 
-            <!-- Card inferior direito direito -->
+            <!-- Card inferior direito -->
             <div class="stat-card">
                 <div class="stat-number" data-target="50000">0</div>
                 <div class="stat-text">Valores fiscalizados</div>
@@ -178,12 +165,13 @@
         <div class="solucao-content">
             <div class="solucao-header2">
                 <h2>Soluções integradas para o seu negócio</h2>
-                <div class="botao">
-                    <i class="fas fa-arrow-down"></i>
+                <div class="arrow-down2">
+                    <a href="servico.html">
+                        <i class="fas fa-arrow-down"></i>
+                    </a>
                 </div>
-            </div>
 
-        </div>
+            </div>
     </section>
 
 
@@ -197,7 +185,9 @@
                     <p class="feature-img-desc">Contabilização do IVA, balanços, declarações fiscais, conformidade legal
                     </p>
                     <div class="arrow-img-icon">
-                        <i class="fas fa-arrow-right"></i>
+                        <a href="servico.html">
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -208,7 +198,9 @@
                     <p class="feature-img-desc">Estratégias para eficiência operacional, análise financeira e
                         crescimento sustentável</p>
                     <div class="arrow-img-icon">
-                        <i class="fas fa-arrow-right"></i>
+                        <a href="servico.html">
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -219,7 +211,9 @@
                     <p class="feature-img-desc">Cursos em Excel Avançado, Primavera ERP, RH, Contabilidade Geral e
                         Analítica</p>
                     <div class="arrow-img-icon">
-                        <i class="fas fa-arrow-right"></i>
+                        <a href="fomacao.html">
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -233,7 +227,10 @@
                 <h2>A nossa equipa de especialistas</h2>
                 <p class="experts-bg-subtitle">Profissionais certificados pela OCPA com mais de 10 anos de experiência
                 </p>
-                <button class="btn-experts-bg">Saiba mais</button>
+                <a href="sobre.html">
+                    <button class="btn-experts-bg">Saiba mais</button>
+                </a>
+
             </div>
             <div class="experts-bg-images">
                 <div class="expert-bg-card">
@@ -251,19 +248,17 @@
             <h2>Fale connosco</h2>
             <p class="subtitle">Estamos à disposição para <span class="highlight">ajudar o seu negócio</span></p>
             <button class="contact-btn">
-                Agende uma reunião gratuita
+                Agende uma reunião
                 <i class="fas fa-arrow-right"></i>
             </button>
-            <p class="description">Marque uma reunião gratuita e descubra como podemos agregar valor ao crescimento da
-                sua empresa.</p>
+
         </div>
     </section>
 
     <footer class="footer-section">
         <div class="footer-content">
             <div class="footer-logo">
-                <img src="Imagem/Imagem WhatsApp 2025-09-02 às 21.26.28_bb567b5e.jpg" alt="ANGORGE LDA"
-                    class="logo-img">
+                <img src="Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img">
                 <p class="company-info">Empresa certificada pela OCPA com mais de 10 anos de experiência</p>
             </div>
             <div class="footer-info">
@@ -285,14 +280,17 @@
 
 
 
-    <!-- JavaScript -->
-    <script src="script.js" defer></script>
 
     <!-- Botão Scroll para Topo -->
     <button id="scrollTopBtn" title="Voltar ao topo">
         <i class="fas fa-arrow-up"></i>
     </button>
 
+    <script src="script.js"></script>
+    <script src="js/navbar.js"></script>
+
+
 </body>
+
 
 </html>

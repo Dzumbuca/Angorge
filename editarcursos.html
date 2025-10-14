@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Curso - Área de Administração</title>
+    <!-- Estilos globais -->
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashbord.css">
+    <!-- Estilo específico da página de editar curso -->
+    <link rel="stylesheet" href="css/novocurso.css">
+    <link rel="stylesheet" href="css/editarcurso.css">
+</head>
+
+<body>
+    <!-- Layout -->
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="meu-logo">
+                <a href="index.html" target="_blank">
+                    <img src="Icone/Ativo 1 2.png" alt="ANGORGE LDA">
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashbord.html" class="nav-item"><i class="fas fa-home"></i></a>
+                <a href="cursos.html" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+                <a href="artigo.html" class="nav-item active"><i class="fas fa-file-edit"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+
+            <!-- Header -->
+            <header class="header">
+                <div class="header-text">
+                    <h1 id="tituloCursoHeader">Editar Curso</h1>
+                    <p>Atualize as informações do curso abaixo.</p>
+                </div>
+                <div class="user-header">
+                    <i class="fas fa-bell"></i>
+                    <img src="Imagem/medium-shot-man-working-as-real-estate-agent.jpg" alt="Joaquim">
+                    <span>Joaquim</span>
+                </div>
+            </header>
+
+            <!-- Formulário de Edição -->
+            <div class="form-wrapper">
+                <!-- Upload de Imagem (com miniatura) -->
+                <div class="current-image">
+                    <a href="" target="_blank" id="linkImagem">
+                        <img id="previewImg" src="https://via.placeholder.com/800x500?text=Curso+Contabilidade"
+                            alt="Imagem Atual">
+                    </a>
+                    <button type="button" class="btn-change">Trocar Imagem</button>
+                    <div class="upload-area">
+                        <p>Clique para enviar uma imagem</p>
+                    </div>
+                    <input type="file" id="imagemCurso" accept="image/*" hidden>
+                </div>
+
+                <!-- Linha 1: Título + Categoria -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Título do Curso</label>
+                        <input type="text" id="titulo">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select id="categoria">
+                            <option value="">Selecione uma categoria</option>
+                            <option value="contabilidade">Contabilidade</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="tecnologia">Tecnologia</option>
+                            <option value="gestao">Gestão</option>
+                            <option value="educacao">Educação</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                        <div style="margin-top:8px; display:flex; gap:8px;">
+                            <input type="text" id="nova-categoria" placeholder="Cole aqui a categoria">
+                            <button type="button" id="adicionar-categoria" class="btn-save">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Linha 2: Tipo + Duração -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tipo de Curso</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="tipo" value="Online"> Online</label>
+                            <label><input type="radio" name="tipo" value="Presencial"> Presencial</label>
+                            <label><input type="radio" name="tipo" value="Híbrido"> Híbrido</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Duração (horas)</label>
+                        <input type="number" id="duracao">
+                    </div>
+                </div>
+
+                <!-- Descrição -->
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="descricao" rows="6"></textarea>
+                </div>
+
+                <!-- O que você vai aprender -->
+                <div class="form-group">
+                    <label>O que você vai aprender</label>
+                    <div id="aprendizado-wrapper"></div>
+                    <input type="text" id="novo-aprendizado" placeholder="Digite um tópico">
+                    <button type="button" id="adicionar-aprendizado">Adicionar</button>
+                </div>
+
+
+                <!-- Currículo do Curso -->
+                <div class="form-group">
+                    <label>Currículo do Curso</label>
+                    <div id="curriculo-wrapper"></div>
+                    <input type="text" id="titulo-aula" placeholder="Título da aula">
+                    <textarea id="descricao-aula" rows="3" placeholder="Descrição da aula"></textarea>
+                    <button type="button" id="adicionar-curriculo">Adicionar Aula</button>
+                </div>
+
+                <!-- Este curso inclui -->
+                <div class="form-group">
+                    <label>Este curso inclui</label>
+                    <div id="inclui-wrapper"></div>
+                    <input type="text" id="novo-inclui" placeholder="Digite o que inclui">
+                    <button type="button" id="adicionar-inclui">Adicionar</button>
+                </div>
+
+                <!-- Autor -->
+                <div class="form-group">
+                    <label for="autor">Autor</label>
+                    <input type="text" name="autor" id="autor" placeholder="Nome do autor">
+                </div>
+
+                <!-- Preço -->
+                <div class="form-group">
+                    <label for="preco">Preço</label>
+                    <input type="number" name="preco" id="preco" placeholder="Ex: 25000">
+                </div>
+
+                <!-- Requisitos -->
+                <div class="form-group">
+                    <label>Requisitos</label>
+                    <div id="requisitos-wrapper"></div>
+                    <input type="text" id="novo-requisito" placeholder="Digite um requisito">
+                    <button type="button" id="adicionar-requisito">Adicionar</button>
+                </div>
+
+
+
+                <!-- Status -->
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="status" value="Disponível Agora" checked> Disponível
+                            Agora</label>
+                        <label><input type="radio" name="status" value="Em Breve"> Em Breve</label>
+                        <label><input type="radio" name="status" value="Encerrado"> Encerrado</label>
+                    </div>
+                </div>
+
+
+                <div id="curso-message" style="margin-bottom:10px; font-size:14px;"></div>
+
+
+                <!-- Botões de Ação -->
+                <div class="action-buttons">
+                    <button id="btn-salvar-curso" class="btn-save">Salvar Alterações</button>
+
+                    <button class="btn-cancel">Cancelar</button>
+                    <button class="btn-delete">Excluir Curso</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/editarcurso.js">
+
+    </script>
+
+</body>
+
+</html>

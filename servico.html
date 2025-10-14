@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sobre Nós - ANGORGE LDA</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/servico.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Local onde o menu vai aparecer -->
+    <div id="navbar-container"></div>
+
+    <section class="company-section">
+        <div class="company-container">
+            <div class="company-textbox">
+                <h2>Serviços</h2>
+                <p class="company-subtitle">
+                    Oferecemos soluções integradas em contabilidade, consultoria e formação
+                    <span class="company-focus">profissional.</span>
+                </p>
+                <button class="company-action">
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+            </div>
+            <div class="company-visual">
+                <img src="Imagem/industrial-designer-wodddrking-3d-model.jpg" alt="Equipa de especialistas"
+                    loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <section class="services-section">
+        <div class="services-content">
+            <p class="services-text">Oferecemos soluções integradas em contabilidade, consultoria e formação <span
+                    class="highlight">profissional</span>.</p>
+        </div>
+    </section>
+
+    <section class="courses-section">
+        <div class="courses-content">
+            <div class="course-card" onclick="openCourseModal('contabilidade')">
+                <img src="Icone/accounting-svgrepo-com.svg" alt="Contabilidade" class="course-icon" />
+                <h3 class="course-title">Contabilidade Geral e Analítica</h3>
+                <p class="course-description">
+                    Curso de contabilidade: registos, balanços, resultados e análise patrimonial.
+                </p>
+            </div>
+
+            <div class="course-card" onclick="openCourseModal('custos')">
+                <img src="Icone/blackboard-graph-svgrepo-com.svg" alt="Custos" class="course-icon" />
+                <h3 class="course-title">Custos e Gestão de Stocks</h3>
+                <p class="course-description">
+                    Aprenda a gerir custos e stocks com métodos práticos e estratégias eficazes.
+                </p>
+            </div>
+
+            <div class="course-card" onclick="openCourseModal('fluxo')">
+                <img src="Icone/flow-tree-svgrepo-com.svg" alt="Fluxo de Caixa" class="course-icon" />
+                <h3 class="course-title">Demonstração de Fluxo de Caixa no Primavera ERP</h3>
+                <p class="course-description">
+                    Domine a criação e análise de relatórios financeiros no Primavera ERP.
+                </p>
+            </div>
+
+            <div class="course-card" onclick="openCourseModal('office')">
+                <img src="Icone/escritorio.png" alt="Office" class="course-icon" />
+                <h3 class="course-title">Pacote Office (Word, Excel, PowerPoint, Outlook, Access)</h3>
+                <p class="course-description">
+                    Domine as ferramentas essenciais de produtividade e gestão documental.
+                </p>
+            </div>
+
+            <div class="course-card" onclick="openCourseModal('excel')">
+                <img src="Icone/arquivo-excel.png" alt="Excel" class="course-icon" />
+                <h3 class="course-title">Excel Avançado</h3>
+                <p class="course-description">
+                    Fórmulas complexas, macros e automação para quem quer ir além do básico.
+                </p>
+            </div>
+
+            <div class="course-card" onclick="openCourseModal('rh')">
+                <img src="Icone/recursos-humanos.png" alt="RH" class="course-icon" />
+                <h3 class="course-title">Recursos Humanos no Primavera ERP</h3>
+                <p class="course-description">
+                    Gestão de pessoal, salários e Segurança Social no software Primavera ERP.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modal -->
+    <div id="course-modal" class="course-modal">
+        <div class="course-modal-content">
+            <span class="course-modal-close" onclick="closeCourseModal()">&times;</span>
+            <div id="course-modal-body"></div>
+        </div>
+    </div>
+
+
+    <section class="testimonials-section">
+        <div class="testimonials-content">
+            <h2>Soluções para todas as necessidades de <span class="highlight">negócios</span></h2>
+
+            <div class="testimonial-card">
+                <img src="Imagem/medium-shot-man-working-as-real-estate-agent.jpg" alt="George Ameixa"
+                    class="testimonial-image">
+                <div class="testimonial-text">
+                    <p class="quote">Com a ANGORGE, meu negócio cresceu</p>
+                    <p class="description">Desde que comecei a trabalhar com a ANGORGE, minha gestão financeira
+                        ficou
+                        mais clara e eficiente. O suporte em contabilidade e fiscalidade foi essencial para o
+                        crescimento do meu negócio.</p>
+                    <div class="author">
+                        <h4>George Ameixa</h4>
+                        <p class="role">Fundador – Sagittis</p>
+                    </div>
+                </div>
+                <div class="quote-icon"></div>
+            </div>
+            <div class="testimonial-card">
+                <img src="Imagem/medium-shot-man-working-as-real-estate-agent.jpg" alt="George Ameixa"
+                    class="testimonial-image">
+                <div class="testimonial-text">
+                    <p class="quote">Com a ANGORGE, meu negócio cresceu</p>
+                    <p class="description">A equipe da ANGORGE é profissional, atenciosa e sempre pronta para
+                        ajudar. Os
+                        cursos de Excel Avançado transformaram a forma como trabalho com dados na minha empresa.</p>
+                    <div class="author">
+                        <h4>George Ameixa</h4>
+                        <p class="role">Fundador – Sagittis</p>
+                    </div>
+                </div>
+                <div class="quote-icon"></div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-section">
+        <!-- Fundo parallax controlado via JavaScript -->
+        <div class="stats-bg"></div>
+
+        <!-- Conteúdo sobreposto -->
+        <div class="stats-content">
+            <!-- Primeiro card grande -->
+            <div class="stat-card">
+                <div class="stat-number">Mais de 10 anos de experiência</div>
+            </div>
+
+            <!-- Card superior direito -->
+            <div class="stat-card">
+                <div class="stat-number" data-target="600">0</div>
+                <div class="stat-text">Clientes atendidos</div>
+            </div>
+
+            <!-- Card inferior esquerdo -->
+            <div class="stat-card">
+                <div class="stat-number" data-target="9000">0</div>
+                <div class="stat-text">Faturas processadas</div>
+            </div>
+
+            <!-- Card inferior direito -->
+            <div class="stat-card">
+                <div class="stat-number" data-target="50000">0</div>
+                <div class="stat-text">Valores fiscalizados</div>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="section-team-img-right">
+        <div class="team-img-right-container">
+            <div class="team-img-right-text">
+                <h2>A nossa equipa de especialistas ajudará você em todas as <span
+                        class="highlight-blue">situações</span></h2>
+                <p class="desc-team-right">Profissionais certificados pela OCPA com mais de 10 anos de experiência.
+                    Estamos prontos para apoiar Pequenas, Médias e Grandes Empresas com soluções personalizadas em
+                    contabilidade, fiscalidade, RH e formação profissional.</p>
+                <p class="desc-team-right">Nossa equipa de profissionais certificados pela OCPA está pronta para apoiar
+                    Pequenas, Médias e Grandes Empresas com soluções personalizadas em contabilidade, fiscalidade, RH e
+                    formação profissional.</p>
+                <button class="btn-team-img-right">Saiba mais →</button>
+            </div>
+            <div class="team-img-right-img">
+                <img src="Imagem/Rectangle 31.png" alt="Escritório" loading="lazy">
+            </div>
+        </div>
+    </section>
+
+
+
+
+    <section class="contact-section">
+        <div class="contact-content">
+            <h2>Fale connosco</h2>
+            <p class="subtitle">Estamos à disposição para <span class="highlight">ajudar o seu negócio</span></p>
+            <button class="contact-btn">
+                Agende uma reunião
+                <i class="fas fa-arrow-right"></i>
+            </button>
+
+        </div>
+    </section>
+
+
+    <footer class="footer-section">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img">
+                <p class="company-info">Empresa certificada pela OCPA com mais de 10 anos de experiência</p>
+            </div>
+            <div class="footer-info">
+                <div class="footer-address">
+                    <h3>Endereço</h3>
+                    <p>Avenida 4 de Fevereiro,<br>Nº 1234, 7º Andar, Sala 705<br>Praia, Luanda</p>
+                </div>
+                <div class="footer-hours">
+                    <h3>Horários</h3>
+                    <p>Seg – Sex: 08:00 – 18:00<br>Sábado: 08:30 – 13:00<br>Domingo: Fechado</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 ANGORGE – Todos os direitos reservados</p>
+            <p>Desenvolvido pela BlackMachine</p>
+        </div>
+    </footer>
+
+
+
+
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="js/course.js"></script>
+</body>
+
+</html>

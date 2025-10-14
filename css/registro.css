@@ -1,0 +1,207 @@
+/* Reset básico para evitar scroll */
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+    /* impede qualquer rolagem */
+}
+
+
+/* Seção de registo */
+.register-section {
+    width: 100vw;
+    /* garante largura total da tela */
+    height: 100vh;
+    /* garante altura total da tela */
+    background: url('../Imagem/Sem-Título-1.png') center/cover no-repeat;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    /* evita scroll */
+
+
+
+}
+
+.register-form {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    width: 460px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+
+    /* Centralização total */
+    display: flex;
+    flex-direction: column;
+    /* garante que os elementos fiquem em coluna */
+    justify-content: center;
+    /* centraliza verticalmente */
+    align-items: center;
+    /* centraliza horizontalmente */
+
+    min-height: 600px;
+    /* altura maior */
+    text-align: center;
+    /* mantém o texto centralizado */
+}
+
+.logo img {
+    width: 180px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.register-form h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.form-group label {
+    font-size: 14px;
+    color: #666;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-family: 'Inter', sans-serif;
+    box-sizing: border-box;
+}
+
+.register-btn {
+    background: transparent;
+    color: #007BFF;
+    border: 1px solid #007BFF;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.register-btn:hover {
+    background: rgba(0, 123, 255, 0.1);
+}
+
+
+#login-error {
+    opacity: 0;
+    transition: opacity 0.5s;
+    height: 0;
+    overflow: hidden;
+}
+
+#login-error.show {
+    opacity: 1;
+    height: auto;
+}
+
+#register-message {
+    opacity: 0;
+    transition: opacity 0.5s;
+    height: 0;
+    overflow: hidden;
+}
+
+#register-message.show {
+    opacity: 1;
+    height: auto;
+    color: red;
+    /* cor padrão de erro */
+    font-weight: 500;
+}
+
+/* Celulares pequenos (até 480px) */
+@media (max-width: 480px) {
+    .register-section {
+        padding: 20px;
+        background-size: cover;
+        height: auto;
+    }
+
+    .register-form {
+        width: 100%;
+        min-height: auto;
+        padding: 20px;
+        border-radius: 12px;
+    }
+
+    .logo img {
+        width: 140px;
+    }
+
+    .register-form h2 {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+    }
+
+    .form-group input {
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .register-btn {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+}
+
+/* Tablets e telas médias (até 768px) */
+@media (max-width: 768px) {
+    .register-section {
+        padding: 40px 20px;
+        height: 100vh;
+    }
+
+    .register-form {
+        width: 360px;
+        padding: 30px;
+        min-height: 500px;
+    }
+
+    .logo img {
+        width: 160px;
+    }
+
+    .register-form h2 {
+        font-size: 1.4rem;
+    }
+
+    .form-group input {
+        padding: 9px;
+    }
+
+    .register-btn {
+        padding: 9px 18px;
+    }
+}
+
+/* Ajustes gerais para telas pequenas */
+@media (max-width: 1024px) {
+    .register-form {
+        width: 400px;
+    }
+
+    .logo img {
+        width: 170px;
+    }
+}

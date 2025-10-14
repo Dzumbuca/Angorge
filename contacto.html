@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formação- ANGORGE LDA</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/formacao.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/contacto.css">
+</head>
+
+<body>
+    <!-- Local onde o menu vai aparecer -->
+    <div id="navbar-container"></div>
+
+    <section class="company-section">
+        <div class="company-container">
+            <div class="company-textbox">
+                <h2>Fale connosco</h2>
+                <p class="company-subtitle">
+                    Estamos à disposição para ajudar o seu negócio a crescer com segurança.
+
+                </p>
+                <button class="company-action">
+                    <i class="fas fa-arrow-down"></i>
+                </button>
+            </div>
+            <div class="company-visual">
+                <img src="Imagem/pessoa-no-escritorio-durante-um-dia-de-trabalho.jpg" alt="Equipa de especialistas"
+                    loading="lazy">
+            </div>
+        </div>
+    </section>
+
+    <section class="experts-section">
+        <div class="container">
+            <div class="experts-intro">
+                <h2>A nossa equipa de especialistas</h2>
+                <p>Profissionais certificados pela OCPA com mais de 10 anos de experiência</p>
+            </div>
+
+            <div class="experts-list">
+                <div class="expert-card">
+                    <img src="Imagem/ca024ad9-2921-4851-b51c-ad501a8c9308.png" alt="Angelo Jorge">
+                    <div class="expert-info">
+                        <h3>Angelo Jorge</h3>
+                        <a href="tel:+244936384878" class="expert-phone">(+244) 936 384 878</a>
+                        <span class="expert-email">angerojorgecontato@code@gmail.com</span>
+                    </div>
+                </div>
+
+                <div class="expert-card">
+                    <img src="Imagem/ca024ad9-2921-4851-b51c-ad501a8c9308.png" alt="Angelo Jorge">
+                    <div class="expert-info">
+                        <h3>Angelo Jorge</h3>
+                        <a href="tel:+244936384878" class="expert-phone">(+244) 936 384 878</a>
+                        <span class="expert-email">angerojorgecontato@code@gmail.com</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="contato-secao">
+        <!-- Linha 1: imagem + info lado a lado -->
+        <div class="contato-linha1">
+            <div class="contato-icone">
+                <img src="Icone/Agrupar 1.png" alt="Angorge LDA">
+            </div>
+
+            <div class="contato-info">
+                <div class="contato-telefone">(+224)936 384 878</div>
+                <div class="contato-email">angorgecontabilidade@angorge.com</div>
+                <div class="contato-endereco">
+                    Avenida 4 de Fevereiro, Nº 1234,<br>
+                    Praia, Luanda, Angola
+                </div>
+            </div>
+        </div>
+
+        <!-- Linha 2: formulário -->
+        <div class="contato-formulario-box">
+            <h3 class="contato-formulario-titulo">Estamos ao seu dispor</h3>
+            <form id="form-contato">
+                <div class="input-grupo">
+                    <input type="text" id="nome-contato" placeholder="Nome Completo" required>
+                </div>
+                <div class="input-grupo">
+                    <input type="tel" id="telefone-contato" placeholder="Telefone" required>
+                </div>
+                <div class="input-grupo">
+                    <input type="email" id="email-contato" placeholder="E-mail" required>
+                </div>
+                <div class="input-grupo">
+                    <textarea id="mensagem-contato" placeholder="Mensagem" required></textarea>
+                </div>
+                <div class="checkbox-linha">
+                    <input type="checkbox" id="privacidade-contato" required>
+                    <label for="privacidade-contato">Concordo com o processamento de dados</label>
+                </div>
+                <button type="submit" class="botao-enviar-contato">Enviar</button>
+            </form>
+        </div>
+    </section>
+
+    <section class="mapa-secao">
+        <h2>Onde nos encontrar</h2>
+        <div id="mapa" style="height:500px;"></div>
+    </section>
+    <footer class="footer-section">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img">
+                <p class="company-info">Empresa certificada pela OCPA com mais de 10 anos de experiência</p>
+            </div>
+            <div class="footer-info">
+                <div class="footer-address">
+                    <h3>Endereço</h3>
+                    <p>Avenida 4 de Fevereiro,<br>Nº 1234, 7º Andar, Sala 705<br>Praia, Luanda</p>
+                </div>
+                <div class="footer-hours">
+                    <h3>Horários</h3>
+                    <p>Seg – Sex: 08:00 – 18:00<br>Sábado: 08:30 – 13:00<br>Domingo: Fechado</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 ANGORGE – Todos os direitos reservados</p>
+            <p>Desenvolvido pela BlackMachine</p>
+        </div>
+    </footer>
+
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/navbar.js"></script>
+    <script src="script.js"></script>
+    <script src="js/mapa.js"></script>
+</body>
+
+</html>

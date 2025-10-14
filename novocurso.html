@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adicionar Novo Curso - Área de Administração</title>
+    <!-- Estilos globais -->
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="css/dashbord.css">
+    <link rel="stylesheet" href="css/novocurso.css">
+    <!-- Estilo específico da página de novo curso -->
+    <link rel="stylesheet" href="css/novo-curso.css">
+</head>
+
+<body>
+    <!-- Layout -->
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="meu-logo">
+                <a href="index.html" target="_blank">
+                    <img src="Icone/Ativo 1 2.png" alt="ANGORGE LDA">
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <a href="dashbord.html" class="nav-item"><i class="fas fa-home"></i></a>
+                <a href="cursos.html" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+                <a href="#" class="nav-item active"><i class="fas fa-file-edit"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-text">
+                    <h1>Adicionar Novo Curso</h1>
+                    <p>Preencha os campos abaixo para publicar um novo curso.</p>
+                </div>
+                <div class="user-header">
+                    <i class="fas fa-bell"></i>
+                    <img src="Imagem/medium-shot-man-working-as-real-estate-agent.jpg" alt="Joaquim">
+                    <span>Joaquim</span>
+                </div>
+            </header>
+
+            <!-- Formulário de Novo Curso -->
+            <div class="form-wrapper">
+                <!-- Upload de Imagem -->
+                <div class="upload-section">
+                    <label>Imagem do Curso</label>
+                    <div class="upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Arraste ou clique para enviar</p>
+                        <small>Formatos aceitos: JPG, PNG, WebP | Recomendado: 800x500px</small>
+                        <input type="file" name="imagem" accept="image/*" hidden>
+                    </div>
+                </div>
+
+                <!-- Linha 1: Título + Categoria -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Título do Curso</label>
+                        <input type="text" name="titulo" placeholder="Ex: Contabilidade Geral e Analítica">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select name="categoria" id="categoria">
+                            <option value="">Selecione uma categoria</option>
+                            <option value="contabilidade">Contabilidade</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="tecnologia">Tecnologia</option>
+                            <option value="gestao">Gestão</option>
+                            <option value="educacao">Educação</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Adicionar Categoria</label>
+                        <div style="display:flex; gap:8px;">
+                            <input type="text" id="nova-categoria" placeholder="Cole aqui a categoria">
+                            <button type="button" id="adicionar-categoria" class="btn-save">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Linha 2: Tipo + Duração -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Tipo de Curso</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="tipo" value="Online" checked> Online</label>
+                            <label><input type="radio" name="tipo" value="Presencial"> Presencial</label>
+                            <label><input type="radio" name="tipo" value="Híbrido"> Híbrido</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Duração (horas)</label>
+                        <input type="number" name="duracao" min="1" placeholder="Ex: 40">
+                    </div>
+                </div>
+
+                <!-- Descrição -->
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea name="descricao" rows="6"
+                        placeholder="Aprenda os princípios contabilísticos com casos reais e aplicados."></textarea>
+                </div>
+
+                <!-- Autor e Preço -->
+                <div class="form-group">
+                    <label>Autor</label>
+                    <input type="text" name="autor" placeholder="Ex: Joaquim">
+                </div>
+                <div class="form-group">
+                    <label>Preço</label>
+                    <input type="text" name="preco" placeholder="Ex: 10000 KZ ou 'Sob consulta'">
+                </div>
+
+                <!-- Requisitos -->
+                <div class="form-group">
+                    <label>Requisitos</label>
+                    <div id="requisitos-wrapper"></div>
+                    <input type="text" id="novo-requisito" placeholder="Digite um requisito">
+                    <div id="container-requisitos"></div>
+                    <button type="button" id="adicionar-requisito">Adicionar Requisito</button>
+
+                </div>
+
+                <!-- O que você vai aprender -->
+                <div class="form-group">
+                    <label>O que você vai aprender</label>
+                    <div id="aprendizado-wrapper"></div>
+                    <input type="text" id="novo-aprendizado" placeholder="Digite um tópico">
+                    <button type="button" id="adicionar-aprendizado">Adicionar</button>
+                </div>
+
+                <!-- Currículo do Curso -->
+                <div class="form-group">
+                    <label>Currículo do Curso</label>
+                    <div id="curriculo-wrapper"></div>
+                    <input type="text" id="titulo-aula" placeholder="Título da aula">
+                    <textarea id="descricao-aula" rows="3" placeholder="Descrição da aula"></textarea>
+                    <button type="button" id="adicionar-curriculo">Adicionar Aula</button>
+                </div>
+
+                <!-- Este curso inclui -->
+                <div class="form-group">
+                    <label>Este curso inclui</label>
+                    <div id="inclui-wrapper">
+                        <label><input type="checkbox" name="inclui" value="Certificado de conclusão"> Certificado de
+                            conclusão</label><br>
+                        <label><input type="checkbox" name="inclui" value="Materiais didáticos"> Materiais
+                            didáticos</label><br>
+                        <label><input type="checkbox" name="inclui" value="Suporte pós-treinamento"> Suporte
+                            pós-treinamento</label>
+                    </div>
+                    <input type="text" id="novo-inclui" placeholder="Adicionar novo item">
+                    <button type="button" id="adicionar-inclui">Adicionar</button>
+                </div>
+
+                <!-- Status -->
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="status" value="Disponível Agora" checked> Disponível
+                            Agora</label>
+                        <label><input type="radio" name="status" value="Em Breve"> Em Breve</label>
+                        <label><input type="radio" name="status" value="Encerrado"> Encerrado</label>
+                    </div>
+                </div>
+                <div id="curso-message" style="margin-bottom:10px; font-size:14px;"></div>
+
+
+                <!-- Botão Publicar -->
+                <button class="btn-publish">Publicar Curso</button>
+            </div>
+        </main>
+
+
+    </div>
+
+
+    <script>
+        const user = localStorage.getItem("user");
+        if (!user) window.location.href = "login.html";
+
+        // ======== Campos Dinâmicos ========
+        const messageDiv = document.getElementById('curso-message');
+
+        const showMessage = (msg, type = 'error') => {
+            messageDiv.textContent = msg;
+            messageDiv.style.color = type === 'success' ? 'green' : 'red';
+            messageDiv.classList.add('show');
+
+            setTimeout(() => {
+                messageDiv.classList.remove('show');
+                messageDiv.textContent = '';
+            }, 4000); // some depois de 4 segundos
+        };
+
+
+        // Aprendizado
+        const aprendizadoWrapper = document.getElementById('aprendizado-wrapper');
+        const novoAprendizadoInput = document.getElementById('novo-aprendizado');
+        document.getElementById('adicionar-aprendizado').addEventListener('click', () => {
+            const valor = novoAprendizadoInput.value.trim();
+            if (valor) {
+                const item = document.createElement('div');
+                item.classList.add('item-aprendizado');
+                item.innerHTML = `
+            <span class="texto-item">${valor}</span>
+            <button type="button" class="remover-item">Remover</button>
+        `;
+                aprendizadoWrapper.appendChild(item);
+                novoAprendizadoInput.value = '';
+
+                // Remover item
+                item.querySelector('.remover-item').addEventListener('click', () => item.remove());
+            }
+        });
+
+        // Currículo
+        const curriculoWrapper = document.getElementById('curriculo-wrapper');
+        document.getElementById('adicionar-curriculo').addEventListener('click', () => {
+            const titulo = document.getElementById('titulo-aula').value.trim();
+            const descricao = document.getElementById('descricao-aula').value.trim();
+            if (titulo && descricao) {
+                const item = document.createElement('div');
+                item.classList.add('item-curriculo');
+                item.innerHTML = `
+            <span class="texto-item"><strong>${titulo}</strong>: ${descricao}</span>
+            <button type="button" class="remover-item">Remover</button>
+        `;
+                curriculoWrapper.appendChild(item);
+                document.getElementById('titulo-aula').value = '';
+                document.getElementById('descricao-aula').value = '';
+
+                item.querySelector('.remover-item').addEventListener('click', () => item.remove());
+            }
+        });
+
+        // Requisitos
+        const requisitosWrapper = document.getElementById('requisitos-wrapper');
+        const novoRequisitoInput = document.getElementById('novo-requisito');
+        document.getElementById('adicionar-requisito').addEventListener('click', () => {
+            const valor = novoRequisitoInput.value.trim();
+            if (valor) {
+                const item = document.createElement('div');
+                item.classList.add('item-requisito');
+                item.innerHTML = `
+            <input type="text" name="requisitos[]" value="${valor}" />
+            <button type="button" class="remover-requisito">Remover</button>
+        `;
+                requisitosWrapper.appendChild(item);
+                novoRequisitoInput.value = '';
+
+                item.querySelector('.remover-requisito').addEventListener('click', () => item.remove());
+            }
+        });
+
+        // Este curso inclui
+        const incluiWrapper = document.getElementById('inclui-wrapper');
+        document.getElementById('adicionar-inclui').addEventListener('click', () => {
+            const valor = document.getElementById('novo-inclui').value.trim();
+            if (valor) {
+                const label = document.createElement('label');
+                label.innerHTML = `<input type="checkbox" name="inclui" value="${valor}" checked> ${valor}`;
+                incluiWrapper.appendChild(document.createElement('br'));
+                incluiWrapper.appendChild(label);
+                document.getElementById('novo-inclui').value = '';
+            }
+        });
+
+        // ======== Publicar curso ========
+        document.querySelector('.btn-publish').addEventListener('click', async function (e) {
+            e.preventDefault();
+
+            const titulo = document.querySelector('input[name="titulo"]').value.trim();
+            let categoria = document.getElementById('categoria').value;
+            const novaCategoriaInput = document.getElementById('nova-categoria');
+            if (novaCategoriaInput && novaCategoriaInput.value.trim() !== '') {
+                categoria = novaCategoriaInput.value.trim();
+            }
+
+            const tipo = document.querySelector('input[name="tipo"]:checked').value;
+            const duracao = document.querySelector('input[name="duracao"]').value;
+            const descricao = document.querySelector('textarea[name="descricao"]').value;
+            const status = document.querySelector('input[name="status"]:checked').value;
+            const autor = document.querySelector('input[name="autor"]').value.trim();
+            const preco = document.querySelector('input[name="preco"]').value.trim();
+
+            // Extrair valores dos campos dinâmicos
+            const requisitos = Array.from(document.querySelectorAll('.item-requisito input'))
+                .map(input => input.value.trim());
+
+            const aprendizado = Array.from(document.querySelectorAll('.item-aprendizado .texto-item'))
+                .map(el => el.textContent.trim());
+
+            const curriculo = Array.from(document.querySelectorAll('.item-curriculo .texto-item'))
+                .map(el => el.textContent.trim());
+
+            const inclui = Array.from(document.querySelectorAll('input[name="inclui"]:checked'))
+                .map(el => el.value);
+
+            // FormData
+            const formData = new FormData();
+            formData.append("titulo", titulo);
+            formData.append("categoria", categoria);
+            formData.append("tipo", tipo);
+            formData.append("duracao", duracao);
+            formData.append("descricao", descricao);
+            formData.append("status", status);
+            formData.append("autor", autor);
+            formData.append("preco", preco);
+            formData.append("requisitos", JSON.stringify(requisitos));
+            formData.append("aprendizado", JSON.stringify(aprendizado));
+            formData.append("curriculo", JSON.stringify(curriculo));
+            formData.append("inclui", JSON.stringify(inclui));
+
+            const imagemInput = document.querySelector('input[name="imagem"]');
+            if (imagemInput.files[0]) formData.append("imagem", imagemInput.files[0]);
+
+            try {
+                const response = await fetch("http://localhost:5000/api/cursos", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await response.json();
+                if (response.ok) {
+                    showMessage(data.message || "✅ Curso publicado com sucesso!", "success");
+                    setTimeout(() => {
+                        window.location.href = "cursos.html";
+                    }, 1500);
+                } else {
+                    showMessage("⚠️ Erro: " + (data.message || "Não foi possível publicar"), "error");
+                }
+            } catch (err) {
+                console.error(err);
+                showMessage("❌ Erro de ligação ao servidor", "error");
+            }
+        });
+
+        // ======== Upload de imagem ========
+        document.querySelector('.upload-area').addEventListener('click', () => {
+            document.querySelector('input[name="imagem"]').click();
+        });
+
+        document.querySelector('input[name="imagem"]').addEventListener('change', function () {
+            if (this.files.length > 0) {
+                this.parentElement.querySelector('p').textContent = this.files[0].name;
+                this.parentElement.style.backgroundColor = "#f0f7ff";
+            }
+        });
+
+        // ======== Adicionar nova categoria ========
+        document.getElementById('adicionar-categoria')?.addEventListener('click', () => {
+            const select = document.getElementById('categoria');
+            const novaCategoria = document.getElementById('nova-categoria').value.trim();
+            if (novaCategoria) {
+                const option = document.createElement('option');
+                option.value = novaCategoria;
+                option.text = novaCategoria;
+                option.selected = true;
+                select.appendChild(option);
+                document.getElementById('nova-categoria').value = '';
+            }
+        });
+
+
+    </script>
+
+
+
+
+</body>
+
+</html>

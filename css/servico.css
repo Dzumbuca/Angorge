@@ -1,0 +1,1039 @@
+/* Seção Sobre Nós */
+.company-section {
+    z-index: 1;
+    /* 🔥 Mantém a seção numa camada acima */
+    width: 100%;
+    padding: 0px;
+    margin: 0;
+    background: url('../Imagem/Sem-Título-1.png') center/cover no-repeat;
+    position: relative;
+}
+
+/* Conteúdo flexível, mas agora sem fundo quadrado */
+.company-container {
+    display: flex;
+    flex-direction: row;
+    /* Texto à esquerda, imagem à direita */
+    justify-content: space-between;
+    align-items: stretch;
+    /* Mesma altura para texto e imagem */
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Texto simples, sem fundo quadrado */
+.company-textbox {
+    flex: 1;
+    padding: 60px 60px 60px 150px;
+    /* 🔥 Mais espaço só no lado esquerdo */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.company-textbox h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #e5c535;
+}
+
+.company-subtitle {
+    font-size: 32px;
+    font-weight: 400;
+    margin-bottom: 20px;
+    line-height: 1.4;
+    width: 90%;
+}
+
+/* Botão redondo */
+.company-action {
+    background: #e5c535;
+    color: white;
+    border: none;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: absolute;
+    bottom: -25px;
+    /* 🔥 metade para fora da seção */
+    left: 130px;
+    /* 🔥 Mantém o botão na esquerda */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    /* 🔥 Garante que ele fica em cima da próxima seção */
+}
+
+.company-action:hover {
+    background: #d4b82a;
+}
+
+/* Imagem no canto direito sem borda */
+.company-visual {
+    flex: 1;
+    width: 100%;
+    height: auto;
+    border: none;
+    border-radius: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: flex-end;
+    /* Manda o conteúdo para a direita */
+}
+
+.company-visual img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Cobre tudo sem distorcer */
+    display: block;
+}
+
+/* Palavra em destaque */
+.company-focus {
+    color: rgb(255, 255, 255);
+    /* 🔥 Troca a cor aqui se quiser outro tom */
+    font-weight: 600;
+    /* opcional: destaque extra */
+}
+
+/* === Responsividade === */
+
+
+
+/* Telemóveis médios (até 768px) */
+/* Telemóveis (até 768px) */
+@media (max-width: 768px) {
+    .company-section {
+        padding-top: 30px;
+        /* 🔥 Dá respiro só em cima */
+    }
+
+    .company-container {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .company-textbox {
+        padding: 30px 20px;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        width: 100%;
+    }
+
+    .company-textbox h2,
+    .company-subtitle {
+        width: 100%;
+    }
+
+    .company-subtitle {
+        font-size: 20px;
+        width: 90%;
+    }
+
+    .company-visual {
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .company-visual img {
+        width: 100%;
+        height: auto;
+    }
+
+    .company-action {
+        background: #e5c535;
+        color: white;
+        border: none;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: absolute;
+        bottom: -25px;
+        left: 80px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    }
+}
+
+
+/* Telemóveis pequenos (até 480px) */
+@media (max-width: 480px) {
+    .company-textbox h2 {
+        font-size: 0.9rem;
+    }
+
+    .company-subtitle {
+        font-size: 20px;
+    }
+
+    .company-action {
+        width: 45px;
+        height: 45px;
+    }
+
+    .company-visual img {
+        max-height: 220px;
+    }
+}
+
+
+
+/* Seção de serviços */
+.services-section {
+    padding: 110px 0;
+    background-color: #f9f9f9;
+
+}
+
+.services-content {
+    max-width: 1200px;
+    margin-left: 120px;
+    /* 🔥 afasta do canto esquerdo */
+    padding: 0 40px;
+    text-align: left;
+    width: 50%;
+}
+
+.services-text {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    line-height: 1.5;
+}
+
+.highlight {
+    color: #e5c535;
+}
+
+/* === Responsividade === */
+
+/* Tablets (até 1024px) */
+@media (max-width: 1024px) {
+    .services-content {
+        margin-left: 60px;
+        /* menos afastado */
+        width: 70%;
+        /* ocupa mais espaço */
+        padding: 0 20px;
+    }
+
+    .services-text {
+        font-size: 1.3rem;
+    }
+}
+
+/* Telemóveis médios (até 768px) */
+@media (max-width: 768px) {
+    .services-section {
+        padding: 60px 20px;
+        /* 🔥 menos espaço vertical e lateral */
+    }
+
+    .services-content {
+        margin-left: 0;
+        /* 🔥 remove margem lateral */
+        width: 100%;
+        /* ocupa toda a tela */
+        padding: 0 20px;
+        /* 🔥 respiro pequeno nas laterais */
+        text-align: left;
+    }
+
+    .services-text {
+        font-size: 1.1rem;
+        line-height: 1.4;
+    }
+}
+
+/* Telemóveis pequenos (até 480px) */
+@media (max-width: 480px) {
+    .services-content {
+        padding: 0 15px;
+    }
+
+    .services-text {
+        font-size: 1rem;
+        line-height: 1.4;
+    }
+}
+
+
+/* Seção de cursos */
+.courses-section {
+    padding: 40px 0;
+    background-color: #f9f9f9;
+
+}
+
+.courses-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 40px;
+
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.course-card {
+
+    border-radius: 10px;
+    padding: 70px;
+
+    transition: transform 0.3s ease;
+    text-align: left;
+}
+
+.course-card:hover {
+    transform: translateY(-5px);
+
+    background: #f0f0f0;
+}
+
+.course-icon {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 15px;
+}
+
+.course-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.course-description {
+    font-size: 14px;
+    color: #666;
+    line-height: 1.5;
+}
+
+
+/* 📱 Responsivo */
+
+/* Tablets até 768px */
+@media (max-width: 768px) {
+    .courses-content {
+        grid-template-columns: 1fr;
+        /* 🔥 uma coluna apenas */
+        gap: 20px;
+    }
+
+    .course-card {
+        padding: 30px;
+    }
+
+    .course-title {
+        font-size: 16px;
+    }
+
+    .course-description {
+        font-size: 13px;
+    }
+}
+
+/* Telemóveis pequenos até 480px */
+@media (max-width: 480px) {
+    .courses-section {
+        padding: 40px 10px;
+    }
+
+    .course-card {
+        padding: 20px;
+    }
+
+    .course-title {
+        font-size: 15px;
+    }
+
+    .course-description {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+}
+
+/* ====== MODAL DE CURSOS - VERSÃO PROFISSIONAL ====== */
+.course-modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    animation: fadeIn 0.3s ease;
+}
+
+.course-modal-content {
+    background: #fff;
+    margin: 8% auto;
+    padding: 40px;
+    border-radius: 20px;
+    max-width: 700px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+    position: relative;
+    animation: slideUp 0.4s ease;
+}
+
+/* Fechar botão (X) */
+.course-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.course-modal-close:hover {
+    color: #007bff;
+    transform: rotate(90deg);
+}
+
+/* Título */
+.course-modal-content h2 {
+    font-size: 28px;
+    color: #021f87;
+    margin-bottom: 20px;
+    font-weight: 700;
+    text-align: center;
+}
+
+/* Texto dentro do modal */
+.course-modal-content p {
+    color: #555;
+    font-size: 17px;
+    line-height: 1.7;
+    text-align: justify;
+    margin-bottom: 20px;
+}
+
+/* ====== ESTILO DO MODAL ====== */
+.course-modal {
+    display: none;
+    /* escondido por padrão */
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* overlay semi-transparente */
+    animation: fadeIn 0.4s ease;
+}
+
+/* Conteúdo do modal */
+.course-modal-content {
+    background-color: #fff;
+    margin: 80px auto;
+    padding: 40px 35px;
+    border-radius: 15px;
+    width: 60%;
+    max-width: 900px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    animation: slideUp 0.5s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Scroll interno para conteúdos longos */
+.course-modal-body {
+    max-height: 70vh;
+    overflow-y: auto;
+    padding-right: 10px;
+    /* evita que a scrollbar sobreponha o texto */
+}
+
+/* Fechar modal */
+.course-modal-close {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    color: #E8AD21;
+    font-size: 28px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.course-modal-close:hover {
+    color: #E8AD21;
+}
+
+/* Títulos dentro do modal */
+.course-modal-content h2 {
+    color: #E8AD21;
+    font-size: 28px;
+    margin-bottom: 25px;
+    font-weight: 700;
+    position: relative;
+    padding-left: 35px;
+    /* espaço para o decorativo */
+}
+
+.course-modal-content h2::before {
+    content: "▌";
+    /* barra vertical decorativa */
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: #E8AD21;
+    /* cor do decorativo */
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+/* Seções dentro do modal */
+.modal-section {
+    margin-bottom: 30px;
+}
+
+.modal-section h3 {
+    color: #E8AD21;
+    font-size: 20px;
+    margin-bottom: 12px;
+    font-weight: 600;
+}
+
+/* Parágrafos e listas */
+.modal-section p,
+.modal-section ul {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #333;
+}
+
+.modal-section ul {
+    padding-left: 20px;
+    list-style-type: disc;
+}
+
+/* Botão do modal */
+.modal-btn {
+    display: inline-block;
+    background-color: #E8AD21;
+    color: #fff;
+    padding: 12px 28px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 16px;
+    transition: 0.3s ease;
+    margin-top: 15px;
+}
+
+.modal-btn:hover {
+    background-color: #0036ff;
+    transform: scale(1.05);
+}
+
+/* Animações */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* ====== RESPONSIVO ====== */
+@media (max-width: 1024px) {
+    .course-modal-content {
+        width: 75%;
+        padding: 35px 25px;
+    }
+
+    .course-modal-content h2 {
+        font-size: 26px;
+    }
+
+    .modal-section h3 {
+        font-size: 18px;
+    }
+
+    .modal-section p,
+    .modal-section ul {
+        font-size: 15px;
+    }
+}
+
+@media (max-width: 768px) {
+    .course-modal-content {
+        width: 90%;
+        padding: 25px 20px;
+        margin: 60px auto;
+    }
+
+    .course-modal-content h2 {
+        font-size: 24px;
+        padding-left: 30px;
+    }
+
+    .course-modal-content h2::before {
+        font-size: 28px;
+    }
+
+    .modal-section h3 {
+        font-size: 17px;
+    }
+
+    .modal-section p,
+    .modal-section ul {
+        font-size: 14px;
+    }
+
+    .course-modal-close {
+        font-size: 26px;
+        top: 12px;
+        right: 15px;
+    }
+}
+
+
+
+
+
+
+/* Seção de depoimentos */
+.testimonials-section {
+    padding: 80px 0;
+    display: flex;
+    justify-content: center;
+    background: url('../Imagem/fundo_logo.png') center/cover no-repeat;
+}
+
+.testimonials-content {
+    max-width: 1000px;
+    width: 100%;
+}
+
+.testimonials-content h2 {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 40px;
+    text-align: left;
+    width: 70%;
+}
+
+.testimonial-card {
+    background: white;
+    border-radius: 15px;
+    padding: 80px;
+    /* reduzi um pouco do teu 100px */
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    position: relative;
+    margin: 0 auto 40px auto;
+    /* centraliza horizontalmente */
+    overflow: visible;
+
+    /* controla a largura */
+    max-width: 800px;
+    /* ajusta conforme precisares */
+    width: 100%;
+    /* ocupa o espaço até o limite */
+}
+
+
+
+.testimonial-card:last-child {
+    margin-bottom: 0;
+}
+
+.testimonial-image {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+    position: absolute;
+    left: -60px;
+    /* metade para fora */
+    top: 50%;
+    transform: translateY(-50%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+    /* 🔥 corte diagonal no canto inferior direito */
+    clip-path: polygon(0 0,
+            /* canto superior esquerdo */
+            100% 0,
+            /* canto superior direito */
+            100% 80%,
+            /* desce um pouco antes do canto */
+            80% 100%,
+            /* faz o corte diagonal */
+            0 100%
+            /* canto inferior esquerdo */
+        )
+}
+
+.testimonial-text {
+    flex: 1;
+    margin-left: 120px;
+    /* empurra o texto para não colar na imagem */
+}
+
+.quote {
+    font-size: 16px;
+    font-weight: 700;
+    color: #000;
+    margin-bottom: 30px;
+}
+
+.description {
+    font-size: 12px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    width: 70%;
+}
+
+.author h4 {
+    font-size: 15px;
+    font-weight: 600;
+    color: #000;
+    margin-bottom: 3px;
+}
+
+.author .role {
+    font-size: 12px;
+    color: #777;
+}
+
+.quote-icon {
+    width: 50px;
+    height: 50px;
+    background: #f77f2f;
+    /* cor da bolinha */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.quote-icon::before {
+    content: "❞";
+}
+
+
+/* 🔥 Responsivo */
+@media (max-width: 768px) {
+
+
+
+    .testimonials-content> :not(h2) {
+        margin-top: 180px;
+        /* 🔥 ajusta como quiseres */
+    }
+
+
+    .testimonial-card {
+        flex-direction: column;
+        padding: 100px 80px 40px 20px;
+        /* 🔥 mais espaço no topo para a imagem “furar” */
+        position: relative;
+        width: 85%;
+        margin-bottom: 190px;
+        /* 🔥 controla a distância entre cards */
+    }
+
+    .testimonial-image {
+        position: absolute;
+        top: -167px;
+        /* sobe a imagem */
+        left: 50%;
+        transform: translateX(-50%);
+        margin-bottom: 0;
+
+        width: 230px;
+        /* 🔥 aumenta a largura */
+        height: 240px;
+        /* 🔥 aumenta a altura */
+        object-fit: cover;
+        /* garante que não distorce */
+
+
+    }
+
+    .testimonial-text {
+        margin-left: 0;
+        width: 100%;
+        text-align: left;
+    }
+
+    .description {
+        width: 100%;
+    }
+
+    .testimonials-content h2 {
+        font-size: 20px;
+        margin-left: 30px;
+        /* 🔥 ajusta o valor até ficar no ponto */
+        text-align: left;
+        /* garante que o texto continue alinhado à esquerda */
+    }
+
+    .quote-icon {
+        margin-top: 80px;
+
+    }
+
+    /* Seção de equipa */
+    .team-section {
+        padding: 80px 0;
+        background-color: #f9f9f9;
+    }
+
+    .team-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+        display: flex;
+        gap: 40px;
+        align-items: center;
+    }
+
+    .team-text {
+        flex: 1;
+        text-align: left;
+    }
+
+    .team-text h2 {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 10px;
+    }
+
+    .team-text .highlight {
+        color: #007BFF;
+        font-weight: 600;
+    }
+
+    .team-text .description {
+        font-size: 14px;
+        color: #666;
+        line-height: 1.5;
+        margin-bottom: 20px;
+    }
+
+    .team-text .learn-more-btn {
+        background: transparent;
+        color: #007BFF;
+        border: 1px solid #007BFF;
+        padding: 10px 20px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-radius: 4px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+
+    .team-text .learn-more-btn:hover {
+        background: rgba(0, 123, 255, 0.1);
+    }
+
+    .team-image {
+        flex: 1;
+        border: 2px solid #007BFF;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .team-image img {
+        width: 100%;
+        height: auto;
+        object-fit: cover;
+    }
+
+
+}
+
+/* Seção de equipa com imagem à direita */
+.section-team-img-right {
+    padding: 80px 0;
+    background-color: #f9f9f9;
+
+    display: flex;
+    justify-content: center;
+    /* 🔥 centraliza horizontal */
+    align-items: center;
+    /* 🔥 centraliza vertical */
+    text-align: center;
+    /* 🔥 centraliza o texto interno */
+}
+
+.team-img-right-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    gap: 40px;
+    align-items: center;
+}
+
+.team-img-right-text {
+    flex: 1;
+    text-align: left;
+    width: 30%;
+    /* 🔥 ajusta a largura, antes estava 10% */
+    max-width: 400px;
+    /* 🔥 limite opcional para não esticar demais */
+}
+
+.team-img-right-text h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.highlight-blue {
+    color: #007BFF;
+    font-weight: 600;
+}
+
+.desc-team-right {
+    font-size: 12px;
+    color: #666;
+    line-height: 1.5;
+    margin-bottom: 20px;
+    font-weight: 100;
+}
+
+.btn-team-img-right {
+    background: transparent;
+    color: #007BFF;
+    border: 1px solid #007BFF;
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-team-img-right:hover {
+    background: rgba(0, 123, 255, 0.1);
+}
+
+.team-img-right-img {
+    flex: 1;
+    max-width: 400px;
+    /* 🔥 define um limite de largura */
+    max-height: 350px;
+    /* 🔥 define um limite de altura */
+    overflow: hidden;
+
+
+    overflow: hidden;
+    /* 🔥 corte diagonal no canto inferior direito */
+    clip-path: polygon(0 0,
+            /* canto superior esquerdo */
+            100% 0,
+            /* canto superior direito */
+            100% 80%,
+            /* desce um pouco antes do canto */
+            80% 100%,
+            /* faz o corte diagonal */
+            0 100%
+            /* canto inferior esquerdo */
+        )
+}
+
+.team-img-right-img img {
+    width: 100%;
+    /* 🔥 faz a imagem ocupar o container */
+    height: 100%;
+    /* 🔥 mantém a proporção */
+    object-fit: cover;
+    /* 🔥 corta e centraliza sem distorcer */
+}
+
+@media (max-width: 768px) {
+    .team-img-right-container {
+        flex-direction: column;
+        /* 🔥 coloca imagem em cima e texto em baixo */
+        text-align: center;
+        /* centraliza o texto no mobile */
+    }
+
+    .team-img-right-img {
+        order: -1;
+        /* 🔥 manda a imagem para cima */
+        max-width: 100%;
+        max-height: 250px;
+        margin-bottom: 20px;
+    }
+
+    .team-img-right-text {
+        width: 100%;
+        /* faz o texto ocupar toda a largura */
+        max-width: 100%;
+        /* remove limite fixo */
+        text-align: left;
+        /* texto centralizado no mobile */
+    }
+
+    .team-img-right-text h2 {
+        font-size: 18px;
+        /* ajusta para mobile */
+    }
+
+    .desc-team-right {
+        font-size: 13px;
+        /* ligeiramente maior que 12px para leitura */
+    }
+}

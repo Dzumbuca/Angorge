@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - ANGORGE LDA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/registro.css" />
+</head>
+
+<body>
+    <div class="register-section">
+        <div class="register-form">
+            <div class="logo">
+                <img src="Imagem/Ativo 1.svg" alt="ANGORGE LDA">
+            </div>
+            <h2>Login</h2>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="nome">Nome</label>
+                    <input type="text" id="nome" placeholder="Coloca o teu nome" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Palavra Passe</label>
+                    <input type="password" id="password" placeholder="Coloca a sua palavra passe" required>
+                </div>
+                <button type="submit" class="register-btn">Entrar →</button>
+                <div id="login-error" style="color: red; margin-top: 10px; font-size: 14px;"></div>
+
+            </form>
+
+            <p style="margin-top:20px; font-size:14px; color:#666;">
+                Ainda não tens conta?
+                <a href="registo.html" style="color:#007BFF; text-decoration:none;">Regista-te</a>
+            </p>
+        </div>
+    </div>
+
+    <script src="js/login.js"> </script>
+
+
+</body>
+
+</html>

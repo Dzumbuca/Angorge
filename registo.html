@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registo - ANGORGE LDA</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="css/registro.css" />
+</head>
+
+<body>
+    <div class="register-section">
+        <div class="register-form">
+            <div class="logo">
+                <img src="Imagem/Ativo 1.svg" alt="ANGORGE LDA">
+            </div>
+            <h2>Registo</h2>
+            <form id="register-form">
+                <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" id="name" placeholder="Coloca o seu nome" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Palavra Passe</label>
+                    <input type="password" id="password" placeholder="Coloca a sua palavra passe" required>
+                </div>
+                <button type="submit" class="register-btn">Registar →</button>
+                <div id="register-message" style="margin-top:10px; font-size:14px;"></div>
+            </form>
+
+            <p style="margin-top:20px; font-size:14px; color:#666;">
+                Já tens conta?
+                <a href="login.html" style="color:#007BFF; text-decoration:none;">Faz login</a>
+            </p>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("register-form").addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const nome = document.getElementById("name").value;
+            const senha = document.getElementById("password").value;
+            const messageDiv = document.getElementById("register-message");
+
+            // limpa mensagem anterior
+            messageDiv.textContent = "";
+            messageDiv.classList.remove("show");
+
+            try {
+                const response = await fetch("http://localhost:5000/api/register", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ nome, senha })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    showMessage(data.error || data.message || "⚠️ Erro desconhecido", "error");
+                    return;
+                }
+
+                // sucesso
+                showMessage(data.message || "Registrado com sucesso!", "success");
+
+                // redireciona após 2 segundos
+                setTimeout(() => {
+                    window.location.href = "login.html";
+                }, 2000);
+
+            } catch (err) {
+                console.error("Erro:", err);
+                showMessage("🚨 Erro ao comunicar com o servidor", "error");
+            }
+
+            // função para mostrar mensagens
+            function showMessage(msg, type) {
+                messageDiv.textContent = msg;
+                messageDiv.classList.add("show");
+                messageDiv.style.color = type === "success" ? "green" : "red";
+
+                // desaparece depois de 3 segundos (opcional)
+                setTimeout(() => {
+                    messageDiv.classList.remove("show");
+                    messageDiv.textContent = "";
+                }, 3000);
+            }
+        });
+
+    </script>
+</body>
+
+</html>
