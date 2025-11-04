@@ -485,5 +485,192 @@ app.get("/api/admin/comentarios", async (req, res) => {
 
 
 
+// ✅ APAGAR RESPOSTA POR _id (não por índice)
+// ✅ APAGAR RESPOSTA POR _id (compatível com Mongoose 6+)
+app.delete("/api/comentarios/:comentarioId/respostas/:respostaId", async (req, res) => {
+    try {
+        const { comentarioId, respostaId } = req.params;
+        const { autor, isAdmin } = req.query;
+
+        if (!autor && isAdmin !== "true") {
+            return res.status(400).json({ error: "Parâmetros 'autor' ou 'isAdmin' são obrigatórios" });
+        }
+
+        const comentario = await Comentario.findById(comentarioId);
+        if (!comentario) {
+            return res.status(404).json({ error: "Comentário não encontrado" });
+        }
+
+        // 👇 Verifica se a resposta existe
+        const resposta = comentario.respostas.id(respostaId);
+        if (!resposta) {
+            return res.status(404).json({ error: "Resposta não encontrada" });
+        }
+
+        // 👇 Verifica permissões
+        const admins = ["Joaquim", "Admin", "ANGORGE", "Equipe ANGORGE"];
+        const ehAdmin = isAdmin === "true" || admins.includes(autor);
+        const podeApagar = ehAdmin ||
+            (resposta.autor?.trim().toLowerCase() === autor?.trim().toLowerCase());
+
+        if (!podeApagar) {
+            return res.status(403).json({ error: "Sem permissão para apagar esta resposta" });
+        }
+
+        // ✅ CORRETO PARA MONGOOSE 6+:
+        comentario.respostas.pull({ _id: respostaId });
+        await comentario.save();
+
+        res.json({ message: "✅ Resposta apagada com sucesso!" });
+
+    } catch (error) {
+        console.error("Erro ao apagar resposta:", error);
+        res.status(500).json({ error: "Erro ao eliminar resposta" });
+    }
+});
+
+
+// Rota para buscar notificações recentes (ATUALIZADA)
+app.get("/api/notificacoes", async (req, res) => {
+    try {
+        const comentarios = await Comentario.find().sort({ data: -1 }).limit(5).populate("artigoId");
+        const inscricoes = await Inscricao.find().sort({ data: -1 }).limit(5).populate("cursoId");
+
+        const notificacoes = [];
+
+        comentarios.forEach(c => {
+            if (c.artigoId) {
+                notificacoes.push({
+                    tipo: "comentario",
+                    texto: `Novo comentário de ${c.autor}`,
+                    data: c.data,
+                    artigoId: c.artigoId._id.toString(),
+                    comentarioId: c._id.toString()
+                });
+            }
+        });
+
+        inscricoes.forEach(i => {
+            if (i.cursoId) {
+                notificacoes.push({
+                    tipo: "inscricao",
+                    texto: `Nova inscrição de ${i.nome} no curso "${i.cursoId.titulo}"`,
+                    data: i.data,
+                    cursoId: i.cursoId._id.toString()
+                });
+            }
+        });
+
+        // Ordenar por data mais recente
+        notificacoes.sort((a, b) => new Date(b.data) - new Date(a.data));
+
+        res.json(notificacoes.slice(0, 10));
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: "Erro ao buscar notificações" });
+    }
+});
+
+
+
+// 💬 Responder a um comentário (VERSÃO ÚNICA E CORRIGIDA)
+app.post("/api/comentarios/:id/respostas", async (req, res) => {
+    try {
+        const { texto, autor } = req.body;
+
+        if (!texto) {
+            return res.status(400).json({ error: "⚠️ A resposta não pode estar vazia" });
+        }
+
+        const comentario = await Comentario.findById(req.params.id);
+        if (!comentario) {
+            return res.status(404).json({ error: "Comentário não encontrado" });
+        }
+
+        if (!Array.isArray(comentario.respostas)) {
+            comentario.respostas = [];
+        }
+
+        const nomeAutor = autor?.trim() || "Anónimo";
+        const admins = ["Joaquim", "Admin", "ANGORGE", "Equipe ANGORGE"];
+        const isAdm = admins.includes(nomeAutor);
+
+        // ✅ CORRETO: nome da propriedade explícito
+        comentario.respostas.push({
+            autor: nomeAutor,
+            texto: texto.trim(),
+            isAdm,
+            data: new Date()
+        });
+
+
+        await comentario.save();
+        res.status(201).json({ message: "✅ Resposta adicionada com sucesso!", comentario });
+    } catch (error) {
+        console.error("Erro ao adicionar resposta:", error);
+        res.status(500).json({ error: "Erro ao salvar resposta" });
+    }
+});
+// 👍 Adicionar like a um comentário
+app.post("/api/comentarios/:id/like", async (req, res) => {
+    try {
+        const { autor } = req.body;
+
+        if (!autor || !autor.trim()) {
+            return res.status(400).json({ error: "⚠️ O campo 'autor' é obrigatório." });
+        }
+
+        const comentario = await Comentario.findById(req.params.id);
+        if (!comentario) {
+            return res.status(404).json({ error: "Comentário não encontrado." });
+        }
+
+        // ✅ Verifica se o utilizador já deu like
+        if (comentario.likedBy.includes(autor)) {
+            return res.status(400).json({ error: "❌ Já deste like neste comentário." });
+        }
+
+        comentario.likedBy.push(autor);
+        comentario.likes = comentario.likedBy.length;
+        await comentario.save();
+
+        res.json({ message: "👍 Like adicionado com sucesso!", likes: comentario.likes });
+    } catch (error) {
+        console.error("Erro ao adicionar like:", error);
+        res.status(500).json({ error: "❌ Erro no servidor ao adicionar like." });
+    }
+});
+
+
+// 👎 Remover like de um comentário
+// 👎 Remover like de um comentário
+app.delete("/api/comentarios/:id/like", async (req, res) => {
+    try {
+        const { autor } = req.body;
+
+        if (!autor || !autor.trim()) {
+            return res.status(400).json({ error: "⚠️ O campo 'autor' é obrigatório." });
+        }
+
+        const comentario = await Comentario.findById(req.params.id);
+        if (!comentario) {
+            return res.status(404).json({ error: "Comentário não encontrado." });
+        }
+
+        // ✅ Remove o utilizador da lista de likes
+        comentario.likedBy = comentario.likedBy.filter(u => u !== autor);
+        comentario.likes = comentario.likedBy.length;
+        await comentario.save();
+
+        res.json({ message: "👎 Like removido com sucesso!", likes: comentario.likes });
+    } catch (error) {
+        console.error("Erro ao remover like:", error);
+        res.status(500).json({ error: "❌ Erro no servidor ao remover like." });
+    }
+});
+
+
+
+
 // 🚀 INICIAR SERVIDOR
 app.listen(5000, () => console.log("🚀 Servidor rodando em http://localhost:5000"));

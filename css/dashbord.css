@@ -314,7 +314,7 @@
 }
 
 .card.active {
-    background: #e5c535;
+    background: #E8AD21;
     color: #fff;
 }
 
@@ -1868,39 +1868,58 @@
     top: -5px;
     right: -5px;
     background: #E8AD21;
+    /* amarelo do seu site */
     color: white;
     border-radius: 50%;
     padding: 2px 6px;
     font-size: 12px;
     display: none;
+    min-width: 18px;
+    text-align: center;
+    font-weight: bold;
 }
 
 .notification-dropdown {
     display: none;
     position: absolute;
     right: 0;
-    top: 25px;
+    top: 28px;
     background: white;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-    border-radius: 5px;
-    width: 220px;
-    max-height: 250px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    width: 280px;
+    max-height: 320px;
     overflow-y: auto;
     z-index: 1000;
+    border: 1px solid #eee;
+}
+
+.notification-dropdown h4 {
+    padding: 12px 16px;
+    margin: 0;
+    font-size: 14px;
+    color: #007698;
+    font-weight: 600;
+    border-bottom: 1px solid #f0f0f0;
+    background: #fafafa;
 }
 
 .notification-dropdown ul {
     list-style: none;
     margin: 0;
-    padding: 10px;
+    padding: 0;
 }
 
 .notification-dropdown li {
-    padding: 10px 15px;
+    padding: 12px 16px;
     font-size: 14px;
     color: #333;
-    border-bottom: 1px solid #f0f0f0;
-    transition: background 0.2s ease;
+    border-bottom: 1px solid #f5f5f5;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    transition: background 0.2s;
+    position: relative;
 }
 
 .notification-dropdown li:last-child {
@@ -1912,16 +1931,66 @@
     background: #f9f9f9;
 }
 
+.notification-dropdown li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: #007698;
+    opacity: 0;
+}
+
+.notification-dropdown li.unread::before {
+    opacity: 1;
+}
+
 /* Animação ao abrir */
 .notification-dropdown.show {
     display: block;
-    animation: fadeIn 0.25s ease forwards;
+    animation: fadeIn 0.2s ease;
 }
 
 #notification-bell {
     font-size: 20px;
     color: #333;
 }
+
+.notification-icon {
+    font-size: 16px;
+    min-width: 20px;
+    text-align: center;
+}
+
+.notification-icon.comentario {
+    color: #007698;
+}
+
+.notification-icon.inscricao {
+    color: #E8AD21;
+}
+
+.notification-text {
+    flex: 1;
+    line-height: 1.4;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
 
 
 .painel-comentarios {
@@ -1969,4 +2038,496 @@
 
 .comentario-acoes .btn-apagar:hover {
     background-color: #c0392b;
+}
+
+
+
+
+
+
+.secao-estatica {
+    margin: 2rem 0;
+    padding: 1.5rem;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border: 1px solid #eee;
+}
+
+.secao-estatica h2 {
+    margin-bottom: 1.5rem;
+    color: #007698;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+.secao-estatica ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.secao-estatica li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.secao-estatica li:last-child {
+    border-bottom: none;
+}
+
+.comentarios-admi {
+    background-color: #f8f8f8;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border-left: 4px solid #e5c535;
+    /* cor laranja/amarela da imagem */
+}
+
+.comentarios-admi strong {
+    display: block;
+    font-size: 16px;
+    color: #000000;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+}
+
+.comentarios-admi:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.comentarios-admi p {
+    margin: 0 0 0.8rem 0;
+    font-size: 15px;
+    color: #000000;
+    line-height: 1.5;
+}
+
+
+/* Botões de ação */
+.comentario-acoes {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 14px;
+}
+
+.comentario-acoes .btn-acao {
+    background: none;
+    border: none;
+    color: #000000;
+    font-size: 14px;
+    padding: 0;
+    cursor: pointer;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.comentario-acoes .btn-acao:hover {
+    color: #005b7a;
+    text-decoration: underline;
+}
+
+.comentario-acoes span {
+    color: #999;
+    font-size: 14px;
+}
+
+.comentarios-admi small {
+    color: #888;
+    font-size: 13px;
+}
+
+
+.admin-layout section {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+}
+
+.bg-laranja {
+    background-color: #E8AD21 !important;
+    color: white !important;
+}
+
+.bg-cinza {
+    background-color: #E8AD21 !important;
+    color: #ffffff !important;
+}
+
+.paginacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+    font-family: sans-serif;
+}
+
+.paginacao button {
+    background-color: #007698;
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+    max-width: 200px;
+    margin-top: 20px;
+    align-self: flex-start;
+}
+
+.paginacao button:hover:not(:disabled) {
+    background: #007698;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.18);
+}
+
+.paginacao button:disabled {
+    background: #9db4c3;
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+    box-shadow: none;
+}
+
+.paginacao span {
+    font-weight: 600;
+    color: #444;
+}
+
+
+
+
+
+/* Accordion e estilo de respostas (estilo "Facebook" leve) */
+.comentarios-admi {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.comentario-acoes {
+    margin-top: 8px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.comentario-acoes .btn-acao {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-weight: 200;
+    font-size: 13px;
+}
+
+.comentario-acoes .btn-acao:hover {
+    text-decoration: none;
+}
+
+.respostas-wrapper {
+    margin-top: 12px;
+    padding-left: 16px;
+    border-left: 2px solid rgba(0, 0, 0, 0.06);
+    display: none;
+    color: #000;
+}
+
+/* Quando expandido */
+.respostas-wrapper.expanded {
+    display: block;
+    animation: fadeIn .16s ease-out;
+}
+
+.resposta-item {
+
+    padding: 10px;
+    border-radius: 6px;
+    margin-bottom: 8px;
+    position: relative;
+}
+
+.resposta-meta {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.resposta-texto {
+    white-space: pre-wrap;
+}
+
+/* Caixa de resposta inline */
+
+.responder-box textarea {
+    width: 100%;
+    padding: 8px 0;
+    border: none;
+    border-bottom: 1px solid #000;
+    outline: none;
+    font-size: 14px;
+    background: transparent;
+    box-sizing: border-box;
+    color: #333;
+    resize: none;
+    /* impede o redimensionamento manual do textarea */
+    min-height: 20px;
+    /* altura mínima para caber uma linha */
+    overflow: hidden;
+    /* opcional: esconde scroll */
+}
+
+.responder-box textarea::placeholder {
+    color: #333;
+    font-style: normal;
+
+}
+
+.responder-box {
+    margin-top: 8px;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    width: 100%;
+    /* ← adicionado */
+}
+
+.responder-box input[type="text"] {
+    width: 100%;
+    padding: 8px 0;
+    /* ajuste vertical para alinhar com a linha */
+    border: none;
+    border-bottom: 1px solid #000;
+    /* apenas linha inferior preta */
+    outline: none;
+    font-size: 14px;
+    background: transparent;
+    /* fundo transparente */
+    box-sizing: border-box;
+    color: #333;
+}
+
+.responder-box input[type="text"]::placeholder {
+    color: #333;
+    font-style: normal;
+}
+
+.responder-box .btn {
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    border: none;
+    font-weight: 700;
+}
+
+.responder-box .btn-enviar {
+    background: #007698;
+    color: #fff;
+}
+
+.responder-box .btn-cancel {
+    background: transparent;
+    color: #333;
+    border: 1px solid #ddd;
+}
+
+/* Indicador de "x respostas" (botão) */
+.ver-respostas-btn {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    color: #007698;
+    background: transparent;
+    border: none;
+    padding: 4px;
+}
+
+.ver-respostas-btn:focus {
+    outline: none;
+}
+
+/* pequeno estilo para badge de data */
+.data-badge {
+    font-size: 0.78rem;
+    color: #000000;
+    margin-left: 8px;
+}
+
+/* animação */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #0009;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    max-width: 600px;
+    width: 90%;
+    border-radius: 8px;
+}
+
+.hidden {
+    display: none;
+}
+
+/* Botão "Eliminar resposta" */
+.btn-acao.btn-eliminar-resposta {
+    background-color: #d9544f00;
+    /* Vermelho suave (bootstrap danger) */
+    color: rgb(0, 0, 0);
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.btn-acao.btn-eliminar-resposta:hover {
+    background-color: #007698;
+    /* Mais escuro ao passar o mouse */
+}
+
+.btn-acao.btn-eliminar-resposta:focus {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
+.data-badge {
+    font-size: 0.75rem;
+    color: #ffffff;
+    background-color: #007698;
+    padding: 2px 6px;
+    border-radius: 4px;
+    margin-left: 8px;
+    font-weight: normal;
+}
+
+.btn-gostar {
+    background: none;
+    border: none;
+    color: #000000;
+    cursor: pointer;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 6px;
+    border-radius: 4px;
+    transition: color 0.2s;
+}
+
+.btn-gostar:hover {
+    color: #0d6efd;
+    background-color: #f8f9fa;
+}
+
+.btn-gostar i {
+    font-size: 1rem;
+}
+
+
+
+/* Botão de like */
+.btn-like {
+    background: none;
+    border: 1px solid #ddd;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    color: #555;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-like:hover:not(:disabled) {
+    background: #f0f0f0;
+}
+
+.btn-like:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Respostas */
+.respostas-container {
+    margin-top: 12px;
+}
+
+.resposta {
+    background: #f9f9f9;
+    padding: 8px;
+    margin: 6px 0;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.resposta-adm {
+    background: #e7f3ff;
+    border-left: 3px solid #0d6efd;
+}
+
+.resposta-adm strong::after {
+    content: " (Admin)";
+    color: #0d6efd;
+    font-size: 0.8rem;
+    font-weight: normal;
+}
+
+/* Formulário de resposta */
+.form-resposta {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+}
+
+.form-resposta textarea {
+    flex: 1;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.btn-responder {
+    padding: 6px 12px;
+    background: #0d6efd;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-responder:hover {
+    background: #0b5ed7;
 }

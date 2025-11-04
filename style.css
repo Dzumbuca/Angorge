@@ -369,6 +369,8 @@ body {
     margin-bottom: 50px;
     margin-top: 30px;
     color: white;
+    word-break: break-word;
+    /* quebra automática se precisar */
 }
 
 .arrow-btn {
@@ -700,36 +702,35 @@ body {
     max-width: 1200px;
     margin: 0 auto;
     padding: 10px 20px;
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(341px, 1fr));
     gap: 40px;
-    /* Espaçamento entre os cards */
+    justify-items: center;
+    /* Centraliza os cards horizontalmente dentro da coluna */
 }
 
 /* Card individual */
 .service-card {
-    flex: 0 0 341px;
+    width: 100%;
+    /* Ocupa toda a largura da coluna */
     height: 360px;
+    /* Altura fixa para manter alinhamento */
     display: flex;
-    /* ativa flexbox */
     flex-direction: column;
-    /* organiza o conteúdo em coluna */
-    align-items: left;
-    /* centraliza na horizontal */
-    justify-content: center;
-    /* centraliza na vertical */
+    align-items: flex-start;
+    /* Alinha conteúdo à esquerda */
+    justify-content: flex-start;
+    /* Alinha conteúdo ao topo */
     text-align: left;
-    /* alinha o texto no meio */
-
     border: 1px solid #ddd;
     padding: 30px;
     border-radius: 12px;
     background: linear-gradient(135deg, #0091BA, #00607B);
     transition: all 0.3s ease;
-    margin: 0;
     color: #fff;
     box-sizing: border-box;
+    overflow: hidden;
+    /* Evita que conteúdo ultrapasse o card */
 }
 
 .service-card:hover {

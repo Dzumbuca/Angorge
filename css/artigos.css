@@ -247,30 +247,63 @@
 
 
 
+.artigo-comentarios {
+    margin-top: 3rem;
+}
 
+.artigo-comentarios h3 {
+    font-size: 16px;
+    margin-bottom: 1rem;
+    color: #000000;
+    font-weight: 600;
+    border-bottom: 2px solid #007698;
+    padding-bottom: 0.5rem;
+}
 
 .lista-comentarios {
     margin-bottom: 30px;
 }
 
 .comentario {
-    background: #0091BA;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
     border-radius: 10px;
-    padding: 15px;
-    margin-bottom: 15px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    padding: 16px;
+    margin-bottom: 16px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.2s;
+}
+
+.comentario:hover {
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
 }
 
 .comentario-cabecalho {
     display: flex;
     justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 8px;
     font-size: 14px;
-    color: #ffffff;
+    color: #333;
+}
+
+.comentario-cabecalho strong {
+    font-weight: 600;
+    color: #000;
+}
+
+.comentario-cabecalho .comentario-data {
+    color: #777;
+    font-size: 0.85rem;
+    white-space: nowrap;
 }
 
 .comentario-texto {
-    margin-top: 8px;
-    color: #ffffff;
+    margin: 10px 0;
+    color: #555;
+    line-height: 1.6;
+    word-wrap: break-word;
 }
 
 .sem-comentarios,
@@ -523,6 +556,16 @@
 
 
 
+/* Ações: like, responder, apagar */
+.comentario-acoes {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px dashed #eee;
+}
+
 .notificacao-login {
     position: fixed;
     top: 20px;
@@ -543,4 +586,290 @@
 .notificacao-login.visivel {
     opacity: 1;
     transform: translateY(0);
+}
+
+
+/* Botão de like */
+.btn-like {
+    background: transparent;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+}
+
+.btn-like:hover:not(:disabled) {
+    background: #f0f9ff;
+    color: #007698;
+}
+
+.btn-like.favorito,
+.btn-like.favorito:hover {
+    color: #007698;
+    font-weight: 600;
+}
+
+.btn-like:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Respostas */
+.respostas-container {
+    margin-top: 12px;
+}
+
+.resposta {
+    background: #f9f9f9;
+    padding: 8px;
+    margin: 6px 0;
+    border-radius: 4px;
+    font-size: 0.9rem;
+}
+
+.resposta-adm {
+    background: #e7f3ff;
+    border-left: 3px solid #0d6efd;
+}
+
+.resposta-adm strong::after {
+    content: " (Admin)";
+    color: #0d6efd;
+    font-size: 0.8rem;
+    font-weight: normal;
+}
+
+/* Formulário de resposta */
+.form-resposta {
+    margin-top: 10px;
+    display: flex;
+    gap: 8px;
+}
+
+.form-resposta textarea {
+    flex: 1;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-family: inherit;
+}
+
+.btn-responder {
+    background: transparent;
+    border: none;
+    color: #007698;
+    font-size: 0.875rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.btn-responder:hover {
+    background: #f0f9ff;
+}
+
+
+/* 🔥 Botão Apagar de comentários */
+.btn-apagar {
+    background: transparent;
+    color: #dc3545;
+    border: none;
+    font-size: 0.875rem;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.btn-apagar:hover {
+    background: #ffe0e0;
+    color: #c82333;
+}
+
+.btn-apagar:active {
+    transform: scale(0.98);
+    opacity: 0.9;
+}
+
+.btn-apagar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+/* ✨ Animação leve de fade-in quando o botão aparece */
+.btn-apagar {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+
+/* Formulário de resposta (ao clicar em "Responder") */
+.form-resposta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    padding: 8px 0;
+}
+
+form-resposta textarea {
+    flex: 1;
+    background: #ffffff;
+    color: #333;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 8px 12px;
+    font-family: inherit;
+    font-size: 0.9rem;
+    resize: none;
+    /* Remove redimensionamento vertical */
+    min-height: 36px;
+    max-height: 36px;
+    line-height: 1.4;
+    outline: none;
+}
+
+.form-resposta textarea:focus {
+    border-color: #007698;
+    box-shadow: 0 0 0 2px rgba(0, 118, 152, 0.1);
+}
+
+.form-resposta .btn-responder {
+    padding: 8px 16px;
+    background: #007698;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.875rem;
+    min-width: 80px;
+}
+
+.form-resposta .btn-responder:hover {
+    background: #005a75;
+}
+
+.resposta {
+    background: #fafafa;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: #444;
+    border: 1px solid #f5f5f5;
+}
+
+.resposta-adm {
+    background: #e6f4f8;
+    border-left: 3px solid #007698;
+}
+
+.resposta-adm strong::after {
+    content: " (Admin)";
+    color: #007698;
+    font-size: 0.8rem;
+    font-weight: normal;
+    margin-left: 4px;
+}
+
+/* Formulário principal de comentário */
+.comentario-form {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #eee;
+}
+
+.comentario-form input,
+.comentario-form textarea {
+    width: 100%;
+    padding: 0.75rem;
+    margin-bottom: 0.75rem;
+    border: 1px solid #d1d5db;
+    border-radius: 11px;
+    font-size: 1rem;
+}
+
+.comentario-form textarea {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.btn-enviar {
+    background-color: #007698;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: background-color 0.2s;
+    font-size: 1rem;
+}
+
+.btn-enviar:hover {
+    background-color: #005a75;
+}
+
+
+.btn-enviar-resposta {
+    background: #007698;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: background 0.2s;
+    min-width: 80px;
+    text-align: center;
+}
+
+
+/* Mensagens de estado */
+.sem-comentarios,
+.erro-comentarios {
+    color: #777;
+    font-style: italic;
+    text-align: center;
+    padding: 1rem;
+    font-size: 0.95rem;
+}
+
+.btn-enviar-resposta:hover {
+    background: #005a75;
+}
+
+/* Estilo opcional: ícone de verificação ao focar (como no YouTube) */
+.form-resposta textarea:focus+.btn-enviar-resposta {
+    background: #007698;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-2px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.resposta .btn-apagar {
+    font-size: 0.8rem;
+    padding: 4px 8px;
 }
