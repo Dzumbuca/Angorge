@@ -611,3 +611,23 @@
         font-size: 16px;
     }
 }
+
+/* Custom marker do Leaflet */
+.custom-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    transform: translate(-12px, -12px);
+    /* centraliza o ícone no ponto do mapa */
+    cursor: pointer;
+    z-index: 20;
+    /* acima do mapa mas abaixo do título se quiser */
+}
+
+.custom-marker svg {
+    display: block;
+    width: 24px;
+    height: 24px;
+}
