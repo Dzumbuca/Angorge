@@ -1100,7 +1100,7 @@ section,
     left: -5%;
     /* CORREÇÃO: Centraliza o elemento extra-largo */
 
-    background: url('Imagem/es.jpg') center center no-repeat;
+    background: url('Imagem/es.png') center center no-repeat;
     background-size: cover;
 
     /* Adicione estas linhas para performance */

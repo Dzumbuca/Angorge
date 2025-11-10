@@ -29,7 +29,8 @@ app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
 // ==========================
 // 📌 CONEXÃO COM MONGODB
 // ==========================
-mongoose.connect("mongodb://localhost:27017/teuBanco")
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/teuBanco";
+mongoose.connect(MONGODB_URI)
     .then(() => console.log("✅ Conectado ao MongoDB"))
     .catch(err => console.error("❌ Erro ao conectar:", err));
 
@@ -670,7 +671,12 @@ app.delete("/api/comentarios/:id/like", async (req, res) => {
 });
 
 
+app.get("/healthz", (req, res) => {
+    res.status(200).send("OK");
+});
+
 
 
 // 🚀 INICIAR SERVIDOR
-app.listen(5000, () => console.log("🚀 Servidor rodando em http://localhost:5000"));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
