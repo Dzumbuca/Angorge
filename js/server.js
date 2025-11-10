@@ -21,7 +21,8 @@ app.use(cors());
 app.use(express.json());
 
 // 👇 Servir arquivos estáticos (HTML, CSS, JS, imagens) da pasta raiz do site (Site/)
-app.use(express.static(path.join(__dirname, "..")));
+app.use(express.static(path.join(__dirname, "../Site"))); // ou ../public
+
 
 // 👇 Servir arquivos de upload (imagens de cursos/artigos)
 app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
@@ -673,6 +674,10 @@ app.delete("/api/comentarios/:id/like", async (req, res) => {
 
 app.get("/healthz", (req, res) => {
     res.status(200).send("OK");
+});
+
+app.get("*", (req, res) => {
+    res.sendFile(path.join(__dirname, "../Site/registo.html")); // ajusta para o caminho do teu HTML
 });
 
 
