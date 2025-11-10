@@ -39,6 +39,10 @@
     </div>
 
     <script>
+        const BASE_URL = window.location.hostname.includes("localhost")
+            ? "http://localhost:5000"
+            : ""; // vazio usa o mesmo domínio do Render
+
         document.getElementById("register-form").addEventListener("submit", async (e) => {
             e.preventDefault();
 
@@ -46,12 +50,11 @@
             const senha = document.getElementById("password").value;
             const messageDiv = document.getElementById("register-message");
 
-            // limpa mensagem anterior
             messageDiv.textContent = "";
             messageDiv.classList.remove("show");
 
             try {
-                const response = await fetch("/api/register", {
+                const response = await fetch(`${BASE_URL}/api/register`, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({ nome, senha })
@@ -64,10 +67,8 @@
                     return;
                 }
 
-                // sucesso
                 showMessage(data.message || "Registrado com sucesso!", "success");
 
-                // redireciona após 2 segundos
                 setTimeout(() => {
                     window.location.href = "login.html";
                 }, 2000);
@@ -77,13 +78,11 @@
                 showMessage("🚨 Erro ao comunicar com o servidor", "error");
             }
 
-            // função para mostrar mensagens
             function showMessage(msg, type) {
                 messageDiv.textContent = msg;
                 messageDiv.classList.add("show");
                 messageDiv.style.color = type === "success" ? "green" : "red";
 
-                // desaparece depois de 3 segundos (opcional)
                 setTimeout(() => {
                     messageDiv.classList.remove("show");
                     messageDiv.textContent = "";
