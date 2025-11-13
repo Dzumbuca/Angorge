@@ -676,8 +676,14 @@ app.get("/healthz", (req, res) => {
     res.status(200).send("OK");
 });
 
+// ✅ Rota específica para /registo
+app.get("/registo", (req, res) => {
+    res.sendFile(path.join(__dirname, "../Site/registo.html"));
+});
+
+// ✅ Rota fallback para SPA (se aplicável) — geralmente index.html
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../Site/registo.html")); // ajusta para o caminho do teu HTML
+    res.sendFile(path.join(__dirname, "../Site/index.html"));
 });
 
 
