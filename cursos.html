@@ -148,6 +148,10 @@
     </div>
 
     <script>
+
+        const API_BASE = window.location.hostname === "localhost"
+            ? "http://localhost:5000"
+            : "https://teu-app.onrender.com"; // substitui pela tua URL do Render
         // Buscar o nome guardado
         const user = localStorage.getItem("user");
 
@@ -163,7 +167,7 @@
         // --- Buscar cursos do backend com paginação ---
         async function carregarCursos(page = 1) {
             try {
-                const response = await fetch(`http://localhost:5000/api/cursos?page=${page}&limit=${limite}`);
+                const response = await fetch(`${API_BASE}/api/cursos?page=${page}&limit=${limite}`);
                 const data = await response.json();
 
                 const tbody = document.querySelector(".courses-table tbody");
@@ -172,31 +176,30 @@
                 data.cursos.forEach(curso => {
                     const row = document.createElement("tr");
                     row.innerHTML = `
-                    <td>
-                        ${curso.imagem
-                            ? `<img src="http://localhost:5000${curso.imagem}" class="course-image" alt="${curso.titulo}">`
+                <td>
+                    ${curso.imagem
+                            ? `<img src="${API_BASE}${curso.imagem}" class="course-image" alt="${curso.titulo}">`
                             : `<div class="course-image-placeholder">${curso.titulo.charAt(0).toUpperCase()}</div>`}
-                        ${curso.titulo}
-                    </td>
-                    <td>${curso.categoria || "-"}</td>
-                    <td>${curso.duracao ? curso.duracao + " horas" : "-"}</td>
-                    <td>${curso.tipo || "-"}</td>
-                    <td><span class="status-badge ${curso.status === "Disponível Agora" ? "status-disponivel" : (curso.status === "Em Breve" ? "status-em-breve" : "status-encerrado")}">${curso.status || "-"}</span></td>
-                    <td>
-                        <div class="actions-menu">
-                            <button class="action-btn" title="Editar" onclick="editarCurso('${curso._id}')">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="action-btn" title="Excluir" onclick="excluirCurso('${curso._id}', this)">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </div>
-                    </td>
-                `;
+                    ${curso.titulo}
+                </td>
+                <td>${curso.categoria || "-"}</td>
+                <td>${curso.duracao ? curso.duracao + " horas" : "-"}</td>
+                <td>${curso.tipo || "-"}</td>
+                <td><span class="status-badge ${curso.status === "Disponível Agora" ? "status-disponivel" : (curso.status === "Em Breve" ? "status-em-breve" : "status-encerrado")}">${curso.status || "-"}</span></td>
+                <td>
+                    <div class="actions-menu">
+                        <button class="action-btn" title="Editar" onclick="editarCurso('${curso._id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="action-btn" title="Excluir" onclick="excluirCurso('${curso._id}', this)">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
                     tbody.appendChild(row);
                 });
 
-                // Atualiza a paginação
                 renderizarPaginacao(data.page, data.totalPages);
             } catch (error) {
                 console.error("Erro ao carregar cursos:", error);
@@ -235,6 +238,9 @@
             }
         }
 
+
+
+
         // Funções de editar/excluir
         function editarCurso(id) {
             window.location.href = `editarcursos.html?id=${id}`;
@@ -243,7 +249,7 @@
         async function excluirCurso(id, btn) {
             if (confirm("Tem certeza que deseja excluir este curso?")) {
                 try {
-                    const response = await fetch(`http://localhost:5000/api/cursos/${id}`, {
+                    const response = await fetch(`${API_BASE}/api/cursos/${id}`, {
                         method: "DELETE"
                     });
                     const data = await response.json();
@@ -255,6 +261,7 @@
                 }
             }
         }
+
         // Carrega a 1ª página ao abrir
         carregarCursos();
 
