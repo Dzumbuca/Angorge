@@ -1,3 +1,10 @@
+
+// Detecta ambiente local ou Render
+const API_BASE_URL = window.location.hostname === "localhost"
+    ? "http://localhost:5000"
+    : "https://angorge-1.onrender.com"; // <-- mete aqui o URL REAL do teu backend
+
+
 document.addEventListener('DOMContentLoaded', async () => {
     const messageDiv = document.getElementById('curso-message');
 
@@ -77,7 +84,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // ---------- Carregar dados do curso ----------
     try {
-        const response = await fetch(`http://localhost:5000/api/cursos/${cursoId}`);
+        const response = await fetch(`${API_BASE_URL}/api/cursos/${cursoId}`);
+
         if (!response.ok) throw new Error('Erro ao carregar curso');
         const curso = await response.json();
 
@@ -88,8 +96,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         duracao.value = curso.duracao || '';
         categoria.value = curso.categoria || '';
         imagemPreview.src = curso.imagem
-            ? `http://localhost:5000${curso.imagem}`
+            ? `${API_BASE_URL}${curso.imagem}`
             : 'https://via.placeholder.com/800x500?text=Curso+Sem+Imagem';
+
 
         Array.from(tipoRadios).forEach(r => r.checked = r.value === curso.tipo);
         Array.from(statusRadios).forEach(r => r.checked = r.value.toLowerCase() === (curso.status || '').toLowerCase());
@@ -199,10 +208,11 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (inputImagem.files[0]) formData.append('imagem', inputImagem.files[0]);
 
         try {
-            const response = await fetch(`http://localhost:5000/api/cursos/${cursoId}`, {
+            const response = await fetch(`${API_BASE_URL}/api/cursos/${cursoId}`, {
                 method: 'PUT',
                 body: formData
             });
+
             const result = await response.json();
 
             if (response.ok) {

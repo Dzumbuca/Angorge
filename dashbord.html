@@ -89,6 +89,10 @@
 
     <script src="js/navbar.js"></script>
     <script>
+        const API_URL = window.location.hostname === "localhost"
+            ? "http://localhost:5000"
+            : "https://angorge-1.onrender.com";
+
         document.addEventListener("DOMContentLoaded", async () => {
             // Dados do utilizador logado (usa o nome que já existe no header)
             const currentUser = (document.querySelector('.user-name')?.textContent || 'Admin').trim();
@@ -106,7 +110,7 @@
 
             async function fetchNotifications() {
                 try {
-                    const res = await fetch("http://localhost:5000/api/notificacoes");
+                    const res = await fetch("${API_URL}/api/notificacoes");
                     if (!res.ok) throw new Error("Falha ao buscar notificações");
                     const dados = await res.json();
 
@@ -220,7 +224,8 @@
                 if (!container) return;
                 container.innerHTML = "<p>🔄 A carregar comentários...</p>";
                 try {
-                    const res = await fetch("http://localhost:5000/api/admin/comentarios");
+                    const res = await fetch(`${API_URL}/api/admin/comentarios`);
+
                     if (!res.ok) throw new Error("Erro na resposta da API");
                     const dados = await res.json();
                     // espera-se que a API devolva { comentarios: [...] } ou um array
@@ -374,7 +379,8 @@
 
                 // se não tiveres as respostas completas, busca do backend
                 try {
-                    const res = await fetch(`http://localhost:5000/api/comentarios/${commentId}/respostas`);
+                    const res = await fetch(`${API_URL}/api/admin/comentarios`);
+
                     if (!res.ok) throw new Error("Erro ao buscar respostas");
                     const dados = await res.json(); // espera { respostas: [...] } ou array
                     const respostas = Array.isArray(dados) ? dados : (dados.respostas || []);
@@ -489,15 +495,17 @@
 
             async function enviarResposta(commentId, { autor, texto }) {
                 try {
-                    const res = await fetch(`http://localhost:5000/api/comentarios/${commentId}/respostas`, {
+                    const res = await fetch(`${API_URL}/api/comentarios/${commentId}/respostas`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ autor, texto }) // ← agora envia "autor"
+                        body: JSON.stringify({ autor, texto })
                     });
+
                     if (!res.ok) {
                         const err = await res.json().catch(() => ({ error: 'Erro desconhecido' }));
                         throw new Error(err.error || 'Erro ao enviar resposta');
                     }
+
                     return await res.json();
                 } catch (err) {
                     throw err;
@@ -509,7 +517,7 @@
             async function eliminarResposta(commentId, replyIndex) {
                 try {
                     // Corrigido: /respostas/ (com "s") e usa replyIndex
-                    const res = await fetch(`http://localhost:5000/api/comentarios/${commentId}/respostas/${replyIndex}`, {
+                    const res = await fetch(`${API_URL}/api/comentarios/${commentId}/respostas/${replyIndex}`, {
                         method: 'DELETE'
                     });
                     if (!res.ok) {
@@ -527,7 +535,7 @@
             window.apagarComentarioAdmin = async function (comentarioId) {
                 if (!confirm("Tem certeza que deseja eliminar este comentário?")) return;
                 try {
-                    const url = new URL(`http://localhost:5000/api/comentarios/${comentarioId}`);
+                    const url = new URL(`${API_URL}/api/comentarios/${comentarioId}`);
                     url.searchParams.append("autor", currentUser);
                     url.searchParams.append("isAdmin", "true");
                     const res = await fetch(url.toString(), { method: "DELETE" });
@@ -561,7 +569,7 @@
 
                 if (jaDeuCurtida) {
                     // ❌ Remover like
-                    const res = await fetch(`http://localhost:5000/api/comentarios/${commentId}/like`, {
+                    const res = await fetch(`${API_URL}/api/comentarios/${commentId}/like`, {
                         method: 'DELETE',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ autor: currentUser })
@@ -575,7 +583,7 @@
                     localStorage.setItem('likedComments', JSON.stringify(novosLiked));
                 } else {
                     // ✅ Dar like
-                    const res = await fetch(`http://localhost:5000/api/comentarios/${commentId}/like`, {
+                    const res = await fetch(`${API_URL}/api/comentarios/${commentId}/like`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ autor: currentUser })

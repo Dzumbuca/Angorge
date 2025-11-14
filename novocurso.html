@@ -184,6 +184,11 @@
 
 
     <script>
+
+        const API_BASE_URL = window.location.hostname === "localhost"
+            ? "http://localhost:5000"
+            : "https://angorge-1.onrender.com";
+
         const user = localStorage.getItem("user");
         if (!user) window.location.href = "login.html";
 
@@ -324,10 +329,11 @@
             if (imagemInput.files[0]) formData.append("imagem", imagemInput.files[0]);
 
             try {
-                const response = await fetch("http://localhost:5000/api/cursos", {
+                const response = await fetch(`${API_BASE_URL}/api/cursos`, {
                     method: "POST",
                     body: formData
                 });
+
 
                 const data = await response.json();
                 if (response.ok) {

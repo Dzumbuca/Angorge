@@ -101,6 +101,11 @@
     </div>
 
     <script>
+        // Detecta ambiente
+        const API_BASE_URL = window.location.hostname === "localhost"
+            ? "http://localhost:5000"
+            : "https://angorge-1.onrender.com";
+
         const urlParams = new URLSearchParams(window.location.search);
         const artigoId = urlParams.get("id");
         if (!artigoId) window.location.href = "artigos.html";
@@ -124,43 +129,38 @@
             const id = urlParams.get("id");
 
             try {
-                const res = await fetch(`http://localhost:5000/api/artigos/${id}`);
+                const res = await fetch(`${API_BASE_URL}/api/artigos/${id}`);
                 const art = await res.json();
 
-                // Preenche os campos do formulário
                 document.getElementById("descricao").value = art.descricao || "";
                 document.getElementById("titulo").value = art.titulo || "";
                 document.getElementById("autor").value = art.autor || "";
                 document.getElementById("categoria").value = art.categoria || "";
 
-                // 📅 Corrigir data
                 if (art.dataPublicacao) {
                     const data = new Date(art.dataPublicacao);
                     document.getElementById("dataPublicacao").value = data.toISOString().split("T")[0];
                 }
 
-                // 📌 Corrigir status
                 if (art.status) {
                     document.querySelectorAll("input[name='status']").forEach(radio => {
                         radio.checked = (radio.value === art.status);
                     });
                 }
-                // imagem
+
                 if (art.imagem) {
-                    previewImg.src = `http://localhost:5000${art.imagem}`;
+                    previewImg.src = `${API_BASE_URL}${art.imagem}`;
                     linkImg.href = previewImg.src;
                 } else {
                     previewImg.src = "https://via.placeholder.com/800x500";
                     linkImg.href = "#";
                 }
 
-
                 console.log("[DEBUG] Artigo carregado:", art);
             } catch (error) {
                 console.error("Erro ao carregar artigo:", error);
             }
         }
-
 
         // Salvar
         btnSalvar.addEventListener("click", async () => {
@@ -176,7 +176,7 @@
             if (imgInput.files[0]) fd.append("imagem", imgInput.files[0]);
 
             try {
-                const res = await fetch(`http://localhost:5000/api/artigos/${artigoId}`, {
+                const res = await fetch(`${API_BASE_URL}/api/artigos/${artigoId}`, {
                     method: "PUT",
                     body: fd
                 });
@@ -184,9 +184,7 @@
 
                 if (res.ok) {
                     alert(data.message);
-
-                    // 👉 Redireciona para a página de listagem
-                    window.location.href = "artigo.html";
+                    window.location.href = "artigos.html";
                 } else {
                     alert(data.error || "Erro ao atualizar");
                 }
@@ -195,6 +193,7 @@
                 alert("Erro ao atualizar artigo");
             }
         });
+
         // Trocar imagem
         document.querySelector(".btn-change").addEventListener("click", () => imgInput.click());
         imgInput.addEventListener("change", () => {
@@ -208,8 +207,9 @@
         // Excluir
         btnExcluir.addEventListener("click", async () => {
             if (!confirm("Deseja realmente excluir este artigo?")) return;
+
             try {
-                const res = await fetch(`http://localhost:5000/api/artigos/${artigoId}`, { method: "DELETE" });
+                const res = await fetch(`${API_BASE_URL}/api/artigos/${artigoId}`, { method: "DELETE" });
                 const data = await res.json();
                 alert(data.message);
                 window.location.href = "artigos.html";
@@ -220,6 +220,8 @@
 
         carregarArtigo();
     </script>
+
+
 </body>
 
 </html>
