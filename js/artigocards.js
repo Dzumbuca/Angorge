@@ -1,10 +1,16 @@
+const API_URL = window.location.hostname === "localhost"
+    ? "http://localhost:5000"
+    : "https://angorge-1.onrender.com";
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const containerArtigos = document.getElementById("containerArtigos");
 
     // Função para buscar artigos do backend
     async function carregarArtigos() {
         try {
-            const response = await fetch("http://localhost:5000/api/artigos"); // URL do backend para artigos
+            const response = await fetch("${API_URL}/api/artigos"); // URL do backend para artigos
             const data = await response.json();
             const artigos = data.artigos; // Backend retorna { artigos, total, page, totalPages }
 
@@ -16,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.classList.add("card-artigo");
                 card.innerHTML = `
                 <div class="card-artigo-imagem">
-                    <img src="http://localhost:5000${artigo.imagem || '/uploads/default.jpg'}" alt="${artigo.titulo}">
+                    <img src="${API_URL}${artigo.imagem || '/uploads/default.jpg'}" alt="${artigo.titulo}">
                 </div>
                 <div class="card-artigo-conteudo">
                     <div class="card-artigo-categoria">${artigo.categoria || "Sem categoria"}</div>

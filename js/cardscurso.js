@@ -1,10 +1,16 @@
+const API_URL = window.location.hostname === "localhost"
+    ? "http://localhost:5000"
+    : "https://angorge-1.onrender.com";
+
+
+
 document.addEventListener('DOMContentLoaded', () => {
     const containerCursos = document.getElementById("containerCursos");
 
     // Função para buscar cursos do backend
     async function carregarCursos() {
         try {
-            const response = await fetch("http://localhost:5000/api/cursos"); // URL do backend
+            const response = await fetch("${API_URL}/api/cursos"); // URL do backend
             const data = await response.json();
             const cursos = data.cursos; // Backend retorna { cursos, total, page, totalPages }
 
@@ -23,7 +29,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 card.classList.add("card-curso");
                 card.innerHTML = `
         <div class="card-curso-imagem">
-           <img src="http://localhost:5000${curso.imagem}" alt="${curso.titulo}">
+           <img src="${API_URL}${curso.imagem}" alt="${curso.titulo}">
         </div>
         <div class="card-curso-conteudo">
             <div class="card-curso-categoria">${curso.categoria || ''}</div>
