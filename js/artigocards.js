@@ -2,49 +2,46 @@ const API_URL = window.location.hostname === "localhost"
     ? "http://localhost:5000"
     : "https://angorge-1.onrender.com";
 
-
-
 document.addEventListener('DOMContentLoaded', () => {
-    const containerArtigos = document.getElementById("containerArtigos");
+    const containerCursos = document.getElementById("containerCursos");
 
-    // Função para buscar artigos do backend
-    async function carregarArtigos() {
+    async function carregarCursos() {
         try {
-            const response = await fetch("${API_URL}/api/artigos"); // URL do backend para artigos
+            const response = await fetch(`${API_URL}/api/cursos`);
             const data = await response.json();
-            const artigos = data.artigos; // Backend retorna { artigos, total, page, totalPages }
+            const cursos = data.cursos; // espera que o backend retorne { cursos, total, ... }
 
-            containerArtigos.innerHTML = ""; // limpa container antes de adicionar
+            containerCursos.innerHTML = ""; // limpa container
 
-            // Renderizar os artigos em cards
-            artigos.forEach(artigo => {
+            cursos.forEach(curso => {
+                // Só renderiza cursos que têm _id
+                if (!curso._id) return;
+
                 const card = document.createElement("div");
-                card.classList.add("card-artigo");
+                card.classList.add("card-curso");
                 card.innerHTML = `
-                <div class="card-artigo-imagem">
-                    <img src="${API_URL}${artigo.imagem || '/uploads/default.jpg'}" alt="${artigo.titulo}">
-                </div>
-                <div class="card-artigo-conteudo">
-                    <div class="card-artigo-categoria">${artigo.categoria || "Sem categoria"}</div>
-                    <h3 class="card-artigo-titulo">${artigo.titulo}</h3>
-                    <p class="card-artigo-descricao">${artigo.descricao}</p>
-                    <div class="card-artigo-rodape">
-                        <span class="card-artigo-data">
-                            ${new Date(artigo.dataPublicacao).toLocaleDateString('pt-PT')}
-                        </span>
-                        <span class="card-artigo-autor">${artigo.autor || "Anónimo"}</span>
-                        <a href="artigoDetalhe.html?id=${artigo._id}" class="card-artigo-link">Veja mais →</a>
+                    <div class="card-curso-imagem">
+                        <img src="${API_URL}${curso.imagem || '/uploads/default.jpg'}" alt="${curso.titulo}">
                     </div>
-                </div>
-            `;
-                containerArtigos.appendChild(card);
+                    <div class="card-curso-conteudo">
+                        <div class="card-curso-categoria">${curso.categoria || ''}</div>
+                        <div class="card-curso-tipo">${curso.tipo || ''}</div>
+                        <h3 class="card-curso-titulo">${curso.titulo}</h3>
+                        <p class="card-curso-descricao">${curso.descricao || ''}</p>
+                        <div class="card-curso-rodape">
+                            <span class="card-curso-duracao">${curso.duracao || ''}h</span>
+                            <a href="Cursodetalhe.html?id=${encodeURIComponent(curso._id)}">Saiba Mais</a>
+                            <span class="card-curso-status">${curso.status || ''}</span>
+                        </div>
+                    </div>
+                `;
+                containerCursos.appendChild(card);
             });
         } catch (error) {
-            console.error("Erro ao carregar artigos:", error);
-            containerArtigos.innerHTML = "<p>Não foi possível carregar os artigos.</p>";
+            console.error("Erro ao carregar cursos:", error);
+            containerCursos.innerHTML = "<p>Não foi possível carregar os cursos.</p>";
         }
     }
 
-    // Chama a função ao carregar a página
-    carregarArtigos();
+    carregarCursos();
 });
