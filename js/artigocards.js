@@ -3,45 +3,43 @@ const API_URL = window.location.hostname === "localhost"
     : "https://angorge-1.onrender.com";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const containerCursos = document.getElementById("containerCursos");
+    const containerArtigos = document.getElementById("containerArtigos");
 
-    async function carregarCursos() {
+    if (!containerArtigos) {
+        console.error("❌ Não encontrei #containerArtigos no DOM");
+        return;
+    }
+
+    async function carregarArtigos() {
         try {
-            const response = await fetch(`${API_URL}/api/cursos`);
+            const response = await fetch(`${API_URL}/api/artigos`);
             const data = await response.json();
-            const cursos = data.cursos; // espera que o backend retorne { cursos, total, ... }
+            const artigos = data.artigos;
 
-            containerCursos.innerHTML = ""; // limpa container
+            containerArtigos.innerHTML = ""; // limpa container
 
-            cursos.forEach(curso => {
-                // Só renderiza cursos que têm _id
-                if (!curso._id) return;
+            artigos.forEach(artigo => {
+                if (!artigo._id) return;
 
                 const card = document.createElement("div");
-                card.classList.add("card-curso");
+                card.classList.add("card-artigo");
                 card.innerHTML = `
-                    <div class="card-curso-imagem">
-                        <img src="${API_URL}${curso.imagem || '/uploads/default.jpg'}" alt="${curso.titulo}">
+                    <div class="card-artigo-imagem">
+                        <img src="${API_URL}${artigo.imagem || '/uploads/default.jpg'}" alt="${artigo.titulo}">
                     </div>
-                    <div class="card-curso-conteudo">
-                        <div class="card-curso-categoria">${curso.categoria || ''}</div>
-                        <div class="card-curso-tipo">${curso.tipo || ''}</div>
-                        <h3 class="card-curso-titulo">${curso.titulo}</h3>
-                        <p class="card-curso-descricao">${curso.descricao || ''}</p>
-                        <div class="card-curso-rodape">
-                            <span class="card-curso-duracao">${curso.duracao || ''}h</span>
-                            <a href="Cursodetalhe.html?id=${encodeURIComponent(curso._id)}">Saiba Mais</a>
-                            <span class="card-curso-status">${curso.status || ''}</span>
-                        </div>
+                    <div class="card-artigo-conteudo">
+                        <h3>${artigo.titulo}</h3>
+                        <p>${artigo.descricao}</p>
+                        <a href="artigo-detalhe.html?id=${encodeURIComponent(artigo._id)}">Leia Mais</a>
                     </div>
                 `;
-                containerCursos.appendChild(card);
+                containerArtigos.appendChild(card);
             });
         } catch (error) {
-            console.error("Erro ao carregar cursos:", error);
-            containerCursos.innerHTML = "<p>Não foi possível carregar os cursos.</p>";
+            console.error("Erro ao carregar artigos:", error);
+            containerArtigos.innerHTML = "<p>Não foi possível carregar os artigos.</p>";
         }
     }
 
-    carregarCursos();
+    carregarArtigos();
 });
