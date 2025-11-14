@@ -21,7 +21,7 @@ app.use(cors());
 app.use(express.json());
 
 // 👇 Servir arquivos estáticos (HTML, CSS, JS, imagens) da pasta raiz do site (Site/)
-app.use(express.static(path.join(__dirname, "../Site"))); // ou ../public
+app.use(express.static(path.join(__dirname, ".."))); // ou ../public
 
 
 // 👇 Servir arquivos de upload (imagens de cursos/artigos)
@@ -677,9 +677,9 @@ app.get("/healthz", (req, res) => {
 });
 
 
-// ✅ Rota fallback para SPA (se aplicável) — geralmente index.html
+// Rota fallback para index.html
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "../Site/index.html"));
+    res.sendFile(path.join(__dirname, "../index.html"));
 });
 
 
