@@ -71,7 +71,8 @@
                             <option value="financas">Finanças</option>
                             <option value="tecnologia">Tecnologia</option>
                             <option value="educacao">Educação</option>
-                            <option value="outros">Outros</option>
+                            <option value="outros" selected>Outros</option>
+
                         </select>
                     </div>
 
@@ -176,11 +177,11 @@
             const dataPublicacao = document.querySelector("input[name='dataPublicacao']").value;
             const descricao = document.querySelector("textarea[name='descricao']").value.trim();
             const status = document.querySelector("input[name='status']:checked").value;
-
-            if (!titulo || !descricao) {
-                alert("⚠️ Preencha os campos obrigatórios: Título e Descrição");
+            if (!titulo || !descricao || !categoria) {
+                alert("⚠️ Preencha os campos obrigatórios: Título, Descrição e Categoria");
                 return;
             }
+
 
             formData.append("titulo", titulo);
             formData.append("categoria", categoria);
