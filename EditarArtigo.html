@@ -108,7 +108,7 @@
 
         const urlParams = new URLSearchParams(window.location.search);
         const artigoId = urlParams.get("id");
-        if (!artigoId) window.location.href = "artigos.html";
+        if (!artigoId) window.location.href = "artigo.html";
 
         const titulo = document.getElementById("titulo");
         const categoria = document.getElementById("categoria");
@@ -184,7 +184,7 @@
 
                 if (res.ok) {
                     alert(data.message);
-                    window.location.href = "artigos.html";
+                    window.location.href = "artigo.html";
                 } else {
                     alert(data.error || "Erro ao atualizar");
                 }
@@ -212,7 +212,7 @@
                 const res = await fetch(`${API_BASE_URL}/api/artigos/${artigoId}`, { method: "DELETE" });
                 const data = await res.json();
                 alert(data.message);
-                window.location.href = "artigos.html";
+                window.location.href = "artigo.html";
             } catch {
                 alert("Erro ao excluir");
             }

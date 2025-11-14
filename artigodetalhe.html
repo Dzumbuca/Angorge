@@ -92,12 +92,8 @@
         <aside class="artigo-sidebar">
             <div class="sidebar-box">
                 <h4>Categorias</h4>
-                <ul>
-                    <li><a href="#">Contabilidade</a></li>
-                    <li><a href="#">Fiscalidade</a></li>
-                    <li><a href="#">Gestão</a></li>
-                    <li><a href="#">Finanças</a></li>
-                    <li><a href="#">Tecnologia</a></li>
+                <ul id="categorias-lista">
+                    <!-- Categorias serão inseridas aqui -->
                 </ul>
             </div>
         </aside>
@@ -129,6 +125,9 @@
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
+        const API_URL = window.location.hostname === "localhost"
+            ? "http://localhost:5000"
+            : "https://angorge-1.onrender.com";
         // Função para decodificar o token JWT do Google
         function parseJwt(token) {
             const base64Url = token.split('.')[1];
@@ -249,6 +248,67 @@
                 }, 100);
             }
         };
+
+
+        async function carregarCategorias() {
+            try {
+                const response = await fetch(`${API_URL}/api/artigos`);
+                const data = await response.json();
+                const artigos = data.artigos || [];
+
+                // Extrair categorias únicas
+                const categorias = [...new Set(
+                    artigos
+                        .map(art => art.categoria)
+                        .filter(cat => cat && cat.trim() !== "")
+                )];
+
+                // Ordenar alfabeticamente (opcional)
+                categorias.sort();
+
+                // Renderizar na sidebar
+                const lista = document.getElementById("categorias-lista");
+                if (!lista) return;
+
+                if (categorias.length === 0) {
+                    lista.innerHTML = "<li><em>Nenhuma categoria disponível</em></li>";
+                    return;
+                }
+
+                const nomeAmigavel = {
+                    "gestao": "Gestão",
+                    "financas": "Finanças",
+                    "contabilidade": "Contabilidade",
+                    "fiscalidade": "Fiscalidade",
+                    "tecnologia": "Tecnologia",
+                    "educacao": "Educação",
+                    "marketing": "Marketing",
+                    "outros": "Outros"
+                };
+                lista.innerHTML = categorias.map(cat => {
+                    const total = artigos.filter(a => a.categoria === cat).length;
+                    const nomeExibicao = nomeAmigavel[cat] || cat.charAt(0).toUpperCase() + cat.slice(1);
+                    return `
+        <li><a href="artigo.html?categoria=${encodeURIComponent(cat)}">
+            ${nomeExibicao} <span>(${total})</span>
+        </a></li>
+    `;
+                }).join("");
+
+            } catch (error) {
+                console.error("Erro ao carregar categorias:", error);
+                const lista = document.getElementById("categorias-lista");
+                if (lista) {
+                    lista.innerHTML = "<li><em>Erro ao carregar categorias</em></li>";
+                }
+            }
+        }
+
+        // Carregar quando a página estiver pronta
+        if (document.getElementById("categorias-lista")) {
+            carregarCategorias();
+        }
+
     </script>
 
 

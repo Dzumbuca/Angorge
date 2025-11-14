@@ -516,35 +516,31 @@
     width: 90%;
 }
 
-
-
-
-
-/* Estilo principal do card de artigo */
-/* Container de artigos */
+/* === CONTAINER DE ARTIGOS === */
 .container-artigos {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     justify-content: left;
-    /* centraliza os cards horizontalmente */
-    padding: 10px 10px 10px 150px;
-    /* espaço interno para não colar na borda da tela */
+    align-items: flex-start;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* Card de artigo */
+/* === CARD === */
 .card-artigo {
-    width: calc(33.333% - 20px);
-    /* 3 cards por linha */
-    max-width: 100%;
-    border: 1px solid #007698;
+    width: 400px;
+    border: 1px solid #ddd;
     border-radius: 12px;
     overflow: hidden;
+    background: #fff;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-    background: white;
+    display: flex;
+    flex-direction: column;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    text-align: left;
-    margin: 0;
+    flex-shrink: 0;
+    /* Evita que o card encolha em layouts apertados */
 }
 
 .card-artigo:hover {
@@ -552,7 +548,7 @@
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
-/* Imagem do artigo */
+/* === IMAGEM === */
 .card-artigo-imagem img {
     width: 100%;
     height: 220px;
@@ -560,72 +556,62 @@
     display: block;
 }
 
-/* Conteúdo do artigo */
+/* === CONTEÚDO === */
 .card-artigo-conteudo {
-    padding: 20px;
-    text-align: left;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
-/* Tipos de texto */
 .card-artigo-categoria {
-    font-size: 14px;
-    color: #333;
+    font-size: 12px;
     font-weight: 500;
-    margin-bottom: 4px;
+    color: #007698;
+    text-transform: uppercase;
 }
 
 .card-artigo-titulo {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: 600;
     color: #000;
-    margin: 10px 0 14px 0;
-    line-height: 1.3;
+    margin: 0;
 }
 
 .card-artigo-descricao {
-    font-size: 15px;
+    font-size: 14px;
     color: #555;
-    margin-bottom: 20px;
-    line-height: 1.6;
+    line-height: 1.4;
     display: -webkit-box;
     -webkit-line-clamp: 3;
-    /* número de linhas que queres mostrar */
     -webkit-box-orient: vertical;
     overflow: hidden;
-    text-overflow: ellipsis;
 }
 
-/* Rodapé do card */
+/* === RODAPÉ === */
 .card-artigo-rodape {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 12px 16px;
     font-size: 12px;
     color: #666;
-    gap: 6px;
-    padding-top: 12px;
     border-top: 1px solid #eee;
 }
 
-.card-artigo-data,
-.card-artigo-autor {
-    font-size: 12px;
-    color: #666;
-}
-
+/* === LINK === */
 .card-artigo-link {
-    font-size: 12px;
-    color: #007698;
+    font-size: 13px;
     font-weight: 500;
-    position: relative;
-    padding-right: 16px;
+    color: #007698;
     text-decoration: none;
+    position: relative;
+    /* Para o pseudo-elemento ↗ */
 }
 
 .card-artigo-link::after {
     content: "↗";
-    position: absolute;
-    right: 0;
+    margin-left: 4px;
     font-size: 10px;
 }
 
@@ -633,61 +619,34 @@
     text-decoration: underline;
 }
 
-/* === RESPONSIVO - CARDS DE ARTIGOS === */
-
-/* Tablets (até 1024px) */
+/* === RESPONSIVO === */
 @media (max-width: 1024px) {
-    .container-artigos {
-        justify-content: center;
-        /* Centraliza os cards */
-        padding: 20px 40px;
-        /* Reduz o espaço lateral */
+    .containerArtigos {
+        padding: 20px;
+        /* justify-content já é center */
     }
 
     .card-artigo {
         width: calc(50% - 20px);
-        /* 2 cards por linha */
     }
 }
 
-/* Telemóveis (até 768px) */
 @media (max-width: 768px) {
-    .container-artigos {
-        flex-direction: column;
-        /* Empilha os cards */
-        align-items: center;
-        /* Centraliza verticalmente */
-        justify-content: center;
-        padding: 20px;
-        /* Dá um respiro equilibrado */
-        text-align: center;
-    }
-
     .card-artigo {
-        width: 100%;
-        /* Ocupa toda a largura */
+        width: calc(100% - 20px);
         max-width: 500px;
-        /* Limita o tamanho */
-    }
-
-    .card-artigo-conteudo {
-        text-align: left;
-        /* Mantém o texto alinhado */
     }
 }
 
 /* Telemóveis pequenos (até 480px) */
 @media (max-width: 480px) {
-    .container-artigos {
+    .containerArtigos {
         padding: 15px;
-        justify-content: center;
-        align-items: center;
     }
 
     .card-artigo {
         width: 100%;
         max-width: 400px;
-        /* Evita que o card fique enorme */
     }
 
     .card-artigo-titulo {
