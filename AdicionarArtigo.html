@@ -123,6 +123,10 @@
 
 
     <script>// Seletores
+
+        const API_URL = window.location.hostname === "localhost"
+            ? "http://localhost:5000"
+            : "https://angorge-1.onrender.com";
         // Buscar o nome guardado
         const user = localStorage.getItem("user");
 
@@ -187,10 +191,11 @@
             if (fileInput.files[0]) formData.append("imagem", fileInput.files[0]);
 
             try {
-                const res = await fetch("http://localhost:5000/api/artigos", {
+                const res = await fetch(`${API_URL}/api/artigos`, {
                     method: "POST",
                     body: formData
                 });
+
                 const data = await res.json();
                 if (res.ok) {
                     alert("✅ Artigo publicado com sucesso!");
