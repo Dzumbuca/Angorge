@@ -3,7 +3,7 @@
 // ==========================
 
 const API_URL = "http://localhost:5000"; // muda para produção quando necessário
-const WHATSAPP_EMPRESA = "244937555618"; // número da empresa (formato: +244937555618)
+const WHATSAPP_EMPRESA = "244937555618"; // número da empresa
 
 document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
@@ -140,69 +140,48 @@ function preencherEstrutura(curso) {
 }
 
 // ---------- Modal ----------
-document.querySelector(".btn-enviar")?.addEventListener("click", (e) => {
+document.querySelector(".btn-enviar").addEventListener("click", (e) => {
     e.preventDefault();
-    const modal = document.getElementById("modalInscricao");
-    if (modal) modal.classList.remove("hidden");
-
+    document.getElementById("modalInscricao").classList.remove("hidden");
     const params = new URLSearchParams(window.location.search);
-    const cursoId = params.get("id");
-    const input = document.getElementById("cursoId");
-    if (input && cursoId) {
-        input.value = cursoId;
-    }
+    document.getElementById("cursoId").value = params.get("id");
 });
 
 function fecharModal() {
-    const modal = document.getElementById("modalInscricao");
-    if (modal) modal.classList.add("hidden");
+    document.getElementById("modalInscricao").classList.add("hidden");
 }
 
-// Fecha modal ao clicar no "X" ou fora do conteúdo
-document.querySelector(".fechar")?.addEventListener("click", fecharModal);
-document.getElementById("modalInscricao")?.addEventListener("click", (e) => {
-    if (e.target.id === "modalInscricao") fecharModal();
-});
-
 // ---------- Enviar inscrição ----------
-document.getElementById("formInscricao")?.addEventListener("submit", async (e) => {
+document.getElementById("formInscricao").addEventListener("submit", async (e) => {
     e.preventDefault();
-    e.stopPropagation(); // 👈 adiciona esta linha para garantir
+    const form = e.target;
+    const data = {
+        nome: form.nome.value,
+        email: form.email.value,
+        telefone: form.telefone.value,
+        cursoId: form.cursoId.value
+    };
 
-    const params = new URLSearchParams(window.location.search);
-    const cursoId = params.get("id");
+    console.log("✉️ Dados de inscrição:", data);
 
-    if (!cursoId) {
-        alert("⚠️ Erro: ID do curso não encontrado. Redirecionando...");
-        window.location.href = "formacao.html";
-        return;
-    }
-
-    const { nome, email, telefone } = Object.fromEntries(new FormData(e.target));
-    if (!nome || !email || !telefone) {
-        alert("Preencha todos os campos.");
-        return;
-    }
-
+    // 1️⃣ Envia pro backend
     try {
         const res = await fetch(`${API_URL}/api/inscricoes`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ nome, email, telefone, cursoId })
+            body: JSON.stringify(data)
         });
-
         const json = await res.json();
         document.getElementById("mensagemInscricao").textContent = json.message || "Inscrição enviada!";
-
-        // ✅ WhatsApp sem espaço
-        const mensagem = `Nova inscrição:\nNome: ${nome}\nEmail: ${email}\nTelefone: ${telefone}\nCurso ID: ${cursoId}`;
-        // ✅ CERTO:
-        const urlWhatsApp = `https://wa.me/${WHATSAPP_EMPRESA}?text=${encodeURIComponent(mensagem)}`;
-        window.open(urlWhatsApp, "_blank");
-
-        e.target.reset();
+        form.reset();
+        console.log("✅ Inscrição enviada para o servidor:", json);
     } catch (err) {
-        console.error("Erro na inscrição:", err);
-        document.getElementById("mensagemInscricao").textContent = "Erro ao enviar. Tente novamente.";
+        document.getElementById("mensagemInscricao").textContent = "Erro ao enviar inscrição.";
+        console.error("❌ Erro ao enviar inscrição para o servidor:", err);
     }
+
+    // 2️⃣ Abre WhatsApp do usuário com a mensagem pronta
+    const mensagem = `Nova inscrição:\nNome: ${data.nome}\nEmail: ${data.email}\nTelefone: ${data.telefone}\nCurso: ${data.cursoId}`;
+    const urlWhatsApp = `https://wa.me/${WHATSAPP_EMPRESA}?text=${encodeURIComponent(mensagem)}`;
+    window.open(urlWhatsApp, "_blank");
 });
