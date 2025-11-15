@@ -2,7 +2,7 @@
 // cursodetalhe.js - script completo com debug, fallback e telefone no formulário
 // ==========================
 
-const API_URL = "http://localhost:5000"; // muda para produção quando necessário
+const API_URL = "";
 const WHATSAPP_EMPRESA = "244937555618"; // número da empresa
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -10,33 +10,27 @@ document.addEventListener("DOMContentLoaded", () => {
     const cursoId = params.get("id");
 
     if (!cursoId) {
-        console.error("❌ Nenhum ID de curso na URL. Ex.: cursodetalhe.html?id=<mongo_id>");
-        alert("⚠️ Nenhum curso selecionado. Volta atrás e tenta 'Saiba Mais' num curso.");
+        console.error("❌ Nenhum ID de curso na URL...");
+        alert("⚠️ Nenhum curso selecionado...");
         return;
     }
 
-    console.log("➡️ Pedir dados do curso id:", cursoId);
     carregarDetalhesCurso(cursoId);
 });
 
 async function carregarDetalhesCurso(id) {
-    const url = `${API_URL}/api/cursos/${id}`;
+    const url = `/api/cursos/${id}`;
     try {
         const response = await fetch(url, { mode: "cors" });
-        if (!response.ok) {
-            const text = await response.text().catch(() => "<sem corpo>");
-            console.error("❌ Resposta inválida da API:", response.status, text);
-            alert(`Erro ao carregar curso (status ${response.status}). Ver consola.`);
-            return;
-        }
-
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const curso = await response.json();
         preencherEstrutura(curso);
     } catch (err) {
-        console.error("❌ Erro no fetch/carregamento:", err);
-        alert("Erro ao carregar curso. Ver console (F12) para mais detalhes.");
+        console.error("❌ Erro no fetch:", err);
+        alert("Erro ao carregar curso. Ver console.");
     }
 }
+
 
 function preencherEstrutura(curso) {
     if (!curso || typeof curso !== "object") return;
@@ -57,9 +51,11 @@ function preencherEstrutura(curso) {
     const bannerImg = document.querySelector(".treinamento-banner-image img");
     if (bannerImg && curso.imagem) {
         let src = String(curso.imagem).trim();
-        if (src.startsWith("http")) bannerImg.src = src;
-        else if (src.startsWith("/")) bannerImg.src = `${API_URL}${src}`;
-        else bannerImg.src = `${API_URL}/${src}`;
+        // Garante caminho absoluto para recursos locais
+        if (!src.startsWith("http") && !src.startsWith("/")) {
+            src = "/" + src;
+        }
+        bannerImg.src = src; // ✅ Sem API_URL
     }
 
     // ---------- Sobre o curso ----------
@@ -161,12 +157,11 @@ document.getElementById("formInscricao").addEventListener("submit", async (e) =>
         telefone: form.telefone.value,
         cursoId: form.cursoId.value
     };
-
     console.log("✉️ Dados de inscrição:", data);
 
     // 1️⃣ Envia pro backend
     try {
-        const res = await fetch(`${API_URL}/api/inscricoes`, {
+        const res = await fetch("/api/inscricoes", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(data)

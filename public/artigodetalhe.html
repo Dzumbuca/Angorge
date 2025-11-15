@@ -5,9 +5,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Artigo - ANGORGE LDA</title>
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="/style.css" />
 
-    <link rel="stylesheet" href="css/artigos.css">
+    <link rel="stylesheet" href="/css/artigos.csss">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
@@ -33,7 +33,7 @@
             </div>
         </div>
         <div class="artigo-banner-image">
-            <img src="Imagem/maos-escrevendo-em-um-caderno.jpg" alt="Pessoa escrevendo em caderno com café"
+            <img src="/Imagem/maos-escrevendo-em-um-caderno.jpg" alt="Pessoa escrevendo em caderno com café"
                 loading="lazy">
         </div>
     </section>
@@ -252,7 +252,7 @@
 
         async function carregarCategorias() {
             try {
-                const response = await fetch(`${API_URL}/api/artigos`);
+                const response = await fetch("/api/artigos");
                 const data = await response.json();
                 const artigos = data.artigos || [];
 
@@ -314,9 +314,9 @@
 
 
 
-    <script src="script.js"></script>
-    <script src="js/artigosdetalhes.js"></script>
-    <script src="js/navbar.js"></script>
+    <script src="/script.js"></script>
+    <script src="/js/artigosdetalhes.js"></script>
+    <script src="/js/navbar.js"></script>
 </body>
 
 </html>
