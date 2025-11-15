@@ -2,9 +2,9 @@
     "name": "meu-backend",
     "version": "1.0.0",
     "description": "Backend para gerir cursos, artigos e inscrições",
-    "main": "js/server.js",
+    "main": "server.js",
     "scripts": {
-        "start": "node js/server.js"
+        "start": "node server.js"
     },
     "keywords": [
         "express",
