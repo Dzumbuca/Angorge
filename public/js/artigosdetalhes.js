@@ -1,568 +1,620 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const artigoId = urlParams.get("id");
 
-let artigoIdGlobal = null;
+    if (document.getElementById("artigo-titulo")) {
+        if (artigoId) {
+            carregarDetalhesArtigo();
+            carregarComentarios(artigoId);
+            carregarListaArtigos(artigoId); // ← Nova linha
+        } else {
+            document.getElementById("artigo-titulo").textContent = "Erro: ID do artigo não especificado";
+        }
+    }
 
-document.addEventListener("DOMContentLoaded", async () => {
-    const params = new URLSearchParams(window.location.search);
-    // ✅ Remove qualquer '#' ou espaços do ID
-    const artigoId = params.get("id")?.replace("#", "").trim();
-    artigoIdGlobal = artigoId;
+    if (document.getElementById("categorias-lista")) {
+        carregarCategorias();
+    }
+});
+
+async function carregarDetalhesArtigo() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const artigoId = urlParams.get("id");
 
     if (!artigoId) {
-        mostrarNotificacao("❌ Artigo não encontrado", "erro");
+        document.getElementById("artigo-titulo").textContent = "Erro: ID do artigo não especificado";
         return;
     }
 
     try {
-        const res = await fetch(`http://localhost:5000/api/artigos/${artigoId}`);
-        const artigo = await res.json();
+        const response = await fetch(`/api/artigos/${artigoId}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-        document.querySelector(".artigo-titulo").textContent = artigo.titulo;
-        document.querySelector(".artigo-categoria").textContent = artigo.categoria || "Sem categoria";
-        document.querySelector(".artigo-meta strong").textContent = artigo.autor || "Anónimo";
+        const artigo = await response.json();
 
-        document.querySelector(".artigo-meta span:nth-child(5)").textContent = artigo.dataPublicacao
-            ? new Date(artigo.dataPublicacao).toLocaleDateString("pt-PT")
-            : "Sem data";
+        // Preenche metadados
+        document.getElementById("artigo-titulo").textContent = artigo.titulo || "Sem título";
+        document.getElementById("artigo-autor").textContent = artigo.autor || "Autor desconhecido";
+        document.getElementById("artigo-categoria").textContent = artigo.categoria || "Geral";
+        document.getElementById("artigo-categoria-meta").textContent = artigo.categoria || "Geral";
+        document.getElementById("artigo-data").textContent =
+            artigo.dataPublicacao
+                ? new Date(artigo.dataPublicacao).toLocaleDateString("pt-PT")
+                : "—";
 
-        if (artigo.imagem) {
-            const imagemSrc = artigo.imagem.startsWith("http")
-                ? artigo.imagem
-                : `http://localhost:5000${artigo.imagem}`;
-            document.querySelector(".artigo-banner-image img").src = imagemSrc;
-        } else {
-            document.querySelector(".artigo-banner-image img").src = "uploads/default.jpg";
+        // Preenche conteúdo
+        const conteudoEl = document.getElementById("artigo-conteudo");
+        if (conteudoEl) {
+            conteudoEl.innerHTML = artigo.descricao || "<p>Conteúdo não disponível.</p>";
         }
 
-        document.querySelector(".artigo-texto").innerHTML = artigo.descricao;
-
-        carregarComentarios(artigoId);
-        setTimeout(() => carregarNavegacao(artigoId), 100);
+        // ✅ Preenche a imagem do banner
+        const bannerImg = document.querySelector(".artigo-banner-image img");
+        if (bannerImg && artigo.imagem) {
+            let src = artigo.imagem.trim();
+            if (!src.startsWith("http") && !src.startsWith("/")) {
+                src = "/" + src;
+            }
+            bannerImg.src = src;
+        }
 
     } catch (error) {
-        console.error(error);
-        mostrarNotificacao("⚠️ Erro ao carregar o artigo", "erro");
+        console.error("Erro ao carregar artigo:", error);
+        document.getElementById("artigo-titulo").textContent = "Erro ao carregar artigo";
     }
-});
+}
+// Variável global para armazenar a lista de artigos ordenados
+let listaArtigosOrdenados = [];
+let indiceArtigoAtual = -1;
 
-
-// ============================
-// 🔹 Carregar navegação entre artigos
-// ============================
-async function carregarNavegacao(artigoIdAtual) {
+// Carrega todos os artigos e identifica o atual
+async function carregarListaArtigos(artigoIdAtual) {
     try {
-        const res = await fetch("http://localhost:5000/api/artigos");
+        const res = await fetch("/api/artigos?limit=100"); // ajuste se tiver muitos artigos
         const data = await res.json();
-
-        const artigos = Array.isArray(data) ? data : (data.artigos || []);
-        const publicados = artigos.filter(a => a.status === "Publicado");
-
-        // Normaliza IDs para comparação segura
-        publicados.forEach(a => {
-            a.idLimpo = a._id?.$oid || a._id?._id || a._id || String(a._id);
-        });
+        const artigos = data.artigos || [];
 
         // Ordena do mais recente para o mais antigo
-        publicados.sort((a, b) => new Date(b.dataPublicacao) - new Date(a.dataPublicacao));
+        artigos.sort((a, b) => {
+            const dataA = new Date(a.dataPublicacao || 0);
+            const dataB = new Date(b.dataPublicacao || 0);
+            return dataB - dataA;
+        });
 
-        // Remove caracteres inválidos do ID atual (como # ou espaços)
-        const idAtualLimpo = artigoIdAtual?.replace(/[^a-zA-Z0-9]/g, "") || "";
+        listaArtigosOrdenados = artigos;
+        indiceArtigoAtual = artigos.findIndex(a => a._id === artigoIdAtual);
 
-        // Encontra o índice do artigo atual
-        const indexAtual = publicados.findIndex(a => a.idLimpo === idAtualLimpo);
+        atualizarBotoesNavegacao();
+    } catch (err) {
+        console.error("Erro ao carregar lista de artigos:", err);
+    }
+}
 
-        if (indexAtual === -1) {
-            console.warn("⚠️ Artigo atual não encontrado entre os publicados.");
+// Atualiza os botões de navegação com base no índice atual
+function atualizarBotoesNavegacao() {
+    const btnAnterior = document.querySelector(".btn-anterior");
+    const btnProximo = document.querySelector(".btn-proximo");
+
+    if (indiceArtigoAtual === -1) {
+        btnAnterior.style.display = "none";
+        btnProximo.style.display = "none";
+        return;
+    }
+
+    // Post anterior (mais recente → índice menor)
+    if (indiceArtigoAtual > 0) {
+        const anterior = listaArtigosOrdenados[indiceArtigoAtual - 1];
+        btnAnterior.textContent = `← ${anterior.titulo}`;
+        btnAnterior.href = `#`; // vamos usar JS para navegar
+        btnAnterior.style.display = "inline-block";
+        btnAnterior.onclick = (e) => {
+            e.preventDefault();
+            indiceArtigoAtual--;
+            carregarArtigoPorIndice();
+        };
+    } else {
+        btnAnterior.style.display = "none";
+    }
+
+    // Próximo post (mais antigo → índice maior)
+    if (indiceArtigoAtual < listaArtigosOrdenados.length - 1) {
+        const proximo = listaArtigosOrdenados[indiceArtigoAtual + 1];
+        btnProximo.textContent = `${proximo.titulo} →`;
+        btnProximo.href = `#`;
+        btnProximo.style.display = "inline-block";
+        btnProximo.onclick = (e) => {
+            e.preventDefault();
+            indiceArtigoAtual++;
+            carregarArtigoPorIndice();
+        };
+    } else {
+        btnProximo.style.display = "none";
+    }
+}
+
+// Carrega o artigo com base no índice atual
+function carregarArtigoPorIndice() {
+    const artigo = listaArtigosOrdenados[indiceArtigoAtual];
+    if (!artigo) return;
+
+    // Atualiza a URL sem recarregar
+    const novaUrl = `artigodetalhe.html?id=${artigo._id}`;
+    history.pushState({ id: artigo._id }, "", novaUrl);
+
+    // Atualiza o conteúdo
+    document.getElementById("artigo-titulo").textContent = artigo.titulo || "Sem título";
+    document.getElementById("artigo-autor").textContent = artigo.autor || "Autor desconhecido";
+    document.getElementById("artigo-categoria").textContent = artigo.categoria || "Geral";
+    document.getElementById("artigo-categoria-meta").textContent = artigo.categoria || "Geral";
+    document.getElementById("artigo-data").textContent =
+        artigo.dataPublicacao
+            ? new Date(artigo.dataPublicacao).toLocaleDateString("pt-PT")
+            : "—";
+
+    const conteudoEl = document.getElementById("artigo-conteudo");
+    if (conteudoEl) {
+        conteudoEl.innerHTML = artigo.descricao || "<p>Conteúdo não disponível.</p>";
+    }
+
+    // Atualiza a imagem
+    const bannerImg = document.querySelector(".artigo-banner-image img");
+    if (bannerImg && artigo.imagem) {
+        let src = artigo.imagem.trim();
+        if (!src.startsWith("http") && !src.startsWith("/")) {
+            src = "/" + src;
+        }
+        bannerImg.src = src;
+    }
+
+    // Atualiza comentários
+    carregarComentarios(artigo._id);
+
+    // Atualiza os botões de navegação
+    atualizarBotoesNavegacao();
+}
+// Função para carregar categorias
+async function carregarCategorias() {
+    try {
+        const response = await fetch("/api/artigos");
+        const data = await response.json();
+        const artigos = data.artigos || [];
+
+        const categorias = [...new Set(
+            artigos.map(art => art.categoria).filter(cat => cat?.trim())
+        )].sort();
+
+        const lista = document.getElementById("categorias-lista");
+        if (!lista) return;
+
+        if (categorias.length === 0) {
+            lista.innerHTML = "<li><em>Nenhuma categoria disponível</em></li>";
             return;
         }
 
-        const anterior = publicados[indexAtual - 1];
-        const proximo = publicados[indexAtual + 1];
+        const nomeAmigavel = {
+            "gestao": "Gestão",
+            "financas": "Finanças",
+            "contabilidade": "Contabilidade",
+            "fiscalidade": "Fiscalidade",
+            "tecnologia": "Tecnologia",
+            "educacao": "Educação",
+            "marketing": "Marketing",
+            "outros": "Outros"
+        };
 
-        const btnAnterior = document.querySelector(".btn-anterior");
-        const btnProximo = document.querySelector(".btn-proximo");
-
-        if (anterior && btnAnterior) {
-            btnAnterior.href = `artigodetalhe.html?id=${encodeURIComponent(anterior.idLimpo)}`;
-            btnAnterior.textContent = `← ${anterior.titulo}`;
-            btnAnterior.style.display = "inline-block";
-        } else if (btnAnterior) {
-            btnAnterior.style.display = "none";
-        }
-
-        if (proximo && btnProximo) {
-            btnProximo.href = `artigodetalhe.html?id=${encodeURIComponent(proximo.idLimpo)}`;
-            btnProximo.textContent = `${proximo.titulo} →`;
-            btnProximo.style.display = "inline-block";
-        } else if (btnProximo) {
-            btnProximo.style.display = "none";
-        }
-
+        lista.innerHTML = categorias.map(cat => {
+            const total = artigos.filter(a => a.categoria === cat).length;
+            const nomeExibicao = nomeAmigavel[cat] || cat.charAt(0).toUpperCase() + cat.slice(1);
+            return `<li><span class="categoria-box">${nomeExibicao} <span>(${total})</span></span></li>`;
+        }).join("");
     } catch (error) {
-        console.error("Erro ao carregar navegação de artigos:", error);
-        mostrarNotificacao("⚠️ Erro ao carregar navegação", "erro");
+        console.error("Erro ao carregar categorias:", error);
+        const lista = document.getElementById("categorias-lista");
+        if (lista) {
+            lista.innerHTML = "<li><em>Erro ao carregar categorias</em></li>";
+        }
     }
 }
 
 
-// ============================
-// 🔹 Carregar comentários
-// ============================
-async function carregarComentarios(artigoId) {
-    const container = document.querySelector(".artigo-comentarios");
-    const listaExistente = container.querySelector(".lista-comentarios");
-    if (listaExistente) listaExistente.remove();
 
-    const lista = document.createElement("div");
-    lista.classList.add("lista-comentarios");
-    container.insertBefore(lista, container.querySelector(".comentario-form"));
+// ===== GOOGLE LOGIN (mantido separado) =====
+let orientacaoElement = null;
+
+function parseJwt(token) {
+    const base64Url = token.split('.')[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(c => {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+}
+
+function mostrarNotificacao(texto) {
+    let notif = document.createElement("div");
+    notif.className = "notificacao-login";
+    notif.textContent = texto;
+    notif.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: #28a745;
+        color: white;
+        padding: 12px 20px;
+        border-radius: 6px;
+        font-size: 14px;
+        font-weight: 500;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        z-index: 10000;
+        opacity: 0;
+        transform: translateY(-10px);
+        transition: opacity 0.3s, transform 0.3s;
+    `;
+    document.body.appendChild(notif);
+    setTimeout(() => notif.classList.add("visivel"), 10);
+    setTimeout(() => {
+        notif.style.opacity = "0";
+        notif.style.transform = "translateY(-10px)";
+        setTimeout(() => notif.remove(), 300);
+    }, 2500);
+}
+
+function handleCredentialResponse(response) {
+    const payload = parseJwt(response.credential);
+    const nome = payload.name;
+    const email = payload.email;
+
+    localStorage.setItem("user", nome);
+    localStorage.setItem("user_email", email);
+
+    const nomeInput = document.querySelector('input[placeholder="Nome"]');
+    const emailInput = document.querySelector('input[placeholder="E-mail"]');
+    if (nomeInput) {
+        nomeInput.value = nome;
+        nomeInput.readOnly = true;
+    }
+    if (emailInput) {
+        emailInput.value = email;
+        emailInput.readOnly = true;
+    }
+
+    const btn = document.getElementById("google-login-button");
+    if (btn) btn.style.display = "none";
+
+    if (orientacaoElement?.parentNode) {
+        orientacaoElement.parentNode.removeChild(orientacaoElement);
+    }
+
+    mostrarNotificacao(`Olá, ${nome}! Você está logado.`);
+}
+
+// Inicializa Google Login
+if (document.getElementById("google-login-button")) {
+    if (localStorage.getItem("user")) {
+        // Já está logado
+        const nome = localStorage.getItem("user");
+        const email = localStorage.getItem("user_email");
+
+        const nomeInput = document.querySelector('input[placeholder="Nome"]');
+        const emailInput = document.querySelector('input[placeholder="E-mail"]');
+        if (nomeInput && !nomeInput.value) nomeInput.value = nome;
+        if (emailInput && !emailInput.value) emailInput.value = email;
+        if (nomeInput) nomeInput.readOnly = true;
+        if (emailInput) emailInput.readOnly = true;
+
+        document.getElementById("google-login-button").style.display = "none";
+    } else {
+        // Mostra botão de login
+        orientacaoElement = document.createElement("p");
+        orientacaoElement.textContent = "Faça login para comentar";
+        orientacaoElement.style.marginBottom = "12px";
+        orientacaoElement.style.fontSize = "14px";
+        orientacaoElement.style.color = "#555";
+        document.getElementById("google-login-button").parentNode.insertBefore(orientacaoElement, document.getElementById("google-login-button"));
+
+        const checkGoogle = setInterval(() => {
+            if (typeof google !== "undefined") {
+                clearInterval(checkGoogle);
+                google.accounts.id.initialize({
+                    client_id: "244625094049-do6orhdmknse8q7168oft6hu23tfuibk.apps.googleusercontent.com",
+                    callback: handleCredentialResponse
+                });
+                google.accounts.id.renderButton(document.getElementById("google-login-button"), {
+                    theme: "outline",
+                    size: "large",
+                    text: "signin_with"
+                });
+            }
+        }, 100);
+    }
+}
+
+// Função para carregar comentários do artigo
+// ==========================================
+// Função para carregar comentários com like, responder e eliminar
+// ==========================================
+async function carregarComentarios(artigoId) {
+    const container = document.getElementById("lista-comentarios");
+    if (!container) return;
 
     try {
-        const res = await fetch(`http://localhost:5000/api/artigos/${artigoId}/comentarios`);
-        const comentarios = await res.json();
+        const response = await fetch(`/api/artigos/${artigoId}/comentarios`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-        const utilizadorAtual = localStorage.getItem("user");
-        const ehAdmin = localStorage.getItem("admin") === "true";
+        const comentarios = await response.json();
+        const currentUser = localStorage.getItem("user") || "Anónimo";
 
-        if (!comentarios.length) {
-            lista.innerHTML = `<p class="sem-comentarios">Nenhum comentário ainda. Seja o primeiro a comentar!</p>`;
+        if (comentarios.length === 0) {
+            container.innerHTML = "<p>Nenhum comentário ainda. Seja o primeiro!</p>";
             return;
         }
 
-        comentarios.forEach(c => {
-            const div = document.createElement("div");
-            div.classList.add("comentario");
-            div.setAttribute("data-comment-id", c._id); // 👈 ADICIONE ESTA LINHA
+        container.innerHTML = comentarios.map(com => {
+            const respostas = com.respostas || [];
+            const isAdmin = ["Joaquim", "Admin", "ANGORGE", "Equipe ANGORGE"].includes(currentUser);
+            const podeApagar = isAdmin || (com.autor?.trim().toLowerCase() === currentUser.trim().toLowerCase());
 
-            // 👇 Formata data amigável
-            const formatarData = (data) => {
-                const d = new Date(data);
-                const hoje = new Date();
-                if (d.toDateString() === hoje.toDateString()) return `Hoje • ${d.getHours()}:${d.getMinutes().toString().padStart(2, '0')}`;
-                return d.toLocaleDateString("pt-PT") + ` • ${d.getHours()}:${d.getMinutes().toString().padStart(2, '0')}`;
-            };
+            return `
+        <div class="comentario-item" data-id="${com._id}" style="border-bottom: 1px solid #eee; padding: 16px 0;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+            <strong>${com.autor || 'Anónimo'}</strong>
+            <span style="font-size: 13px; color: #666;">${formatarData(com.data)}</span>
+          </div>
+          <p style="margin: 8px 0;">${com.texto}</p>
 
-            // 👇 Cabeçalho e texto do comentário
-            div.innerHTML = `
-                <div class="comentario-cabecalho">
-                    <strong>${c.autor || "Anónimo"}</strong>
-                    <span class="comentario-data">${formatarData(c.data)}</span>
-                </div>
-                <p class="comentario-texto">${c.texto}</p>
-            `;
+          <!-- Ações -->
+          <div class="comentario-acoes" style="margin-top: 10px; display: flex; gap: 12px; align-items: center;">
+            <button class="btn-like" 
+                    data-id="${com._id}" 
+                    data-liked="${com.likedBy.includes(currentUser) ? 'true' : 'false'}"
+                    style="background: none; border: none; color: ${com.likedBy.includes(currentUser) ? '#0d6efd' : '#6c757d'}; cursor: pointer; font-size: 14px; display: flex; align-items: center; gap: 4px;">
+              <i class="far fa-thumbs-up"></i>
+              <span>${com.likes || 0}</span>
+            </button>
 
-            // 👇 Contêiner de ações (like, responder, apagar)
-            const acoes = document.createElement("div");
-            acoes.classList.add("comentario-acoes");
+            <button class="btn-responder" 
+                    data-id="${com._id}"
+                    style="background: none; border: none; color: #28a745; cursor: pointer; font-size: 14px;">
+              Responder
+            </button>
 
-            // 👇 Botão de like
-            const likeBtn = document.createElement("button");
-            likeBtn.className = "btn-like";
-            likeBtn.innerHTML = `<i class="far fa-thumbs-up"></i> <span>${c.likes || 0}</span>`;
-            likeBtn.dataset.commentId = c._id;
+            ${podeApagar ? `
+              <button class="btn-eliminar" 
+                      data-id="${com._id}"
+                      style="background: none; border: none; color: #d9534f; cursor: pointer; font-size: 14px;">
+                Eliminar
+              </button>
+            ` : ''}
+          </div>
 
-            const likedComments = JSON.parse(localStorage.getItem('likedComments') || '[]');
-            if (likedComments.includes(c._id)) {
-                likeBtn.innerHTML = `<i class="fas fa-thumbs-up"></i> <span>${c.likes || 0}</span>`;
-                likeBtn.classList.add("favorito");
-            }
-            likeBtn.addEventListener("click", () => darLike(c._id, likeBtn));
-            acoes.appendChild(likeBtn);
+          <!-- Respostas -->
+          ${respostas.length > 0 ? `
+            <div class="respostas" style="margin-top: 12px; padding-left: 20px; border-left: 2px solid #f0f0f0;">
+              ${respostas.map(r => {
+                const rIsAdmin = ["Joaquim", "Admin", "ANGORGE", "Equipe ANGORGE"].includes(r.autor);
+                const rPodeApagar = isAdmin || rIsAdmin;
+                return `
+                  <div class="resposta-item" style="margin: 8px 0; padding: 8px 0;">
+                    <div style="display: flex; justify-content: space-between; font-size: 13px; color: #555;">
+                      <strong>${r.autor || 'Anónimo'}</strong>
+                      <span>${formatarData(r.data)}</span>
+                    </div>
+                    <p>${r.texto}</p>
+                    ${rPodeApagar ? `
+                      <button class="btn-eliminar-resposta" 
+                              data-comment-id="${com._id}" 
+                              data-reply-id="${r._id}"
+                              style="background: none; border: none; color: #d9534f; font-size: 12px; margin-top: 4px;">
+                        Eliminar resposta
+                      </button>
+                    ` : ''}
+                  </div>
+                `;
+            }).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `;
+        }).join('');
 
-            // 👇 Botão Responder
-            const btnResponder = document.createElement("button");
-            btnResponder.textContent = "Responder";
-            btnResponder.classList.add("btn-responder");
-            acoes.appendChild(btnResponder);
-
-            // 👇 Botão Apagar (só se for autor ou admin)
-            const nomesIguais = utilizadorAtual &&
-                c.autor?.trim().toLowerCase() === utilizadorAtual.trim().toLowerCase();
-
-            if (nomesIguais || ehAdmin) {
-                const btnApagar = document.createElement("button");
-                btnApagar.textContent = "Apagar";
-                btnApagar.classList.add("btn-apagar");
-                btnApagar.addEventListener("click", () => apagarComentario(artigoId, c._id));
-                acoes.appendChild(btnApagar);
-            }
-
-            div.appendChild(acoes);
-
-            // 👇 Renderiza respostas (se houver)
-            // 👇 Renderiza respostas (se houver)
-            if (c.respostas && c.respostas.length > 0) {
-                const respostasDiv = document.createElement("div");
-                respostasDiv.classList.add("respostas-container");
-
-                c.respostas.forEach(r => {
-                    const respDiv = document.createElement("div");
-                    respDiv.classList.add("resposta");
-                    if (r.isAdm) respDiv.classList.add("resposta-adm");
-
-                    // Cabeçalho da resposta
-                    const cabecalhoResp = document.createElement("div");
-                    cabecalhoResp.style.display = "flex";
-                    cabecalhoResp.style.justifyContent = "space-between";
-                    cabecalhoResp.style.alignItems = "center";
-                    cabecalhoResp.innerHTML = `
-            <strong>${r.autor || "Anónimo"}</strong>
-            <small>${formatarData(r.data)}</small>
-        `;
-
-                    // Texto da resposta
-                    const textoResp = document.createElement("p");
-                    textoResp.style.margin = "4px 0";
-                    textoResp.textContent = r.texto;
-
-                    respDiv.appendChild(cabecalhoResp);
-                    respDiv.appendChild(textoResp);
-
-                    // 👇 Botão Apagar para respostas (só se for autor ou admin)
-                    const nomesIguaisResp = utilizadorAtual &&
-                        r.autor?.trim().toLowerCase() === utilizadorAtual.trim().toLowerCase();
-
-                    if (nomesIguaisResp || ehAdmin) {
-                        const acoesResp = document.createElement("div");
-                        acoesResp.style.marginTop = "6px";
-                        acoesResp.style.display = "flex";
-                        acoesResp.style.justifyContent = "flex-end";
-
-                        const btnApagarResp = document.createElement("button");
-                        btnApagarResp.textContent = "Apagar";
-                        btnApagarResp.classList.add("btn-apagar");
-                        btnApagarResp.addEventListener("click", () => apagarResposta(artigoId, c._id, r._id));
-                        acoesResp.appendChild(btnApagarResp);
-
-                        respDiv.appendChild(acoesResp);
-                    }
-
-                    respostasDiv.appendChild(respDiv);
-                });
-                div.appendChild(respostasDiv);
-            }
-
-
-            // 👇 Formulário de resposta (só se estiver logado) - ESTILO YOUTUBE
-            if (utilizadorAtual) {
-                const formResp = document.createElement("form");
-                formResp.className = "form-resposta";
-                formResp.style.display = "none"; // começa escondido
-
-                // Cria o campo de texto
-                const textarea = document.createElement("textarea");
-                textarea.placeholder = "Escreva uma resposta...";
-                textarea.rows = 1;
-                textarea.required = true;
-
-                // Cria o botão
-                const btnEnviarResposta = document.createElement("button");
-                btnEnviarResposta.type = "submit";
-                btnEnviarResposta.className = "btn-enviar-resposta";
-                btnEnviarResposta.textContent = "Responder";
-
-                // Adiciona os elementos ao formulário
-                formResp.appendChild(textarea);
-                formResp.appendChild(btnEnviarResposta);
-
-                // Evento de envio
-                formResp.addEventListener("submit", (e) => {
-                    e.preventDefault();
-                    const texto = textarea.value.trim();
-                    if (texto) {
-                        enviarResposta(c._id, texto, utilizadorAtual, ehAdmin);
-                        textarea.value = ""; // limpa após enviar
-                        formResp.style.display = "none"; // esconde formulário
-                    }
-                });
-
-                // Ativa o formulário ao clicar em "Responder"
-                btnResponder.addEventListener("click", (e) => {
-                    e.stopPropagation();
-                    formResp.style.display = formResp.style.display === "none" ? "flex" : "none";
-                    if (formResp.style.display === "flex") {
-                        textarea.focus();
-                    }
-                });
-
-                div.appendChild(formResp);
-            }
-
-            // 👇 Separador visual
-            const hr = document.createElement("hr");
-            div.appendChild(hr);
-
-            lista.appendChild(div);
+        // ====== ADICIONAR EVENTOS ======
+        // Like
+        container.querySelectorAll(".btn-like").forEach(btn => {
+            btn.addEventListener("click", () => alternarLike(btn, artigoId));
         });
 
-        destacarComentarioPorHash();
+        // Responder (abre um textarea abaixo do comentário)
+        container.querySelectorAll(".btn-responder").forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                const commentId = btn.dataset.id;
+                const commentEl = btn.closest(".comentario-item");
+                if (commentEl.querySelector(".resposta-form")) return; // já aberto
+
+                const form = document.createElement("div");
+                form.className = "resposta-form";
+                form.innerHTML = `
+          <textarea placeholder="Escreva sua resposta..." rows="3" style="width: 100%; margin: 8px 0; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
+          <button type="button" class="btn-enviar-resposta" 
+                  data-comment-id="${commentId}" 
+                  style="background: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-right: 8px;">
+            Enviar
+          </button>
+          <button type="button" class="btn-cancelar-resposta" 
+                  style="background: #6c757d; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">
+            Cancelar
+          </button>
+        `;
+                commentEl.appendChild(form);
+
+                // Eventos do formulário
+                form.querySelector(".btn-enviar-resposta").addEventListener("click", () => enviarResposta(commentId, form));
+                form.querySelector(".btn-cancelar-resposta").addEventListener("click", () => form.remove());
+            });
+        });
+
+        // Eliminar comentário
+        container.querySelectorAll(".btn-eliminar").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                if (!confirm("Tem certeza que deseja eliminar este comentário?")) return;
+                const commentId = btn.dataset.id;
+                await apagarComentario(commentId, artigoId);
+            });
+        });
+
+        // Eliminar resposta
+        container.querySelectorAll(".btn-eliminar-resposta").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                if (!confirm("Eliminar esta resposta?")) return;
+                const commentId = btn.dataset.commentId;
+                const replyId = btn.dataset.replyId;
+                await apagarResposta(commentId, replyId, artigoId);
+            });
+        });
+
     } catch (error) {
         console.error("Erro ao carregar comentários:", error);
-        lista.innerHTML = `<p class="erro-comentarios">⚠️ Erro ao carregar comentários.</p>`;
+        container.innerHTML = "<p>Erro ao carregar comentários.</p>";
     }
 }
 
+// ==========================================
+// Funções auxiliares
+// ==========================================
 
+function formatarData(data) {
+    const d = new Date(data);
+    const hoje = new Date();
+    if (d.toDateString() === hoje.toDateString()) {
+        return `Hoje • ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+    }
+    return d.toLocaleDateString('pt-PT') + ` • ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+}
 
-// ============================
-// 🔹 Enviar comentário
-// ============================
-document.querySelector(".comentario-form").addEventListener("submit", async (e) => {
-    e.preventDefault();
+async function alternarLike(btn, artigoId) {
+    const commentId = btn.dataset.id;
+    const isLiked = btn.dataset.liked === "true";
+    const currentUser = localStorage.getItem("user") || "Anónimo";
 
-    const params = new URLSearchParams(window.location.search);
-    const artigoId = params.get("id")?.replace("#", "").trim();
-
-    const texto = e.target.querySelector("textarea").value.trim();
-    const autor = e.target.querySelector("input[type=text]").value.trim();
-
-    if (!texto) {
-        mostrarNotificacao("⚠️ O comentário não pode estar vazio", "erro");
+    if (!currentUser || currentUser === "Anónimo") {
+        alert("Faça login para curtir comentários.");
         return;
     }
-
-    try {
-        const res = await fetch(`http://localhost:5000/api/artigos/${artigoId}/comentarios`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ texto, autor })
-        });
-
-        const data = await res.json();
-        if (res.ok) {
-            mostrarNotificacao("✅ Comentário enviado com sucesso!", "sucesso");
-            e.target.reset();
-            carregarComentarios(artigoId);
-        } else {
-            mostrarNotificacao("⚠️ " + (data.error || data.message), "erro");
-        }
-    } catch (error) {
-        console.error(error);
-        mostrarNotificacao("❌ Erro ao enviar comentário", "erro");
-    }
-});
-
-
-// ============================
-// 🔹 Apagar comentário - VERSÃO CORRIGIDA
-// ============================
-async function apagarComentario(artigoId, comentarioId) {
-    const userName = localStorage.getItem("user");
-    const ehAdmin = localStorage.getItem("admin") === "true";
-
-    if (!userName && !ehAdmin) {
-        mostrarNotificacao("⚠️ Precisas de estar logado para apagar comentários.", "erro");
-        return;
-    }
-
-    try {
-        // ✅ envia o autor e isAdmin como query params
-        const url = new URL(`http://localhost:5000/api/comentarios/${comentarioId}`);
-        url.searchParams.append("autor", ehAdmin ? "admin" : userName);
-        url.searchParams.append("isAdmin", ehAdmin ? "true" : "false");
-
-        console.log("🔸 A enviar pedido DELETE para:", url.toString());
-
-        const res = await fetch(url.toString(), { method: "DELETE" });
-        const data = await res.json();
-
-        console.log("Resposta do servidor:", res.status, data);
-
-        if (res.ok) {
-            mostrarNotificacao(data.message || "✅ Comentário apagado com sucesso!", "sucesso");
-
-            // espera 500ms antes de recarregar, para dar tempo de ver a notificação
-            setTimeout(() => carregarComentarios(artigoId), 500);
-        } else {
-            mostrarNotificacao(data.error || "⚠️ Erro ao apagar comentário.", "erro");
-        }
-    } catch (err) {
-        console.error("Erro ao apagar comentário:", err);
-        mostrarNotificacao("❌ Falha na ligação ao servidor.", "erro");
-    }
-}
-
-// ============================
-// 🔹 Sistema de Notificação
-// ============================
-function mostrarNotificacao(mensagem, tipo = "info") {
-    let notificacao = document.createElement("div");
-    notificacao.className = `notificacao ${tipo}`;
-    notificacao.textContent = mensagem;
-
-    document.body.appendChild(notificacao);
-
-    setTimeout(() => notificacao.classList.add("visivel"), 50);
-    setTimeout(() => {
-        notificacao.classList.remove("visivel");
-        setTimeout(() => notificacao.remove(), 300);
-    }, 3000);
-}
-
-
-// 👍👎 Alternar like/deslike
-async function darLike(rawCommentId, button) {
-    // Normaliza o id (garante string)
-    const commentId = String(rawCommentId);
-    const nomeDoUtilizador = localStorage.getItem("user") || "Anónimo"; // ✅ corrigido
-
-    // Estado visual / segurança
-    button.disabled = true;
-
-    // Garante array de strings
-    const likedComments = JSON.parse(localStorage.getItem('likedComments') || '[]').map(String);
-    const jaDeuCurtida = likedComments.includes(commentId);
 
     try {
         let res;
-        if (jaDeuCurtida) {
-            // REMOVER LIKE
-            res = await fetch(`http://localhost:5000/api/comentarios/${commentId}/like`, {
+        if (isLiked) {
+            res = await fetch(`/api/comentarios/${commentId}/like`, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ autor: nomeDoUtilizador }) // 👈 obrigatório
+                body: JSON.stringify({ autor: currentUser })
             });
         } else {
-            // DAR LIKE
-            res = await fetch(`http://localhost:5000/api/comentarios/${commentId}/like`, {
+            res = await fetch(`/api/comentarios/${commentId}/like`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ autor: nomeDoUtilizador }) // 👈 obrigatório
+                body: JSON.stringify({ autor: currentUser })
             });
-
         }
 
-        // tenta analisar JSON (alguns endpoints retornam vazio)
-        let data;
-        try {
-            data = await res.json();
-        } catch (e) {
-            data = {};
-        }
-
-        // Se a resposta não for ok, mostra mensagem e sai sem alterar localStorage/UI
-        if (!res.ok) {
-            console.error("Resposta do servidor:", res.status, data);
-            alert("❌ Falha ao alterar like: " + (data.error || data.message || "Erro no servidor"));
-            return;
-        }
-
-        // Atualiza contagem no botão (usa resposta do servidor se existir)
-        const countSpan = button.querySelector('span');
-        const icon = button.querySelector('i');
-
-        if (countSpan) {
-            if (typeof data.likes === 'number') {
-                countSpan.textContent = data.likes;
-            } else {
-                // fallback: ajusta localmente
-                const atual = parseInt(countSpan.textContent || "0", 10);
-                countSpan.textContent = jaDeuCurtida ? Math.max(0, atual - 1) : atual + 1;
-            }
-        }
-
-        // Atualiza localStorage e ícone
-        let novoLiked;
-        if (jaDeuCurtida) {
-            novoLiked = likedComments.filter(id => id !== commentId);
-            if (icon) icon.className = "far fa-thumbs-up";
-            button.style.color = "";
+        if (res.ok) {
+            const data = await res.json();
+            btn.dataset.liked = (!isLiked).toString();
+            btn.style.color = !isLiked ? "#0d6efd" : "#6c757d";
+            btn.innerHTML = `<i class="${!isLiked ? 'fas' : 'far'} fa-thumbs-up"></i> <span>${data.likes}</span>`;
+            // Atualiza visualmente sem recarregar
         } else {
-            novoLiked = [...likedComments, commentId];
-            if (icon) icon.className = "fas fa-thumbs-up";
-            button.style.color = "#0d6efd";
+            alert("Erro ao atualizar like.");
         }
-        localStorage.setItem('likedComments', JSON.stringify(novoLiked));
-
-        // pequeno feedback visual
-        setTimeout(() => { button.disabled = false; }, 300);
-
     } catch (err) {
         console.error("Erro ao alternar like:", err);
-        alert("❌ Falha na ligação ao servidor.");
-        button.disabled = false;
+        alert("Falha na operação.");
     }
 }
 
+async function enviarResposta(commentId, formEl) {
+    const texto = formEl.querySelector("textarea").value.trim();
+    const currentUser = localStorage.getItem("user") || "Anónimo";
 
-// 💬 Enviar resposta (sem isAdm!)
-async function enviarResposta(commentId, texto, autor, isAdm = false) {
-    try {
-        const res = await fetch(`http://localhost:5000/api/comentarios/${commentId}/respostas`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ autor, texto, isAdm }) // ✅ agora envia corretamente
-        });
-        if (res.ok) {
-            carregarComentarios(artigoIdGlobal);
-        } else {
-            alert("Erro ao enviar resposta");
-        }
-    } catch (err) {
-        alert("Falha na conexão");
+    if (!texto) {
+        alert("Escreva algo antes de enviar.");
+        return;
     }
-}
 
-// ============================
-// 🔹 Apagar resposta
-// ============================
-async function apagarResposta(artigoId, comentarioId, respostaId) {
-    // Normaliza os IDs (garante string)
-    const comentarioIdStr = comentarioId?.$oid || comentarioId?._id || comentarioId || String(comentarioId);
-    const respostaIdStr = respostaId?.$oid || respostaId?._id || respostaId || String(respostaId);
-
-    const userName = localStorage.getItem("user");
-    const ehAdmin = localStorage.getItem("admin") === "true";
-
-    if (!userName && !ehAdmin) {
-        mostrarNotificacao("⚠️ Precisas de estar logado para apagar respostas.", "erro");
+    if (!currentUser || currentUser === "Anónimo") {
+        alert("Faça login para comentar.");
         return;
     }
 
     try {
-        const url = new URL(`http://localhost:5000/api/comentarios/${comentarioIdStr}/respostas/${respostaIdStr}`);
-        url.searchParams.append("autor", ehAdmin ? "admin" : userName);
-        url.searchParams.append("isAdmin", ehAdmin ? "true" : "false");
-
-        console.log("🔹 Apagando resposta:", url.toString()); // 👈 para debug
-
-        const res = await fetch(url.toString(), { method: "DELETE" });
-        const data = await res.json();
+        const res = await fetch(`/api/comentarios/${commentId}/respostas`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ autor: currentUser, texto })
+        });
 
         if (res.ok) {
-            mostrarNotificacao("✅ Resposta apagada com sucesso!", "sucesso");
-            setTimeout(() => carregarComentarios(artigoId), 500);
+            formEl.remove();
+            const artigoId = new URLSearchParams(window.location.search).get("id");
+            await carregarComentarios(artigoId); // recarrega
         } else {
-            mostrarNotificacao(data.error || "⚠️ Erro ao apagar resposta.", "erro");
+            alert("Erro ao enviar resposta.");
+        }
+    } catch (err) {
+        console.error("Erro ao enviar resposta:", err);
+        alert("Falha na operação.");
+    }
+}
+
+async function apagarComentario(commentId, artigoId) {
+    const currentUser = localStorage.getItem("user") || "Anónimo";
+    const isAdmin = ["Joaquim", "Admin", "ANGORGE", "Equipe ANGORGE"].includes(currentUser);
+
+    try {
+        const url = new URL(`/api/comentarios/${commentId}`, window.location.origin);
+        url.searchParams.append("autor", currentUser);
+        url.searchParams.append("isAdmin", isAdmin ? "true" : "false");
+
+        const res = await fetch(url, { method: "DELETE" });
+        if (res.ok) {
+            await carregarComentarios(artigoId);
+        } else {
+            const data = await res.json();
+            alert(data.error || "Erro ao apagar comentário.");
+        }
+    } catch (err) {
+        console.error("Erro ao apagar comentário:", err);
+        alert("Falha na ligação ao servidor.");
+    }
+}
+
+async function apagarResposta(commentId, replyId, artigoId) {
+    const currentUser = localStorage.getItem("user") || "Anónimo";
+    const isAdmin = ["Joaquim", "Admin", "ANGORGE", "Equipe ANGORGE"].includes(currentUser);
+
+    try {
+        const url = new URL(`/api/comentarios/${commentId}/respostas/${replyId}`, window.location.origin);
+        url.searchParams.append("autor", currentUser);
+        url.searchParams.append("isAdmin", isAdmin ? "true" : "false");
+
+        const res = await fetch(url, { method: "DELETE" });
+        if (res.ok) {
+            await carregarComentarios(artigoId);
+        } else {
+            alert("Erro ao apagar resposta.");
         }
     } catch (err) {
         console.error("Erro ao apagar resposta:", err);
-        mostrarNotificacao("❌ Falha na ligação ao servidor.", "erro");
+        alert("Falha na ligação ao servidor.");
     }
 }
 
-
-// Destaca e rola até o comentário ao carregar a página
-function destacarComentarioPorHash() {
-    const hash = window.location.hash; // ex: #comentario-672a1b3c4d5e6f7g8h9i0j1k
-    if (hash.startsWith("#comentario-")) {
-        const comentarioId = hash.replace("#comentario-", "");
-        const el = document.querySelector(`[data-comment-id="${comentarioId}"]`);
-        if (el) {
-            // Destaque visual
-            el.style.backgroundColor = "#fff9db";
-            el.style.transition = "background-color 0.3s";
-            // Rolar suavemente
-            el.scrollIntoView({ behavior: "smooth", block: "center" });
-            // Remover destaque após 3s
-            setTimeout(() => {
-                el.style.backgroundColor = "";
-            }, 3000);
+window.addEventListener("popstate", (e) => {
+    const id = new URLSearchParams(window.location.search).get("id");
+    if (id) {
+        const idx = listaArtigosOrdenados.findIndex(a => a._id === id);
+        if (idx !== -1) {
+            indiceArtigoAtual = idx;
+            carregarArtigoPorIndice();
         }
     }
-}
-
-// Chame isso APÓS carregar os comentários
-// Dentro da função carregarComentarios(), no final:
-// destacarComentarioPorHash();
-
-
+});
