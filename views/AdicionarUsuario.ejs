@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adicionar Novo Usuário - Área de Administração</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/dashbord.css">
+    <link rel="stylesheet" href="/css/novousuario.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="meu-logo">
+                <a href="/" target="_blank">
+                    <img src="/Icone/Ativo 1 2.png" alt="ANGORGE LDA">
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
+                <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+                <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
+                <a href="/admin/usuarios" class="nav-item active"><i class="fas fa-users"></i></a>
+                <a href="/logout" class="nav-item"><i class="fas fa-sign-out-alt"></i></a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div class="header-text">
+                    <h1>Adicionar Novo Usuário</h1>
+                    <p>Preencha os campos abaixo para criar um novo usuário no sistema.</p>
+                </div>
+                <div class="user-header">
+                    <i class="fas fa-bell"></i>
+                    <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Foto de Perfil do Admin">
+                    <span>
+                        <%= admin.nome %>
+                    </span>
+                </div>
+            </header>
+
+            <div id="toast-notification" style="
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 12px 20px;
+                border-radius: 6px;
+                color: white;
+                font-weight: bold;
+                z-index: 1000;
+                opacity: 0;
+                transform: translateY(-20px);
+                transition: opacity 0.3s, transform 0.3s;
+            "></div>
+
+            <div class="form-wrapper">
+                <form id="user-form">
+                    <div class="current-image" id="upload-container">
+                        <img id="previewImg"
+                            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlMGUwZTAiLz4gIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjBweCIgZmlsbD0iIzc1NzU3NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hYW50LWJhc2VsaW5lPSJtaWRkbGUiPlNlbSBGb3RvPC90ZXh0Pjwvc3ZnPg=="
+                            alt="Foto de Perfil">
+                        <button type="button" class="btn-change"><i class="fas fa-camera"></i></button>
+
+                        <input type="file" id="fotoPerfil" accept="image/*" hidden>
+
+                        <div class="upload-area" id="upload-area-hidden">
+                            <p>Arraste ou clique para enviar imagem</p>
+                            <small>Formatos: JPG, PNG, WEBP | Tamanho: 300x300px</small>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nome">Nome Completo</label>
+                            <input type="text" id="nome" placeholder="Ex: João Silva" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="perfil">Perfil / Cargo</label>
+                            <select id="perfil" required>
+                                <option value="">Selecione um perfil</option>
+                                <option value="administrador">Administrador</option>
+                                <option value="editor">Editor</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="senha">Senha</label>
+                        <input type="password" id="senha" placeholder="Digite uma senha segura" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirmarSenha">Confirmar Senha</label>
+                        <input type="password" id="confirmarSenha" placeholder="Repita a senha" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Status</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="status" value="Ativo" checked> Ativo</label>
+                            <label><input type="radio" name="status" value="Inativo"> Inativo</label>
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button type="button" class="btn-save">Criar Usuário</button>
+                        <button type="button" class="btn-cancel">Cancelar</button>
+                    </div>
+                </form>
+            </div>
+        </main>
+    </div>
+    <script>
+        // Função para notificações suaves
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast-notification');
+            if (!toast) return;
+
+            let bgColor = '#17a2b8'; // Padrão Info
+            let textColor = 'white';
+
+            if (type === 'success') {
+                bgColor = '#0a6d0a'; // Verde escuro
+            } else if (type === 'error') {
+                bgColor = '#dc3545'; // Vermelho forte
+            } else if (type === 'info') {
+                bgColor = '#007698'; // Azul primário
+            }
+
+            toast.textContent = message;
+            toast.style.backgroundColor = bgColor;
+            toast.style.color = textColor;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-20px)';
+            }, 2500);
+        }
+
+        // --- Lógica de Upload de Imagem e Drag/Drop (Mantida) ---
+        const previewImg = document.getElementById("previewImg");
+        const fileInput = document.getElementById("fotoPerfil");
+        const btnChange = document.querySelector(".btn-change");
+        const uploadContainer = document.getElementById("upload-container");
+        const uploadAreaHidden = document.getElementById("upload-area-hidden");
+
+        // 1. Abrir seletor ao clicar no botão de alterar
+        btnChange.addEventListener("click", () => fileInput.click());
+
+        // 2. Pré-visualizar imagem (selecionada)
+        fileInput.addEventListener("change", e => {
+            if (e.target.files[0]) {
+                previewImg.src = URL.createObjectURL(e.target.files[0]);
+            }
+        });
+
+        // 3. Drag and Drop
+        uploadContainer.addEventListener("dragover", e => {
+            e.preventDefault();
+            uploadContainer.style.boxShadow = "0 0 0 4px #fff, 0 0 0 5px #007698";
+            uploadAreaHidden.style.display = 'flex';
+            previewImg.style.opacity = 0.5;
+        });
+
+        uploadContainer.addEventListener("dragleave", () => {
+            uploadContainer.style.boxShadow = "0 0 0 4px #fff, 0 0 0 5px #ddd";
+            uploadAreaHidden.style.display = 'none';
+            previewImg.style.opacity = 1;
+        });
+
+        uploadContainer.addEventListener("drop", e => {
+            e.preventDefault();
+            uploadContainer.style.boxShadow = "0 0 0 4px #fff, 0 0 0 5px #ddd";
+            uploadAreaHidden.style.display = 'none';
+            previewImg.style.opacity = 1;
+
+            if (e.dataTransfer.files[0]) {
+                const file = e.dataTransfer.files[0];
+                previewImg.src = URL.createObjectURL(file);
+                fileInput.files = e.dataTransfer.files; // Define os ficheiros no input escondido
+            }
+        });
+
+        // 4. Lógica de Colar Imagem
+        document.addEventListener("paste", e => {
+            const items = e.clipboardData?.items;
+            if (items) {
+                for (let i = 0; i < items.length; i++) {
+                    if (items[i].type.includes("image")) {
+                        const file = items[i].getAsFile();
+                        if (file) {
+                            previewImg.src = URL.createObjectURL(file);
+                            const dt = new DataTransfer();
+                            dt.items.add(file);
+                            fileInput.files = dt.files;
+                        }
+                        break;
+                    }
+                }
+            }
+        });
+
+        // --- Lógica de Validação e Envio ---
+        function limparErros() {
+            document.querySelectorAll(".form-group").forEach(group => {
+                group.classList.remove("erro");
+                const msg = group.querySelector(".msg-erro");
+                if (msg) msg.remove();
+            });
+        }
+
+        function mostrarErro(campo, mensagem) {
+            const formGroup = campo.closest(".form-group");
+            formGroup.classList.add("erro");
+
+            if (!formGroup.querySelector(".msg-erro")) {
+                const span = document.createElement("span");
+                span.classList.add("msg-erro");
+                span.textContent = mensagem;
+                formGroup.appendChild(span);
+            }
+        }
+
+        // Botão de criar usuário
+        document.querySelector(".btn-save").addEventListener("click", async e => {
+            e.preventDefault();
+            limparErros();
+
+            const nome = document.getElementById("nome");
+            const perfil = document.getElementById("perfil");
+            const senha = document.getElementById("senha");
+            const confirmarSenha = document.getElementById("confirmarSenha");
+            const status = document.querySelector("input[name='status']:checked").value;
+
+            let valid = true;
+
+            // Validação: Nome (Obrigatório)
+            if (!nome.value.trim()) {
+                mostrarErro(nome, "Nome é obrigatório");
+                valid = false;
+            }
+
+            // ✅ Validação: Perfil (Obrigatório) - VERIFICA SE NÃO É A OPÇÃO PADRÃO VAZIA
+            if (perfil.value === "" || perfil.value === null) {
+                mostrarErro(perfil, "Perfil é obrigatório");
+                valid = false;
+            }
+
+            // Validação: Senha (Obrigatório)
+            if (!senha.value) {
+                mostrarErro(senha, "Senha é obrigatória");
+                valid = false;
+            }
+
+            // Validação: Senha mínima
+            if (senha.value && senha.value.length < 6) {
+                mostrarErro(senha, "Senha deve ter pelo menos 6 caracteres");
+                valid = false;
+            }
+
+            // Validação: Confirmação de Senha
+            if (senha.value !== confirmarSenha.value) {
+                mostrarErro(confirmarSenha, "Senhas não coincidem");
+                valid = false;
+            }
+
+            if (!valid) {
+                showToast("Por favor, corrija os erros no formulário.", "error");
+                return;
+            }
+
+            // --- ENVIANDO DADOS REAIS E IMAGEM VIA FormData ---
+            const formData = new FormData();
+            formData.append("nome", nome.value.trim());
+            formData.append("perfil", perfil.value.trim());
+            formData.append("senha", senha.value);
+            formData.append("status", status);
+
+            // Adiciona a imagem se houver ficheiro selecionado
+            if (fileInput.files.length > 0) {
+                formData.append("fotoPerfil", fileInput.files[0]);
+            }
+
+            try {
+                // Requisição POST para o seu endpoint de criação de usuário
+                const res = await fetch("/api/usuarios", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await res.json();
+
+                if (res.ok) { // Status 200-299
+                    showToast("Usuário criado com sucesso! Redirecionando...", "success");
+                    // Redireciona para a lista de usuários
+                    setTimeout(() => window.location.href = "/admin/usuarios", 1500);
+                } else {
+                    // Erro de validação ou lógico do servidor (ex: nome duplicado)
+                    showToast(data.message || "Erro ao criar usuário.", "error");
+                }
+            } catch (err) {
+                // Erro de rede ou servidor não estar a rodar
+                console.error("Erro de conexão/servidor:", err);
+                showToast("Erro de conexão ao criar usuário.", "error");
+            }
+        });
+
+        // Cancelar
+        document.querySelector(".btn-cancel").addEventListener("click", e => {
+            e.preventDefault();
+            showToast("Criação de usuário cancelada.", "info");
+            // Redireciona para a lista de usuários após a notificação
+            setTimeout(() => window.location.href = "/admin/usuarios", 1000);
+        });
+    </script>
+
+
+</body>
+
+</html>

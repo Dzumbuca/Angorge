@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil - Área de Administração</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/dashbord.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="meu-logo">
+                <a href="/" target="_blank">
+                    <img src="/Icone/Ativo 1 2.png" alt="ANGORGE LDA">
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
+                <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+                <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
+                <% if (admin && admin.perfil==="administrador" ) { %>
+                    <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
+                    <% } %>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-text">
+                    <h1>Perfi22l de2 <%= user.nome %>
+                    </h1>
+                    <p>Visualize e atualize as informações deste usuário.</p>
+                </div>
+                <div class="user-header">
+                    <i class="fas fa-bell"></i>
+                    <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Foto">
+                    <span>
+                        <%= admin.nome %>
+                    </span>
+                </div>
+            </header>
+
+            <div id="toast-notification"
+                style="position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 6px; color: white; font-weight: bold; z-index: 1000; opacity: 0; transform: translateY(-20px); transition: opacity 0.3s, transform 0.3s;">
+            </div>
+
+            <div class="form-wrapper">
+                <!-- Foto de Perfil -->
+                <div class="current-image">
+                    <img id="previewImg"
+                        src="<%= user.imagem || user.foto || 'https://via.placeholder.com/300x300?text=Sem+Foto' %>"
+                        alt="Foto de Perfil">
+                    <button type="button" class="btn-change">Alterar Foto</button>
+                    <div class="upload-area">
+                        <p>Formatos aceitos: JPG, PNG, WEBP | Recomendado: 300x300px</p>
+                    </div>
+                    <input type="file" id="fotoPerfil" accept="image/*" hidden>
+                </div>
+
+                <!-- Linha 1: Nome + Perfil -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome Completo</label>
+                        <input type="text" id="nome" value="<%= user.nome %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Perfil</label>
+                        <select id="perfil">
+                            <option value="administrador" <%=(user.perfil==='administrador' ) ? 'selected' : '' %>
+                                >Administrador</option>
+                            <option value="editor" <%=(user.perfil==='editor' ) ? 'selected' : '' %>>Editor</option>
+                            <option value="analista" <%=(user.perfil==='analista' ) ? 'selected' : '' %>>Analista
+                            </option>
+                            <option value="visitante" <%=(user.perfil==='visitante' ) ? 'selected' : '' %>>Visitante
+                            </option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Linha 2: Email + Telefone -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" value="<%= user.email || '' %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone</label>
+                        <input type="tel" id="telefone" value="<%= user.telefone || '' %>">
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="status" value="Ativo" <%=(user.status !=='Inativo' ) ? 'checked'
+                                : '' %>> Ativo
+                        </label>
+                        <label>
+                            <input type="radio" name="status" value="Inativo" <%=(user.status==='Inativo' ) ? 'checked'
+                                : '' %>> Inativo
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Botões de Ação -->
+                <div class="action-buttons">
+                    <button class="btn-save">Salvar Alterações</button>
+                    <button class="btn-password">Alterar Senha</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // 1. CORREÇÃO: Define 'isOtherUser' como o oposto de 'isOwnProfile'.
+        // Se a rota for de administração, isOwnProfile é false, então isOtherUser será true.
+        // O EJS injeta o valor booleano diretamente.
+        const isOtherUser = <%= !isOwnProfile %>;
+        // 2. CORREÇÃO: Captura o ID do usuário que está sendo editado.
+        const userId = "<%= user._id %>";
+
+
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast-notification');
+            if (!toast) return;
+            // Define a cor de fundo com base no tipo
+            const bgColor = type === 'success' ? '#28a745' :
+                type === 'error' ? '#dc3545' :
+                    type === 'info' ? '#17a2b8' : '#6c757d'; // 'info' e fallback
+            toast.textContent = message;
+            toast.style.backgroundColor = bgColor;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-20px)';
+            }, 2500);
+        }
+
+        document.querySelector(".btn-save").addEventListener("click", async () => {
+            const formData = {
+                nome: document.getElementById("nome").value,
+                perfil: document.getElementById("perfil").value,
+                email: document.getElementById("email").value,
+                telefone: document.getElementById("telefone").value,
+                status: document.querySelector("input[name='status']:checked").value
+            };
+
+            try {
+                // 3. CORREÇÃO: Usa 'userId' e 'isOtherUser' para montar a URL correta
+                let url = isOtherUser
+                    ? `/api/usuarios/${userId}` // Rota para editar usuário específico
+                    : "/api/perfil"; // Rota para editar o próprio perfil
+
+                const res = await fetch(url, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(formData)
+                });
+
+                if (res.ok) {
+                    showToast("Perfil atualizado com sucesso!", "success");
+                } else {
+                    const data = await res.json();
+                    // Garante que o tratamento de erro da senha, que usa o res.json(), não interfira.
+                    // Adicionei tratamento de erro mais robusto na chamada da senha também.
+                    showToast(data.message || "Erro ao salvar", "error");
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("Erro de conexão", "error");
+            }
+        });
+
+        document.querySelector(".btn-password").addEventListener("click", () => {
+            // OBS: O uso de 'prompt' não é recomendado em produção.
+            // Aqui estamos usando por simplicidade.
+            const novaSenha = prompt("Digite a nova senha:");
+            if (!novaSenha) return;
+
+            // 4. CORREÇÃO: Usa 'userId' e 'isOtherUser' para montar a URL correta
+            let url = isOtherUser
+                ? `/api/usuarios/${userId}/senha` // Rota para mudar senha do usuário específico
+                : "/api/perfil/senha"; // Rota para mudar a própria senha
+
+            fetch(url, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ senha: novaSenha })
+            })
+                .then(res => {
+                    if (!res.ok) {
+                        return res.json().then(err => { throw new Error(err.message || "Erro ao alterar senha"); });
+                    }
+                    return res.json();
+                })
+                .then(data => showToast(data.message || "Senha alterada!", "success"))
+                .catch(err => {
+                    console.error(err);
+                    showToast(err.message || "Erro ao alterar senha", "error");
+                });
+        });
+
+        // Lógica para alterar a foto (simplesmente clica no input file)
+        document.querySelector(".btn-change").addEventListener("click", () => {
+            document.getElementById('fotoPerfil').click();
+        });
+
+        // Pré-visualização da imagem
+        document.getElementById('fotoPerfil').addEventListener('change', function () {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('previewImg').src = e.target.result;
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+    </script>
+</body>
+
+</html>

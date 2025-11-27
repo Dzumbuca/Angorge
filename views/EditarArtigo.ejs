@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Editar Artigo - Administração</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/dashbord.css">
+    <link rel="stylesheet" href="/css/artigos.css">
+    <link rel="stylesheet" href="/css/novocurso.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="meu-logo">
+                <a href="/" target="_blank">
+                    <img src="/Icone/Ativo 1 2.png" alt="ANGORGE LDA">
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
+                <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+                <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
+                <% if (admin && admin.perfil==="administrador" ) { %>
+                    <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
+                    <% } %>
+            </nav>
+        </aside>
+        <!-- ✅ Container para notificações suaves -->
+        <div id="toast-notification" style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s, transform 0.3s;
+"></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-text">
+                    <h1>Editar Artigo</h1>
+                    <p>Atualize as informações do artigo abaixo.</p>
+                </div>
+                <div class="user-header">
+                    <i class="fas fa-bell"></i>
+                    <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Usuário">
+                    <span class="user-name">Usuário</span> <!-- ✅ CLASSE CORRETA -->
+                </div>
+            </header>
+
+            <div class="form-wrapper">
+                <div class="current-image">
+                    <a href="" target="_blank" id="linkImagem">
+                        <img id="previewImg" src="https://via.placeholder.com/800x500?text=Artigo" alt="Imagem Atual">
+                    </a>
+                    <button class="btn-change">Trocar Imagem</button>
+                    <input type="file" id="imagemArtigo" accept="image/*" hidden>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Título</label>
+                        <input type="text" id="titulo">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select id="categoria" name="categoria">
+                            <option value="">Selecione</option>
+                            <option value="gestao">Gestão</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="financas">Finanças</option>
+                            <option value="tecnologia">Tecnologia</option>
+                            <option value="educacao">Educação</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Autor</label>
+                        <input type="text" id="autor" name="autor">
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Publicação</label>
+                        <input type="date" id="dataPublicacao" name="data">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="descricao" rows="6"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="status" value="publicado"> Publicado</label>
+                        <label><input type="radio" name="status" value="rascunho"> Rascunho</label>
+                        <label><input type="radio" name="status" value="agendado"> Agendado</label>
+                    </div>
+                </div>
+                <div id="artigo-message" class="message-box"></div>
+
+                <div class="action-buttons">
+                    <button id="btn-salvar-artigo" class="btn-save">Salvar Alterações</button>
+                    <button class="btn-cancel">Cancelar</button>
+                    <button class="btn-delete">Excluir</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+
+        // ✅ Função para notificações suaves
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast-notification');
+            if (!toast) return;
+
+            // Cores por tipo
+            const bgColor = type === 'success' ? '#28a745' :
+                type === 'error' ? '#dc3545' :
+                    type === 'confirm' ? '#ffc107' : '#17a2b8';
+            const textColor = type === 'confirm' ? '#212529' : '#fff';
+
+            toast.textContent = message;
+            toast.style.backgroundColor = bgColor;
+            toast.style.color = textColor;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+
+            // Fecha automaticamente
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-20px)';
+            }, type === 'confirm' ? 3000 : 2500);
+        }
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Verifica login
+            const user = localStorage.getItem("user");
+            if (!user) {
+                window.location.href = "/login";
+            } else {
+                const userSpan = document.querySelector(".user-name");
+                if (userSpan) userSpan.textContent = user;
+            }
+
+            // Extrai ID da URL
+            const urlParts = window.location.pathname.split('/');
+            const artigoId = urlParts[3];
+            if (!artigoId) {
+                showToast("ID do artigo não encontrado!");
+                window.location.href = "/artigos";
+            }
+
+            // Seletores
+            const titulo = document.getElementById("titulo");
+            const categoria = document.getElementById("categoria");
+            const autor = document.getElementById("autor");
+            const dataPub = document.getElementById("dataPublicacao");
+            const descricao = document.getElementById("descricao");
+            const statusRadios = document.getElementsByName("status");
+            const previewImg = document.getElementById("previewImg");
+            const linkImg = document.getElementById("linkImagem");
+            const imgInput = document.getElementById("imagemArtigo");
+            const btnSalvar = document.getElementById("btn-salvar-artigo");
+            const btnExcluir = document.querySelector(".btn-delete");
+
+            // Carregar dados do artigo
+            async function carregarArtigo() {
+                try {
+                    const res = await fetch(`/api/artigos/${artigoId}`);
+                    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+                    const art = await res.json();
+                    console.log("Dados recebidos:", art);
+
+                    if (titulo) titulo.value = art.titulo || "";
+                    if (autor) autor.value = art.autor || "";
+                    if (descricao) descricao.value = art.descricao || "";
+                    if (categoria) categoria.value = art.categoria || "";
+
+                    const dataPubValue = art.dataPublicacao || art.createdAt || new Date();
+                    if (dataPub) dataPub.value = new Date(dataPubValue).toISOString().split("T")[0];
+
+                    if (art.status && statusRadios.length > 0) {
+                        Array.from(statusRadios).forEach(radio => {
+                            radio.checked = (radio.value === art.status);
+                        });
+                    }
+
+                    if (art.imagem) {
+                        if (previewImg) previewImg.src = art.imagem;
+                        if (linkImg) linkImg.href = art.imagem;
+                    } else {
+                        if (previewImg) previewImg.src = "https://via.placeholder.com/800x500?text=Artigo";
+                        if (linkImg) linkImg.href = "#";
+                    }
+                } catch (error) {
+                    console.error("Erro ao carregar artigo:", error);
+                    showToast("Erro ao carregar os dados do artigo.", "error");
+                    window.location.href = "/artigos";
+                }
+            }
+
+            // Salvar alterações
+            if (btnSalvar) {
+                btnSalvar.addEventListener("click", async () => {
+                    if (!titulo.value.trim() || !descricao.value.trim()) {
+                        showToast("Título e descrição são obrigatórios!");
+                        return;
+                    }
+
+                    const fd = new FormData();
+                    fd.append("titulo", titulo.value.trim());
+                    fd.append("categoria", categoria.value);
+                    fd.append("autor", autor.value.trim());
+                    fd.append("dataPublicacao", dataPub.value);
+                    fd.append("descricao", descricao.value.trim());
+
+                    const statusSel = Array.from(statusRadios).find(r => r.checked);
+                    if (statusSel) fd.append("status", statusSel.value);
+                    if (imgInput.files[0]) fd.append("imagem", imgInput.files[0]);
+
+                    try {
+                        const res = await fetch(`/api/artigos/${artigoId}`, {
+                            method: "PUT",
+                            body: fd
+                        });
+
+                        const data = await res.json();
+                        if (res.ok) {
+                            showToast("✅ Artigo atualizado com sucesso!");
+                            window.location.href = "/artigos";
+                        } else {
+                            showToast("❌ " + (data.message || "Erro ao salvar o artigo."));
+                        }
+                    } catch (error) {
+                        console.error("Erro ao atualizar artigo:", error);
+                        showToast("Erro de conexão ao salvar o artigo.");
+                    }
+                });
+            }
+
+            // Trocar imagem
+            const btnChange = document.querySelector(".btn-change");
+            if (btnChange) {
+                btnChange.addEventListener("click", () => {
+                    imgInput.click();
+                });
+            }
+
+            if (imgInput) {
+                imgInput.addEventListener("change", () => {
+                    const file = imgInput.files[0];
+                    if (file) {
+                        previewImg.src = URL.createObjectURL(file);
+                        linkImg.href = previewImg.src;
+                    }
+                });
+            }
+
+            // Excluir artigo
+            if (btnExcluir) {
+                btnExcluir.addEventListener("click", async () => {
+                    if (!confirm("Deseja realmente excluir este artigo permanentemente?")) return;
+
+                    try {
+                        const res = await fetch(`/api/artigos/${artigoId}`, {
+                            method: "DELETE"
+                        });
+
+                        const data = await res.json();
+                        if (res.ok) {
+                            showToast("✅ Artigo excluído com sucesso!");
+                            window.location.href = "/artigos";
+                        } else {
+                            showToast("❌ " + (data.message || "Erro ao excluir o artigo."));
+                        }
+                    } catch (error) {
+                        console.error("Erro ao excluir artigo:", error);
+                        showToast("Erro de conexão ao excluir o artigo.");
+                    }
+                });
+            }
+            // Substitua o botão Cancelar atual por:
+            const btnCancel = document.querySelector(".btn-cancel");
+            if (btnCancel) {
+                btnCancel.addEventListener("click", () => {
+                    showToast("Clique novamente para cancelar", "confirm");
+                    let confirmClick = false;
+                    const handler = () => {
+                        confirmClick = true;
+                        document.removeEventListener('click', handler);
+                    };
+                    document.addEventListener('click', handler);
+                    setTimeout(() => {
+                        document.removeEventListener('click', handler);
+                        if (confirmClick) window.location.href = "/artigos";
+                    }, 3000);
+                });
+            }
+
+            // Inicializa
+            carregarArtigo();
+        });
+    </script>
+</body>
+
+</html>

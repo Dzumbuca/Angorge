@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+// models/Artigo.js
+const mongoose = require("mongoose"); // ← ESSENCIAL!
 
 const artigoSchema = new mongoose.Schema({
     titulo: { type: String, required: true },
@@ -6,7 +7,11 @@ const artigoSchema = new mongoose.Schema({
     autor: { type: String, required: true },
     dataPublicacao: { type: Date, default: Date.now },
     descricao: { type: String, required: true },
-    status: { type: String, enum: ["Publicado", "Rascunho", "Agendado"], default: "Rascunho" },
+    status: {
+        type: String,
+        enum: ["publicado", "rascunho", "agendado"],
+        default: "rascunho"
+    },
     imagem: { type: String }
 }, { timestamps: true });
 

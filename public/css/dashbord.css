@@ -4,26 +4,27 @@
     height: 100vh;
 }
 
-/* Sidebar */
+/* 🚀 MELHORIA: Sidebar com cores mais fortes e sombra mais suave */
 .sidebar {
     display: flex;
     flex-direction: column;
     width: 80px;
     background-color: #007698;
+    /* Azul principal */
     color: white;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    /* Sombra mais visível */
     align-items: center;
-    /* centraliza horizontalmente */
-
-    padding-top: 50px;
-    /* adiciona espaço entre topo da sidebar e conteúdo */
+    padding-top: 30px;
+    /* Reduzi o padding para um look mais compacto */
+    transition: width 0.3s ease;
 }
 
-.meu-logo a {
-    display: block;
-    /* link ocupa só o tamanho da imagem */
-    margin: 0;
+.meu-logo {
+    margin: 0 0 50px 0;
+    /* Aumentei o espaço abaixo do logo */
     padding: 0;
+    line-height: 0;
 }
 
 .meu-logo {
@@ -36,41 +37,45 @@
 
 .meu-logo img {
     display: block;
-    /* remove gap de linha-base */
-    width: 40px;
-    /* largura desejada */
+    width: 50px;
+    /* Logo um pouco maior */
     height: auto;
-    margin: 0;
-    padding: 0;
-    border: 0;
 }
 
 .nav-menu {
     display: flex;
     flex-direction: column;
-    gap: 70px;
-    /* Se quiser que o menu fique fixo embaixo, use margin-top: auto */
-    /* margin-top: auto; */
-    /* descomente se quiser empurrar o menu pro final */
+    gap: 30px;
+    /* Reduzi o gap para uma aparência mais coesa */
+    margin-bottom: auto;
+    /* Empurra para baixo o último item se for o caso */
 }
 
+/* 🚀 MELHORIA: Feedback visual mais nítido para os itens de menu */
 .nav-item {
     color: white;
-    font-size: 24px;
+    font-size: 20px;
+    /* Adicionei padding para área de clique */
+    padding: 10px;
+    border-radius: 8px;
     text-align: center;
     transition: all 0.3s ease;
     cursor: pointer;
 }
 
 .nav-item:hover {
-    color: #e5c535;
+    color: #E8AD21;
+    /* Amarelo de destaque */
+    background-color: rgba(255, 255, 255, 0.1);
+    /* Fundo sutil ao passar o mouse */
 }
 
-/* Main Content */
 .main-content {
     flex: 1;
+    /* 🚀 MELHORIA: Cor de fundo suave para destacar os cards/conteúdo */
     background-color: #f0f2f5;
-    padding: 20px;
+    padding: 30px;
+    /* Mantido em 30px, bom espaçamento */
     overflow-y: auto;
 }
 
@@ -124,47 +129,63 @@
 
 
 
-/* Header */
+/* === HEADER === */
 .header {
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    /* muda de center para topo */
+    align-items: center;
+    /* Centraliza verticalmente o título e o perfil */
     margin-bottom: 40px;
-    padding: 20px;
-    border-radius: 10px;
+    padding: 0;
 }
 
+/* 🚀 MELHORIA: Título do Dashboard mais elegante e cor de destaque */
 .header h1 {
+    /* 🚀 MELHORIA: Título principal com cor de destaque e forte */
     font-size: 40px;
-    font-weight: 600;
+    font-weight: 700;
+    color: #007698;
+    /* Azul principal */
+    margin: 0;
     margin-bottom: 5px;
-    /* espaço abaixo do h1 */
+    line-height: 1.2;
 }
 
 .header p {
-    font-size: 20px;
-    color: #666;
+    /* 🚀 MELHORIA: Subtítulo mais legível e suave */
+    font-size: 18px;
+    color: #6a7486;
+    /* Cinza escuro suave */
     margin: 0;
-    /* tira margens do p */
 }
 
 .user-header {
+    /* 🚀 MELHORIA: Adicionado fundo e sombra para parecer um bloco elegante */
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 15px;
+    padding: 10px 15px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
 }
 
 
 
 .user-header img {
-    width: 30px;
-    height: 30px;
+    /* 🚀 MELHORIA: Perfil maior e com borda de destaque */
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #E8AD21;
+    /* Borda amarela */
 }
 
-.user-header span {
+s .user-header span {
     font-size: 16px;
+    font-weight: 600;
+    /* Nome proeminente */
     color: #333;
 }
 
@@ -178,91 +199,70 @@
     /* indica que é clicável */
 }
 
-/* ========================= */
-/* RESPONSIVO */
-@media (max-width: 1024px) {
-    .header h1 {
-        font-size: 32px;
-    }
+/* 🚀 MELHORIA: Notificações visíveis e alinhadas */
+.notification-wrapper {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
 
-    .header p {
-        font-size: 18px;
-    }
-
-    .user-header i {
-        margin-right: 25px;
-        font-size: 18px;
-    }
-
-    .user-header img {
-        width: 28px;
-        height: 28px;
-    }
-
-    .user-header span {
-        font-size: 15px;
-    }
 }
 
+.notification-wrapper i {
+    /* 🚀 MELHORIA: Ícone de sino com tamanho e cor mais atraentes */
+    font-size: 22px;
+    color: #555;
+    transition: color 0.2s;
+}
+
+.notification-wrapper i:hover {
+    color: #007698;
+}
+
+.notification-count {
+    /* Manter estilos, garante que o balão seja visível */
+    position: absolute;
+    top: -5px;
+    right: -8px;
+    background: #E8AD21;
+    color: white;
+    border-radius: 50%;
+    padding: 2px 5px;
+    font-size: 11px;
+    line-height: 1.2;
+    font-weight: bold;
+    display: none;
+    /* Mantido 'none' pois é controlado por JS */
+}
+
+/* === RESPONSIVO HEADER === */
 @media (max-width: 768px) {
     .header {
         flex-direction: column;
         align-items: flex-start;
-        /* mantém topo */
         gap: 15px;
-        padding: 15px;
     }
 
-    .header h1 {
-        font-size: 28px;
-    }
-
-    .header p {
-        font-size: 16px;
+    .header-text {
+        order: 2;
+        /* Move o texto do header para baixo no mobile */
     }
 
     .user-header {
-        gap: 8px;
-        flex-wrap: wrap;
-        /* evita overflow */
-    }
-
-    .user-header i {
-        margin-right: 15px;
-        font-size: 16px;
-    }
-
-    .user-header img {
-        width: 25px;
-        height: 25px;
+        order: 1;
+        /* Move o perfil do usuário para cima no mobile */
+        width: 100%;
+        justify-content: space-between;
+        padding: 10px 15px;
     }
 
     .user-header span {
-        font-size: 14px;
-    }
-}
-
-@media (max-width: 480px) {
-    .header h1 {
-        font-size: 24px;
-    }
-
-    .header p {
-        font-size: 14px;
-    }
-
-    .user-header i {
-        margin-right: 10px;
-        font-size: 14px;
+        display: none;
+        /* Opcional: Esconder o nome no mobile para economizar espaço */
     }
 
     .user-header img {
-        width: 22px;
-        height: 22px;
-    }
-
-    .user-header span {
-        font-size: 12px;
+        width: 35px;
+        height: 35px;
     }
 }
 
@@ -272,14 +272,16 @@
 
 
 
-
-/* Dashboard Cards */
+/* === DASHBOARD CARDS === */
 .dashboard-cards {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    /* cards maiores */
-    gap: 25px;
-    padding: 20px;
+    /* 🚀 MELHORIA: Melhor grid com auto-fit para 3 colunas em telas maiores */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    /* Aumentei o gap */
+    padding: 0;
+    /* Removido padding */
+    margin-bottom: 40px;
 }
 
 .header h1 {
@@ -300,198 +302,154 @@
 
 .card {
     background: #fff;
-    border-radius: 12px;
-    padding: 60px 40px;
-    /* mais espaçamento interno */
-    text-align: center;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 15px;
+    /* Bordas mais suaves */
+    padding: 40px 30px;
+    /* Reduzi o padding ligeiramente */
+    text-align: left;
+    /* Alinhei o texto à esquerda */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+    /* Sombra mais destacada */
+    transition: all 0.3s ease;
+    border-left: 5px solid #007698;
+    /* Borda esquerda de destaque */
     cursor: pointer;
 }
 
 .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    transform: translateY(-8px);
+    /* Efeito mais dramático */
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
 }
 
 .card.active {
     background: #E8AD21;
-    color: #fff;
+    /* Amarelo de destaque */
+    color: #333;
+    /* Texto preto para contraste no amarelo */
+    border-left: 5px solid #005b7a;
+    /* Borda escura no ativo */
 }
 
-/* Título do card */
+.card.active h3 {
+    color: #000000;
+    /* Título preto */
+}
+
 .card h3 {
-    font-size: 16px;
-    /* mais legível */
-    font-weight: 300;
+    font-size: 14px;
+    font-weight: 500;
     text-transform: uppercase;
-    margin-bottom: 10px;
-    color: inherit;
-    /* mantém cor do card ativo */
+    margin-bottom: 5px;
+    color: #888;
+    /* Cor cinza para o título */
 }
 
-/* Número principal */
+/* 🚀 MELHORIA: O número principal é a parte mais importante, destaque-o */
 .card .number {
-    font-size: 92px;
-    /* ajustado para ficar proporcional */
-    font-weight: 700;
+    font-size: 64px;
+    /* Tamanho grande */
+    font-weight: 800;
+    /* Extra bold */
     margin: 0;
-    color: inherit;
-    /* mantém cor do card ativo */
+    color: #007698;
+    /* Azul principal */
 }
 
-/* Texto secundário dentro do card */
-.card p {
-    font-size: 0.95rem;
-    color: #666;
-    line-height: 1.5;
-    margin-top: 10px;
+.card.active .number {
+    color: #333;
+    /* Preto para contraste no card ativo */
 }
 
-/* ========================= */
-/* RESPONSIVO */
-
-/* Tablets e telas médias */
-@media (max-width: 1024px) {
-    .card {
-        padding: 50px 30px;
-    }
-
-    .card .number {
-        font-size: 72px;
-    }
-
-    .card h3 {
-        font-size: 14px;
-    }
-
-    .card p {
-        font-size: 0.9rem;
-    }
-}
-
-/* Mobile padrão */
+/* === RESPONSIVO CARDS === */
 @media (max-width: 768px) {
-    .header {
-        flex-direction: row;
-        /* mantém elementos na mesma linha */
-        align-items: flex-start;
-        /* topo do container */
-    }
-
-    .user-header {
-        margin-left: auto;
-        /* continua no canto direito */
-        margin-top: 0;
-        /* tira qualquer espaçamento em cima */
-        display: flex;
-        align-items: center;
-        gap: 8px;
-
-    }
-
-    .dashboard-cards {
-        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-        gap: 20px;
-        padding: 15px;
-    }
-
-    .card {
-        padding: 40px 20px;
-    }
-
-    .card .number {
-        font-size: 60px;
-    }
-
-    .card h3 {
-        font-size: 13px;
-    }
-
-    .card p {
-        font-size: 0.85rem;
-    }
-}
-
-/* Mobile pequeno */
-@media (max-width: 480px) {
-    .user-header {
-        margin-left: auto;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-    }
-
     .dashboard-cards {
         grid-template-columns: 1fr;
-        gap: 15px;
-        padding: 10px;
+        /* Uma coluna no mobile */
+        gap: 20px;
     }
 
     .card {
-        padding: 30px 15px;
+        padding: 30px 20px;
     }
 
     .card .number {
-        font-size: 48px;
-    }
-
-    .card h3 {
-        font-size: 12px;
-    }
-
-    .card p {
-        font-size: 0.8rem;
+        font-size: 52px;
     }
 }
 
 
-
-
-
-
-
-
-/* Container principal */
+/* Container principal (geralmente usado em páginas de lista/formulário) */
 .content-wrapper {
-    padding: 20px;
+    /* 🚀 MELHORIA: Aumentei o padding padrão para mais espaço */
+    padding: 30px;
 }
 
-/* Cabeçalho da seção */
+/* Cabeçalho da seção (Título da Página e Botão Adicionar) */
 .content-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
+    /* 🚀 MELHORIA: Aumentei a margem inferior */
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+    /* 🚀 MELHORIA: Adicionado uma linha divisória suave para separar o cabeçalho do conteúdo/tabela */
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .content-header h2 {
-    font-size: 28px;
-    font-weight: 600;
-    color: #333;
+    font-size: 32px;
+    /* Título mais proeminente */
+    font-weight: 700;
+    /* Mais robusto */
+    color: #007698;
+    /* Cor de destaque (Azul Principal) */
+    margin: 0;
+    line-height: 1.2;
 }
 
 .content-header p {
-    font-size: 14px;
+    /* 🚀 MELHORIA: Usei esta classe para um subtítulo, se necessário */
+    font-size: 16px;
     color: #666;
     margin: 0;
+    margin-top: 5px;
+    /* Pequena margem acima */
 }
 
-/* Botão Adicionar */
+/* Botão Adicionar (ou Novo) */
 .btn-add {
-    background-color: #007698;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 8px;
+    background-color: #E8AD21;
+    /* 🚀 MELHORIA: Usei o Amarelo de Destaque */
+    color: #333;
+    /* Texto escuro para contraste no amarelo */
+    padding: 12px 24px;
+    /* Aumentei o padding */
+    border-radius: 10px;
+    /* Bordas mais arredondadas */
     text-decoration: none;
-    font-weight: 500;
+    font-weight: 600;
+    /* Mais forte */
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
+    /* 🚀 MELHORIA: Adicionei sombra sutil para profundidade */
+    box-shadow: 0 4px 10px rgba(232, 173, 33, 0.3);
+}
+
+.btn-add i {
+    font-size: 16px;
 }
 
 .btn-add:hover {
-    background-color: #005b7a;
+    background-color: #cf9c1b;
+    /* Amarelo mais escuro ao passar o mouse */
+    color: white;
+    /* Texto branco no hover para um contraste forte */
+    transform: translateY(-2px);
+    /* Efeito de elevação sutil */
+    box-shadow: 0 6px 15px rgba(232, 173, 33, 0.4);
 }
 
 /* ========================= */
@@ -500,7 +458,33 @@
 /* Tablets e telas médias */
 @media (max-width: 1024px) {
     .content-wrapper {
+        padding: 20px;
+    }
+
+    .content-header h2 {
+        font-size: 28px;
+    }
+
+    .btn-add {
+        padding: 10px 20px;
+        font-size: 14px;
+    }
+}
+
+/* Mobile padrão */
+@media (max-width: 768px) {
+
+    .content-wrapper {
         padding: 15px;
+    }
+
+    .content-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+        /* Aumentei o gap */
+        margin-bottom: 20px;
+        padding-bottom: 15px;
     }
 
     .content-header h2 {
@@ -508,285 +492,37 @@
     }
 
     .content-header p {
-        font-size: 13px;
+        font-size: 14px;
     }
 
     .btn-add {
-        padding: 8px 16px;
+        padding: 10px 0;
+        /* Removi padding horizontal, usarei width: 100% */
         font-size: 14px;
+        width: 100%;
+        justify-content: center;
     }
 }
 
-/* Mobile padrão */
-@media (max-width: 768px) {
 
+
+/* Mobile pequeno */
+@media (max-width: 480px) {
     .content-wrapper {
         padding: 10px;
-    }
-
-    .content-header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 10px;
     }
 
     .content-header h2 {
         font-size: 20px;
     }
 
-    .content-header p {
-        font-size: 12px;
-    }
-
     .btn-add {
-        padding: 8px 14px;
         font-size: 13px;
-        width: 100%;
-        /* botão ocupa toda largura */
-        justify-content: center;
-    }
-}
-
-/* Mobile pequeno */
-@media (max-width: 480px) {
-    .content-wrapper {
-        padding: 8px;
-    }
-
-    .content-header h2 {
-        font-size: 18px;
-    }
-
-    .content-header p {
-        font-size: 11px;
-    }
-
-    .btn-add {
-        padding: 6px 12px;
-        font-size: 12px;
+        padding: 8px 0;
     }
 }
 
 
-
-
-
-/* Tabela de Cursos */
-.courses-table {
-    width: 100%;
-    border-collapse: collapse;
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-}
-
-.courses-table th {
-    text-align: left;
-    padding: 15px 20px;
-    background: #f8f9fa;
-    font-weight: 500;
-    color: #555;
-    font-size: 14px;
-    border-bottom: 2px solid #e0e0e0;
-}
-
-.courses-table td {
-    padding: 15px 20px;
-    border-bottom: 1px solid #eee;
-    color: #333;
-    font-size: 14px;
-}
-
-/* Coluna Nome com imagem */
-.courses-table td:first-child {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.course-image-placeholder {
-    width: 40px;
-    height: 40px;
-    background: #e0e0e0;
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 12px;
-    color: #666;
-}
-
-/* Status Badges */
-.status-badge {
-    padding: 4px 10px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 500;
-    text-transform: uppercase;
-    display: inline-block;
-}
-
-.status-disponivel {
-    background: #d4f7d4;
-    color: #0a6d0a;
-}
-
-.status-em-breve {
-    background: #fff9d4;
-    color: #8a6d00;
-}
-
-.status-encerrado {
-    background: #e6e6e6;
-    color: #666;
-}
-
-/* Ações (Editar / Excluir) */
-.actions-menu {
-    display: flex;
-    gap: 8px;
-}
-
-.action-btn {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #007698;
-    font-size: 16px;
-    padding: 4px;
-    transition: color 0.2s;
-}
-
-.action-btn:hover {
-    color: #005b7a;
-}
-
-/* ========================= */
-/* RESPONSIVO TABELA DE CURSOS */
-
-/* Tablets e telas médias */
-@media (max-width: 1024px) {
-
-    .courses-table th,
-    .courses-table td {
-        padding: 12px 15px;
-        font-size: 13px;
-    }
-
-    .course-image-placeholder {
-        width: 35px;
-        height: 35px;
-        font-size: 11px;
-    }
-
-    .status-badge {
-        padding: 3px 8px;
-        font-size: 11px;
-    }
-
-    .action-btn {
-        font-size: 14px;
-        padding: 3px;
-    }
-}
-
-/* Mobile padrão */
-@media (max-width: 768px) {
-    .courses-table {
-        display: block;
-        /* torna a tabela scrollável */
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    .courses-table th,
-    .courses-table td {
-        padding: 10px 12px;
-        font-size: 12px;
-    }
-
-    .course-image-placeholder {
-        width: 30px;
-        height: 30px;
-        font-size: 10px;
-    }
-
-    .status-badge {
-        padding: 2px 6px;
-        font-size: 10px;
-    }
-
-    .action-btn {
-        font-size: 14px;
-        padding: 2px;
-    }
-}
-
-/* Mobile pequeno */
-@media (max-width: 480px) {
-
-    .courses-table th,
-    .courses-table td {
-        padding: 8px 10px;
-        font-size: 11px;
-    }
-
-    .course-image-placeholder {
-        width: 25px;
-        height: 25px;
-        font-size: 9px;
-    }
-
-    .status-badge {
-        padding: 2px 5px;
-        font-size: 9px;
-    }
-
-    .action-btn {
-        font-size: 12px;
-        padding: 2px;
-    }
-}
-
-
-
-/* Paginação */
-.pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 8px;
-    margin-top: 20px;
-    padding: 10px 0;
-}
-
-.pagination button {
-    background: white;
-    border: 1px solid #ddd;
-    padding: 6px 12px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: all 0.2s;
-}
-
-.pagination button.active {
-    background: #007698;
-    color: white;
-    border-color: #007698;
-}
-
-.pagination button:hover:not(.active) {
-    background: #f0f2f5;
-}
-
-@media (max-width: 480px) {
-    .pagination button {
-        padding: 4px 8px;
-        font-size: 12px;
-    }
-}
 
 
 
@@ -1279,10 +1015,12 @@
 .articles-table {
     width: 100%;
     border-collapse: collapse;
-    background: white;
-    border-radius: 12px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    /* 🚀 NOVO: Garante que as colunas respeitem as larguras definidas */
+    table-layout: fixed;
 }
 
 .articles-table th {

@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil - Área de Administração</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/dashbord.css">
+    <link rel="stylesheet" href="/css/perfil.css">
+
+
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="meu-logo">
+                <a href="/" target="_blank">
+                    <img src="/Icone/Ativo 1 2.png" alt="ANGORGE LDA">
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
+                <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+                <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
+                <% if (admin && admin.perfil==="administrador" ) { %>
+                    <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
+                    <% } %>
+                        <a href="/logout" class="nav-item"><i class="fas fa-sign-out-alt"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-text">
+                    <h1>Perfil de <%= user.nome %>
+                    </h1>
+                    <p>Visualize e atualize as informações deste usuário.</p>
+                </div>
+                <div class="user-header">
+                    <i class="fas fa-bell"></i>
+                    <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Foto de Perfil do Admin">
+                    <span>
+                        <%= admin.nome %>
+                    </span>
+                </div>
+            </header>
+
+            <div id="toast-notification"
+                style="position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 6px; color: white; font-weight: bold; z-index: 1000; opacity: 0; transform: translateY(-20px); transition: opacity 0.3s, transform 0.3s;">
+            </div>
+
+            <div class="form-wrapper">
+                <!-- Foto de Perfil -->
+                <div class="current-image">
+                    <img id="previewImg"
+                        src="<%= user.imagem || user.foto || 'https://via.placeholder.com/300x300?text=Sem+Foto' %>"
+                        alt="Foto de Perfil">
+                    <button type="button" class="btn-change">Alterar Foto</button>
+                    <div class="upload-area">
+                        <p>Formatos aceitos: JPG, PNG, WEBP | Recomendado: 300x300px</p>
+                    </div>
+                    <input type="file" id="fotoPerfil" accept="image/*" hidden>
+                </div>
+
+                <!-- Linha 1: Nome + Perfil -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Nome Completo</label>
+                        <input type="text" id="nome" value="<%= user.nome %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Perfil</label>
+                        <% if (!isOwnProfile && admin.perfil==="administrador" ) { %>
+                            <!-- Só admin editando outro usuário pode mudar o perfil -->
+                            <select id="perfil">
+                                <option value="administrador" <%=(user.perfil==='administrador' ) ? 'selected' : '' %>
+                                    >Administrador</option>
+                                <option value="editor" <%=(user.perfil==='editor' ) ? 'selected' : '' %>>Editor</option>
+                            </select>
+                            <% } else { %>
+                                <!-- Qualquer outro caso: campo desabilitado (próprio perfil ou editor vendo outro) -->
+                                <input type="text"
+                                    value="<%= user.perfil === 'administrador' ? 'Administrador' : 'Editor' %>"
+                                    disabled>
+                                <input type="hidden" id="perfil" value="<%= user.perfil %>">
+                                <% } %>
+                    </div>
+                </div>
+
+                <!-- Linha 2: Email + Telefone -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="email" value="<%= user.email || '' %>">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone</label>
+                        <input type="tel" id="telefone" value="<%= user.telefone || '' %>">
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="radio-group">
+                        <label>
+                            <input type="radio" name="status" value="Ativo" <%=(user.status !=='Inativo' ) ? 'checked'
+                                : '' %>> Ativo
+                        </label>
+                        <label>
+                            <input type="radio" name="status" value="Inativo" <%=(user.status==='Inativo' ) ? 'checked'
+                                : '' %>> Inativo
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Botões de Ação -->
+                <div class="action-buttons">
+                    <button class="btn-save">Salvar Alterações</button>
+                    <button class="btn-password">Alterar Senha</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal de alteração de senha -->
+    <div id="passwordModal" class="modal-overlay">
+        <div class="modal-content">
+            <h3>Alterar Senha de <%= user.nome %>
+            </h3>
+            <p id="passwordError" class="password-error">As senhas não coincidem ou são muito curtas.</p>
+
+            <div class="form-group">
+                <label for="newPassword">Nova Senha</label>
+                <input type="password" id="newPassword" placeholder="Mínimo 6 caracteres">
+            </div>
+
+            <div class="form-group">
+                <label for="confirmPassword">Confirmar Senha</label>
+                <input type="password" id="confirmPassword" placeholder="Confirme a nova senha">
+            </div>
+
+            <div class="modal-actions">
+                <button id="btnCancel" type="button" class="btn-cancel">Cancelar</button>
+                <button id="btnConfirmPassword" type="button" class="btn-confirm">Salvar Nova Senha</button>
+            </div>
+        </div>
+    </div>
+
+
+
+    <script>
+        // ------------------------------
+        // Variáveis EJS
+        // ------------------------------
+        const isOtherUser = <%= JSON.stringify(!isOwnProfile) %>;
+        const userId = "<%= user._id %>";
+
+        // ------------------------------
+        // Elementos do Modal
+        // ------------------------------
+        const passwordModal = document.getElementById('passwordModal');
+        const newPasswordField = document.getElementById('newPassword');
+        const confirmPasswordField = document.getElementById('confirmPassword');
+        const passwordError = document.getElementById('passwordError');
+        const btnConfirmPassword = document.getElementById('btnConfirmPassword');
+        const btnCancel = document.getElementById('btnCancel');
+
+        // ------------------------------
+        // Função Toast
+        // ------------------------------
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast-notification');
+            if (!toast) return;
+            const bgColor = type === 'success' ? '#28a745' :
+                type === 'error' ? '#dc3545' :
+                    type === 'info' ? '#17a2b8' : '#6c757d';
+            toast.textContent = message;
+            toast.style.backgroundColor = bgColor;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-20px)';
+            }, 2500);
+        }
+
+        // ------------------------------
+        // Modal Senha
+        // ------------------------------
+
+        // Abrir modal
+        document.querySelector(".btn-password").addEventListener("click", () => {
+            newPasswordField.value = '';
+            confirmPasswordField.value = '';
+            passwordError.style.display = 'none';
+            passwordModal.classList.add('active');
+        });
+
+        // Fechar modal
+        btnCancel.addEventListener("click", () => {
+            passwordModal.classList.remove('active');
+        });
+
+        // Salvar nova senha
+        btnConfirmPassword.addEventListener("click", async () => {
+            const newPassword = newPasswordField.value;
+            const confirmPassword = confirmPasswordField.value;
+
+            passwordError.style.display = 'none';
+
+            if (newPassword.length < 6) {
+                passwordError.textContent = "A senha deve ter no mínimo 6 caracteres.";
+                passwordError.style.display = 'block';
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                passwordError.textContent = "As senhas não coincidem.";
+                passwordError.style.display = 'block';
+                return;
+            }
+
+            let url = isOtherUser ? `/api/usuarios/${userId}/senha` : "/api/perfil/senha";
+
+            try {
+                const res = await fetch(url, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ senha: newPassword })
+                });
+
+                if (res.ok) {
+                    const data = await res.json();
+                    showToast(data.message || "Senha alterada com sucesso!", "success");
+                    passwordModal.classList.remove('active');
+                } else {
+                    const data = await res.json();
+                    showToast(data.message || "Erro ao alterar senha", "error");
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("Erro de conexão ao alterar senha", "error");
+            }
+        });
+
+        // ------------------------------
+        // Alterar perfil
+        // ------------------------------
+        document.querySelector(".btn-save").addEventListener("click", async () => {
+            const formData = {
+                nome: document.getElementById("nome").value,
+                perfil: document.getElementById("perfil").value,
+                email: document.getElementById("email").value,
+                telefone: document.getElementById("telefone").value,
+                status: document.querySelector("input[name='status']:checked").value
+            };
+
+            try {
+                const url = isOtherUser ? `/api/usuarios/${userId}` : "/api/perfil";
+                const res = await fetch(url, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(formData)
+                });
+
+                if (res.ok) {
+                    showToast("Perfil atualizado com sucesso!", "success");
+
+                    setTimeout(() => {
+                        window.location.href = "/admin/usuarios";
+                    }, 1500);
+                } else {
+                    const data = await res.json();
+                    showToast(data.message || "Erro ao salvar", "error");
+                }
+            } catch (err) {
+                console.error(err);
+                showToast("Erro de conexão", "error");
+            }
+        });
+
+        // ------------------------------
+        // Alterar foto
+        // ------------------------------
+        document.querySelector(".btn-change").addEventListener("click", () => {
+            document.getElementById('fotoPerfil').click();
+        });
+
+        // Pré-visualização da imagem
+        document.getElementById('fotoPerfil').addEventListener('change', function () {
+            if (this.files && this.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('previewImg').src = e.target.result;
+                }
+                reader.readAsDataURL(this.files[0]);
+            }
+        });
+
+    </script>
+</body>
+
+</html>

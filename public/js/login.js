@@ -25,7 +25,7 @@ document.getElementById("login-form").addEventListener("submit", async (e) => {
 
         // login ok
         localStorage.setItem("user", nome);
-        window.location.href = "dashbord.html";
+        window.location.href = "/admin";
 
     } catch (err) {
         console.error(err);

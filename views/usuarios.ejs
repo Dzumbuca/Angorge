@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Usuários - Área de Administração</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/dashbord.css">
+    <link rel="stylesheet" href="/css/usarios.css">
+</head>
+
+<body>
+    <!-- Container de notificações -->
+    <div id="toast-notification" style="
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        padding: 12px 20px;
+        border-radius: 6px;
+        color: white;
+        font-weight: bold;
+        z-index: 1000;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 0.3s, transform 0.3s;
+    "></div>
+
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <div class="meu-logo">
+                <a href="/" target="_blank">
+                    <img src="/Icone/Ativo 1 2.png" alt="ANGORGE LDA">
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
+                <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+                <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
+                <% if (admin && admin.perfil==="administrador" ) { %>
+                    <% if (admin && admin.perfil==="administrador" ) { %>
+                        <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
+                        <% } %>
+                            <% } %>
+                                <a href="/logout" class="nav-item"><i class="fas fa-sign-out-alt"></i></a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+            <header class="header">
+                <div class="header-text"></div>
+                <div class="user-header">
+                    <i class="fas fa-bell"></i>
+                    <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Foto de Perfil do Admin">
+                    <span>
+                        <%= admin.nome %>
+                    </span>
+                </div>
+            </header>
+
+            <div class="content-wrapper">
+                <div class="content-header">
+                    <div>
+                        <h2>Usuários</h2>
+                        <p>Gerencie todos os usuários do sistema.</p>
+                    </div>
+                    <a href="/admin/usuarios/novo" class="btn-add">
+                        <i class="fas fa-plus"></i> ADICIONAR
+                    </a>
+                </div>
+
+                <table class="articles-table">
+                    <thead>
+                        <tr>
+                            <th>NOME</th>
+                            <th>PERFIL</th>
+                            <th>STATUS</th>
+                            <th>AÇÕES</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usuarios-tbody">
+                    </tbody>
+
+                </table>
+
+                <div class="pagination" id="pagination-container">
+                    <!-- Paginação será gerada aqui -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+
+
+
+
+
+
+        // Função para notificações suaves
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast-notification');
+            if (!toast) return;
+
+            const bgColor = type === 'success' ? '#28a745' :
+                type === 'error' ? '#dc3545' : '#17a2b8';
+            toast.textContent = message;
+            toast.style.backgroundColor = bgColor;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-20px)';
+            }, 2500);
+        }
+
+        const tbody = document.getElementById("usuarios-tbody");
+        const paginationContainer = document.getElementById("pagination-container");
+        let currentPage = 1;
+        const limit = 10;
+
+        // Carregar usuários
+        async function carregarUsuarios(page = 1) {
+            try {
+                const res = await fetch(`/api/usuarios?page=${page}&limit=${limit}`);
+                const data = await res.json();
+
+                tbody.innerHTML = "";
+
+                if (data.usuarios && data.usuarios.length > 0) {
+                    data.usuarios.forEach(u => {
+                        const tr = document.createElement("tr");
+
+                        // Define o caminho da foto
+                        const fotoUrl = u.foto || u.imagem || '/Imagem/default-list-profile.png';
+
+                        // Define a classe de status
+                        const statusClass = u.status === "Inativo" ? "inativo" : "ativo";
+                        const statusTexto = u.status || "Ativo";
+
+                        tr.innerHTML = `
+        <td data-label="Nome" class="user-cell">
+            <img src="${fotoUrl}" alt="Foto de ${u.nome}" class="user-list-photo">
+            <span>${u.nome || "Sem nome"}</span>
+        </td>
+        <td data-label="Perfil">${u.perfil || "Usuário"}</td>
+        <td>
+            <span class="status-badge status-${statusClass.toLowerCase()}">
+                ${statusTexto}
+            </span>
+        </td>
+        <td data-label="Ações">
+            <div class="actions-menu">
+                <button class="action-btn edit-btn" title="Editar" onclick="verPerfilUsuario('${u._id}')">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button class="action-btn delete-btn" title="Excluir" onclick="excluirUsuario('${u._id}')">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+        </td>
+    `;
+                        tbody.appendChild(tr);
+                    });
+
+                    // Renderiza paginação se houver
+                    if (data.totalPages > 1) {
+                        renderPagination(data.page, data.totalPages);
+                    } else {
+                        paginationContainer.innerHTML = "";
+                    }
+                } else {
+                    tbody.innerHTML = `<tr><td colspan="4" style="text-align:center;">Nenhum usuário encontrado</td></tr>`;
+                    paginationContainer.innerHTML = "";
+                }
+            } catch (err) {
+                console.error("Erro ao carregar usuários:", err);
+                showToast("Não foi possível carregar os usuários.", "error");
+            }
+        }
+
+        // Renderizar paginação
+        function renderPagination(currentPage, totalPages) {
+            paginationContainer.innerHTML = "";
+
+            if (currentPage > 1) {
+                const prevBtn = document.createElement("button");
+                prevBtn.textContent = "Anterior";
+                prevBtn.onclick = () => carregarUsuarios(currentPage - 1);
+                paginationContainer.appendChild(prevBtn);
+            }
+
+            for (let i = 1; i <= totalPages; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = i;
+                if (i === currentPage) btn.classList.add("active");
+                btn.onclick = () => carregarUsuarios(i);
+                paginationContainer.appendChild(btn);
+            }
+
+            if (currentPage < totalPages) {
+                const nextBtn = document.createElement("button");
+                nextBtn.textContent = "Próxima";
+                nextBtn.onclick = () => carregarUsuarios(currentPage + 1);
+                paginationContainer.appendChild(nextBtn);
+            }
+        }
+
+        function editarUsuario(id) {
+            window.location.href = `/admin/usuarios/${id}/perfil`;
+        }
+        function verPerfilUsuario(id) {
+            // Redireciona para a rota correta do usuário selecionado
+            window.location.href = `/admin/usuarios/${id}/perfil`;
+        }
+
+        async function excluirUsuario(id) {
+            showToast("Clique novamente para confirmar exclusão", "confirm");
+
+            let confirmClick = false;
+            const handler = () => {
+                confirmClick = true;
+                document.removeEventListener('click', handler);
+            };
+            document.addEventListener('click', handler);
+
+            setTimeout(async () => {
+                document.removeEventListener('click', handler);
+                if (confirmClick) {
+                    try {
+                        const res = await fetch(`/api/usuarios/${id}`, { method: "DELETE" });
+                        const data = await res.json();
+
+                        if (res.ok) {
+                            showToast("Usuário removido com sucesso!", "success");
+                            carregarUsuarios(currentPage);
+                        } else {
+                            showToast(data.message || "Erro ao excluir usuário.", "error");
+                        }
+                    } catch (err) {
+                        console.error("Erro ao excluir:", err);
+                        showToast("Erro ao excluir usuário.", "error");
+                    }
+                }
+            }, 3000);
+        }
+
+        // Inicializa
+        carregarUsuarios();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+/* ==================================== */
+/* === CONTAINER DE ARTIGOS (GRID) ==== */
+/* ==================================== */
+.container-artigos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* 3 colunas iguais */
+    gap: 20px;
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ==================================== */
+/* ========== CARD (FLEX) ============= */
+/* ==================================== */
+.card-artigo {
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #fff;
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* 🚀 MELHORIA: Garante que todos os cards tenham a mesma altura, já que o container pai é um Grid. */
+    height: 100%;
+}
+
+.card-artigo:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* ==================================== */
+/* =========== IMAGEM ================= */
+/* ==================================== */
+.card-artigo-imagem img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+}
+
+/* ==================================== */
+/* =========== CONTEÚDO =============== */
+/* ==================================== */
+.card-artigo-conteudo {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    /* 🚀 MELHORIA: Permite que o conteúdo principal se expanda, empurrando o rodapé para a parte inferior do card. */
+    flex-grow: 1;
+}
+
+.card-artigo-categoria {
+    font-size: 11px;
+    font-weight: 700;
+    color: #E8AD21;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.card-artigo-titulo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #333;
+    margin: 5px 0 10px 0;
+}
+
+.card-artigo-descricao {
+    font-size: 14px;
+    color: #6a7486;
+    line-height: 1.5;
+    /* Limite de 3 linhas */
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* ==================================== */
+/* =========== RODAPÉ ================= */
+/* ==================================== */
+.card-artigo-rodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    font-size: 13px;
+    color: #999;
+    border-top: 1px solid #f0f0f0;
+    background-color: #fcfcfc;
+}
+
+/* ==================================== */
+/* ============= LINK ================= */
+/* ==================================== */
+.card-artigo-link {
+    font-size: 14px;
+    font-weight: 600;
+    color: #007698;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.card-artigo-link::after {
+    /* Ícone de seta (requer Font Awesome na página) */
+    content: "\f061";
+    font-family: "Font Awesome 6 Free", sans-serif;
+    font-weight: 900;
+    margin-left: 6px;
+    font-size: 12px;
+}
+
+.card-artigo-link:hover {
+    text-decoration: none;
+    color: #005b7a;
+}
+
+/* ==================================== */
+/* ========= RESPONSIVIDADE =========== */
+/* ==================================== */
+
+/* Tablet e Mobile padrão (até 768px) */
+@media (max-width: 768px) {
+    .container-artigos {
+        /* Ajuste no padding para não ficar muito grudado nas bordas */
+        padding: 20px;
+    }
+
+    /* 💡 Nota: As regras manuais de largura do .card-artigo foram removidas,
+       pois o Grid (`1fr`) se encarrega de fazê-lo ocupar 100% da coluna. */
+}
+
+/* Mobile pequeno (até 480px) */
+@media (max-width: 480px) {
+    .container-artigos {
+        padding: 10px;
+        gap: 15px;
+    }
+
+    .card-artigo {
+        border-radius: 8px;
+    }
+
+    .card-artigo-titulo {
+        font-size: 18px;
+    }
+
+    .card-artigo-conteudo {
+        padding: 15px;
+    }
+}

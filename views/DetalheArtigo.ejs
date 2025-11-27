@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title><%- artigo.titulo ? artigo.titulo + ' - ANGORGE LDA' : 'Artigo - ANGORGE LDA' %></title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="/css/artigos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/DetalhesArtigos.css">
+
+
+</head>
+
+<body class="pagina-artigo">
+
+    <div id="navbar-container"></div>
+
+    <section class="artigo-banner">
+        <div class="artigo-banner-content">
+            <span id="artigo-categoria" class="artigo-categoria">
+                <%- artigo.categoria || 'Geral' %>
+            </span>
+            <h1 id="artigo-titulo" class="artigo-titulo">
+                <%- artigo.titulo || 'Sem título' %>
+            </h1>
+            <div class="artigo-meta">
+                <span>Por <strong id="artigo-autor"><%- artigo.autor || 'Autor desconhecido' %></strong></span>
+                <span>•</span>
+                <span id="artigo-data">
+                    <%- artigo.dataPublicacao ? new Date(artigo.dataPublicacao).toLocaleDateString('pt-PT') : '—' %>
+                </span>
+                <span>•</span>
+                <span id="artigo-categoria-meta"><%- artigo.categoria || 'Geral' %></span>
+            </div>
+        </div>
+        <div class="artigo-banner-image">
+            <img src="<%- artigo.imagem ? (artigo.imagem.startsWith('http') ? artigo.imagem : '/' + artigo.imagem.replace(/^\/+/, '')) : '/Imagem/maos-escrevendo-em-um-caderno.jpg' %>"
+                alt="Imagem do artigo" loading="lazy">
+        </div>
+    </section>
+
+    <section class="artigo-container">
+        <div class="artigo-main">
+            <div class="artigo-texto" id="artigo-conteudo">
+                <%- artigo.descricao || '<p>Conteúdo não disponível.</p>' %>
+            </div>
+
+            <div class="artigo-navegacao">
+                <a href="#" class="btn-navegacao btn-anterior">Post anterior</a>
+                <a href="#" class="btn-navegacao btn-proximo">Próximo post</a>
+            </div>
+
+            <div class="artigo-comentarios">
+                <h3>Deixe um comentário</h3>
+                <div id="google-login-button"></div>
+
+                <form class="comentario-form" id="form-comentario-principal">
+                    <input type="hidden" name="artigoId" id="input-artigo-id" value="<%- artigo._id %>">
+
+                    <textarea name="texto" placeholder="Escreva seu comentário..." rows="5" required></textarea>
+
+                    <button type="submit" class="btn-enviar">Enviar</button>
+                </form>
+
+                <div id="lista-comentarios" style="margin-top: 30px;"></div>
+            </div>
+        </div>
+
+        <aside class="artigo-sidebar">
+            <div class="sidebar-box">
+                <h4>Categorias</h4>
+                <ul id="categorias-lista">
+                    <!-- Será preenchido pelo JS -->
+                </ul>
+            </div>
+        </aside>
+    </section>
+
+    <footer class="footer-section">
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="/Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img">
+                <p class="company-info">Empresa certificada pela OCPA com mais de 10 anos de experiência</p>
+            </div>
+            <div class="footer-info">
+                <div class="footer-address">
+                    <h3>Endereço</h3>
+                    <p>Avenida 4 de Fevereiro,<br>Nº 1234, 7º Andar, Sala 705<br>Praia, Luanda</p>
+                </div>
+                <div class="footer-hours">
+                    <h3>Horários</h3>
+                    <p>Seg – Sex: 08:00 – 18:00<br>Sábado: 08:30 – 13:00<br>Domingo: Fechado</p>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 ANGORGE – Todos os direitos reservados</p>
+            <p>Desenvolvido pela BlackMachine</p>
+        </div>
+    </footer>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <script>
+        window.ARTIGO_ID = "<%= artigo._id %>";
+
+    </script>
+
+    <script src="/script.js"></script>
+    <script src="/js/artigosdetalhes.js"></script>
+    <script src="/js/navbar.js"></script>
+
+    <div id="confirm-modal" class="confirm-overlay" style="display:none;">
+        <div class="confirm-box">
+            <p id="confirm-message">Tem certeza?</p>
+            <div class="confirm-buttons">
+                <button id="confirm-yes">Eliminar</button>
+                <button id="confirm-no">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

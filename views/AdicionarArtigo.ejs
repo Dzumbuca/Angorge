@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Adicionar Novo Artigo - Área de Administração</title>
+    <!-- Estilos globais -->
+    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/dashbord.css">
+</head>
+
+<body>
+    <!-- Layout -->
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="meu-logo">
+                <a href="/" target="_blank">
+                    <img src="/Icone/Ativo 1 2.png" alt="ANGORGE LDA">
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
+                <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+                <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
+                <% if (admin && admin.perfil==="administrador" ) { %>
+                    <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
+                    <% } %>
+                        <a href="/logout" class="nav-item"><i class="fas fa-sign-out-alt"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Toast para notificações -->
+        <div id="toast-notification" style="
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 12px 20px;
+            border-radius: 6px;
+            color: white;
+            font-weight: bold;
+            z-index: 1000;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s, transform 0.3s;
+        "></div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header class="header">
+                <div class="header-text">
+                    <h1>Adicionar Novo Artigo</h1>
+                    <p>Preencha os campos abaixo para publicar um novo artigo.</p>
+                </div>
+                <div class="user-header">
+                    <i class="fas fa-bell"></i>
+                    <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="<%= admin.nome %>">
+                    <span>
+                        <%= admin.nome %>
+                    </span>
+                </div>
+            </header>
+
+            <div class="form-wrapper">
+                <!-- Upload de Imagem -->
+                <div class="upload-section">
+                    <label>Imagem do Artigo</label>
+                    <div class="upload-area" id="upload-preview">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Arraste ou clique para enviar</p>
+                        <small>Formatos aceitos: JPG, PNG, WebP | Recomendado: 800x500px</small>
+                        <input type="file" name="imagem" accept="image/*" hidden>
+                    </div>
+                </div>
+
+                <!-- Linha 1: Título + Categoria -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Título do Artigo</label>
+                        <input type="text" name="titulo" placeholder="Ex: Como Criar um Plano de Negócios Eficiente">
+                    </div>
+                    <div class="form-group">
+                        <label>Categoria</label>
+                        <select name="categoria" id="categoria">
+                            <option value="">Selecione uma categoria</option>
+                            <option value="gestao">Gestão</option>
+                            <option value="marketing">Marketing</option>
+                            <option value="financas">Finanças</option>
+                            <option value="tecnologia">Tecnologia</option>
+                            <option value="educacao">Educação</option>
+                            <option value="outros">Outros</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Adicionar Categoria</label>
+                        <div style="display:flex; gap:8px;">
+                            <input type="text" id="nova-categoria" placeholder="Cole aqui a categoria">
+                            <button type="button" id="adicionar-categoria" class="btn-save">Adicionar</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Linha 2: Autor + Data de Publicação -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Autor</label>
+                        <input type="text" name="autor" value="<%= admin.nome %>" placeholder="Ex: Joaquim Silva">
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Publicação</label>
+                        <input type="date" name="dataPublicacao" id="data-publicacao">
+                    </div>
+                </div>
+
+                <!-- Descrição -->
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea name="descricao" rows="6"
+                        placeholder="Escreva aqui o conteúdo do seu artigo..."></textarea>
+                </div>
+
+                <!-- Status -->
+                <div class="form-group">
+                    <label>Status</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="status" value="publicado" checked> Publicado</label>
+                        <label><input type="radio" name="status" value="rascunho"> Rascunho</label>
+                        <label><input type="radio" name="status" value="agendado"> Agendado</label>
+                    </div>
+                </div>
+
+                <!-- Botão Publicar -->
+                <button class="btn-publish">Publicar Artigo</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Função de notificação
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast-notification');
+            if (!toast) return;
+
+            const bgColor =
+                type === 'success' ? '#28a745' :
+                    type === 'error' ? '#dc3545' :
+                        type === 'confirm' ? '#ffc107' : '#17a2b8';
+            const textColor = type === 'confirm' ? '#212529' : '#fff';
+
+            toast.textContent = message;
+            toast.style.backgroundColor = bgColor;
+            toast.style.color = textColor;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-20px)';
+            }, type === 'confirm' ? 3000 : 2500);
+        }
+
+        // Define data atual no carregamento
+        document.getElementById('data-publicacao').valueAsDate = new Date();
+
+        // Elementos
+        const uploadArea = document.getElementById('upload-preview');
+        const fileInput = uploadArea.querySelector("input[type='file']");
+        const adicionarCategoriaBtn = document.getElementById("adicionar-categoria");
+        const novaCategoriaInput = document.getElementById("nova-categoria");
+        const categoriaSelect = document.getElementById("categoria");
+        const btnPublicar = document.querySelector(".btn-publish");
+
+        // Upload de imagem
+        uploadArea.addEventListener("click", () => fileInput.click());
+        fileInput.addEventListener("change", () => {
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    uploadArea.innerHTML = `<img src="${e.target.result}" alt="Preview" style="width:100%;height:auto;border-radius:6px;">`;
+                    // Re-injeta o input oculto para manter a referência
+                    const newInput = document.createElement('input');
+                    newInput.type = 'file';
+                    newInput.name = 'imagem';
+                    newInput.accept = 'image/*';
+                    newInput.hidden = true;
+                    newInput.files = fileInput.files;
+                    uploadArea.appendChild(newInput);
+                    // Atualiza referência
+                    fileInput = newInput;
+                };
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        });
+
+        // Adicionar nova categoria
+        adicionarCategoriaBtn.addEventListener("click", () => {
+            const valor = novaCategoriaInput.value.trim();
+            if (valor) {
+                const slug = valor.toLowerCase().replace(/\s+/g, '_');
+                // Evita duplicatas
+                if (!Array.from(categoriaSelect.options).some(opt => opt.value === slug)) {
+                    const option = document.createElement("option");
+                    option.value = slug;
+                    option.textContent = valor;
+                    option.selected = true;
+                    categoriaSelect.appendChild(option);
+                }
+                novaCategoriaInput.value = "";
+            }
+        });
+
+        // Publicar artigo
+        btnPublicar.addEventListener("click", async () => {
+            const titulo = document.querySelector("input[name='titulo']").value.trim();
+            const categoria = categoriaSelect.value;
+            const autor = document.querySelector("input[name='autor']").value.trim();
+            const dataPublicacao = document.querySelector("input[name='dataPublicacao']").value;
+            const descricao = document.querySelector("textarea[name='descricao']").value.trim();
+            const status = document.querySelector("input[name='status']:checked").value;
+
+            if (!titulo || !descricao || !categoria) {
+                showToast("Preencha os campos obrigatórios: Título, Descrição e Categoria", "error");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("titulo", titulo);
+            formData.append("categoria", categoria);
+            formData.append("autor", autor);
+            formData.append("dataPublicacao", dataPublicacao);
+            formData.append("descricao", descricao);
+            formData.append("status", status);
+            if (fileInput.files && fileInput.files[0]) {
+                formData.append("imagem", fileInput.files[0]);
+            }
+
+            try {
+                const res = await fetch("/api/artigos", {
+                    method: "POST",
+                    body: formData
+                });
+
+                const data = await res.json();
+                if (res.ok) {
+                    showToast("Artigo publicado com sucesso!", "success");
+                    setTimeout(() => window.location.href = "/artigos", 1500);
+                } else {
+                    showToast(data.message || data.error || "Erro ao publicar artigo", "error");
+                    console.error("Erro do servidor:", data);
+                }
+            } catch (err) {
+                console.error("Erro de rede:", err);
+                showToast("Erro de conexão ao publicar artigo", "error");
+            }
+        });
+    </script>
+</body>
+
+</html>

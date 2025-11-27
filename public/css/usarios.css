@@ -1,0 +1,231 @@
+/* =========================
+   TABELA DE USUÁRIOS — ESTILO COERENTE COM CURSOS
+   ========================= */
+
+.articles-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.articles-table th {
+    text-align: left;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #555;
+    font-size: 14px;
+    border-bottom: 2px solid #e0e0e0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.articles-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    font-size: 14px;
+    vertical-align: middle;
+}
+
+/* Coluna NOME com imagem */
+.articles-table td:first-child {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.user-list-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 2px solid #f0f0f0;
+}
+
+/* Status Badges — igual aos cursos */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    display: inline-block;
+    text-align: center;
+    min-width: 70px;
+}
+
+.status-ativo {
+    background: #d4f7d4;
+    color: #0a6d0a;
+}
+
+.status-inativo {
+    background: #ffe6e6;
+    color: #c20000;
+}
+
+/* Ações */
+.actions-menu {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007698;
+    font-size: 16px;
+    padding: 4px;
+    transition: color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 4px;
+}
+
+.action-btn:hover {
+    color: #005b7a;
+    background-color: #f5fbfd;
+}
+
+/* =========================
+   RESPONSIVO — IGUAL À TABELA DE CURSOS
+   ========================= */
+
+/* Tablets e telas médias (≤1024px) */
+@media (max-width: 1024px) {
+
+    .articles-table th,
+    .articles-table td {
+        padding: 12px 15px;
+        font-size: 13px;
+    }
+
+    .user-list-photo {
+        width: 35px;
+        height: 35px;
+    }
+
+    .status-badge {
+        padding: 3px 8px;
+        font-size: 11px;
+        min-width: 60px;
+    }
+
+    .action-btn {
+        font-size: 14px;
+        padding: 3px;
+        width: 26px;
+        height: 26px;
+    }
+}
+
+/* Mobile padrão (≤768px) */
+@media (max-width: 768px) {
+    .articles-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .articles-table th,
+    .articles-table td {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    .user-list-photo {
+        width: 30px;
+        height: 30px;
+    }
+
+    .status-badge {
+        padding: 2px 6px;
+        font-size: 10px;
+        min-width: 50px;
+    }
+
+    .action-btn {
+        font-size: 14px;
+        padding: 2px;
+        width: 24px;
+        height: 24px;
+    }
+}
+
+/* Mobile pequeno (≤480px) */
+@media (max-width: 480px) {
+
+    .articles-table th,
+    .articles-table td {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .user-list-photo {
+        width: 25px;
+        height: 25px;
+    }
+
+    .status-badge {
+        padding: 2px 5px;
+        font-size: 9px;
+        min-width: 45px;
+    }
+
+    .action-btn {
+        font-size: 12px;
+        padding: 2px;
+        width: 22px;
+        height: 22px;
+    }
+}
+
+/* =========================
+   PAGINAÇÃO — IGUAL À DOS CURSOS
+   ========================= */
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 0;
+}
+
+.pagination button {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.pagination button.active {
+    background: #007698;
+    color: white;
+    border-color: #007698;
+}
+
+.pagination button:hover:not(.active) {
+    background: #f0f2f5;
+}
+
+@media (max-width: 480px) {
+    .pagination button {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+}

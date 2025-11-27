@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Cursos - Área de Administração</title>
+    <!-- Estilos globais -->
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/dashbord.css">
+    <!-- Estilo específico da página de cursos -->
+    <link rel="stylesheet" href="/css/curso.css">
+</head>
+
+<body>
+    <!-- Layout -->
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="meu-logo">
+                <a href="/" target="_blank">
+                    <img src="Icone/Ativo 1 2.png" alt="ANGORGE LDA">
+                </a>
+            </div>
+            <nav class="nav-menu">
+                <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
+                <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+                <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
+                <% if (admin && admin.perfil==="administrador" ) { %>
+                    <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
+                    <% } %>
+                        <a href="/logout" class="nav-item"><i class="fas fa-sign-out-alt"></i></a>
+            </nav>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="header">
+                <div class="header-text">
+
+                </div>
+                <div class="user-header">
+                    <i class="fas fa-bell"></i>
+                    <img src="<%= admin ? admin.foto || '/Imagem/default-profile.jpg' : '/Imagem/default-profile.jpg' %>"
+                        alt="Foto de Perfil">
+                    <span>
+                        <%= admin ? admin.nome : 'Visitante' %>
+                    </span>
+                </div>
+            </header>
+            <!-- ✅ Container para notificações suaves -->
+            <div id="toast-notification" style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s, transform 0.3s;
+"></div>
+
+            <!-- Conteúdo Principal -->
+            <div class="content-wrapper">
+                <div class="content-header">
+                    <div>
+                        <h2>Cursos</h2>
+                        <p>Gerencie todos os cursos disponíveis no site.</p>
+                    </div>
+                    <a href="/admin/cursos/novo" class="btn-add">
+                        <i class="fas fa-plus"></i> ADICIONAR
+                    </a>
+                </div>
+
+                <!-- Tabela de Cursos -->
+                <table class="courses-table">
+                    <thead>
+                        <tr>
+                            <th>Nome do Curso</th>
+                            <th>Categoria</th>
+                            <th>Duração</th>
+                            <th>Tipo</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="course-image-placeholder">C</div>
+                                Contabilidade Geral e Analítica
+                            </td>
+                            <td>Contabilidade</td>
+                            <td>40 horas</td>
+                            <td>Online</td>
+                            <td><span class="status-badge status-disponivel">Disponível Agora</span></td>
+                            <td>
+                                <div class="actions-menu">
+                                    <button class="action-btn" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" title="Excluir">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="course-image-placeholder">M</div>
+                                Marketing Digital para Iniciantes
+                            </td>
+                            <td>Marketing</td>
+                            <td>30 horas</td>
+                            <td>Online</td>
+                            <td><span class="status-badge status-em-breve">Em Breve</span></td>
+                            <td>
+                                <div class="actions-menu">
+                                    <button class="action-btn" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" title="Excluir">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="course-image-placeholder">T</div>
+                                Introdução ao JavaScript
+                            </td>
+                            <td>Tecnologia</td>
+                            <td>25 horas</td>
+                            <td>Online</td>
+                            <td><span class="status-badge status-encerrado">Encerrado</span></td>
+                            <td>
+                                <div class="actions-menu">
+                                    <button class="action-btn" title="Editar">
+                                        <i class="fas fa-edit"></i>
+                                    </button>
+                                    <button class="action-btn" title="Excluir">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Paginação -->
+                <div class="pagination">
+                    <button>Anterior</button>
+                    <button>01</button>
+                    <button>02</button>
+                    <button class="active">03</button>
+                    <button>04</button>
+                    <button>...</button>
+                    <button>10</button>
+                    <button>Próxima</button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // ✅ Função para notificações suaves
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast-notification');
+            if (!toast) return;
+
+            const bgColor = type === 'success' ? '#28a745' :
+                type === 'error' ? '#dc3545' :
+                    type === 'confirm' ? '#ffc107' : '#17a2b8';
+            const textColor = type === 'confirm' ? '#212529' : '#fff';
+
+            toast.textContent = message;
+            toast.style.backgroundColor = bgColor;
+            toast.style.color = textColor;
+            toast.style.opacity = '1';
+            toast.style.transform = 'translateY(0)';
+
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                toast.style.transform = 'translateY(-20px)';
+            }, type === 'confirm' ? 3000 : 2500);
+        }
+
+        const user = localStorage.getItem("user");
+        if (user) {
+            document.querySelector(".user-header span").textContent = user;
+        } else {
+            window.location.href = "/login";
+        }
+
+        let paginaAtual = 1;
+        const limite = 5;
+
+        async function carregarCursos(page = 1) {
+            try {
+                const response = await fetch(`/api/cursos?page=${page}&limit=${limite}`);
+                const data = await response.json();
+
+                const tbody = document.querySelector(".courses-table tbody");
+                tbody.innerHTML = "";
+
+                data.cursos.forEach(curso => {
+                    const row = document.createElement("tr");
+                    row.innerHTML = `
+                    <td>
+                        ${curso.imagem
+                            ? `<img src="${curso.imagem}" class="course-image" alt="${curso.titulo}">`
+                            : `<div class="course-image-placeholder">${curso.titulo.charAt(0).toUpperCase()}</div>`}
+                        ${curso.titulo}
+                    </td>
+                    <td>${curso.categoria || "-"}</td>
+                    <td>${curso.duracao ? curso.duracao + " horas" : "-"}</td>
+                    <td>${curso.tipo || "-"}</td>
+                    <td><span class="status-badge ${curso.status === "Disponível Agora" ? "status-disponivel" : (curso.status === "Em Breve" ? "status-em-breve" : "status-encerrado")}">${curso.status || "-"}</span></td>
+                    <td>
+                        <div class="actions-menu">
+                            <button class="action-btn" title="Editar" onclick="editarCurso('${curso._id}')">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="action-btn" title="Excluir" onclick="excluirCurso('${curso._id}', this)">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                    </td>
+                `;
+                    tbody.appendChild(row);
+                });
+
+                renderizarPaginacao(data.page, data.totalPages);
+            } catch (error) {
+                console.error("Erro ao carregar cursos:", error);
+                showToast("Não foi possível carregar os cursos.", "error");
+            }
+        }
+
+        function renderizarPaginacao(pagina, totalPaginas) {
+            const paginacao = document.querySelector(".pagination");
+            paginacao.innerHTML = "";
+
+            if (pagina > 1) {
+                const btnAnt = document.createElement("button");
+                btnAnt.textContent = "Anterior";
+                btnAnt.onclick = () => carregarCursos(pagina - 1);
+                paginacao.appendChild(btnAnt);
+            }
+
+            for (let i = 1; i <= totalPaginas; i++) {
+                const btn = document.createElement("button");
+                btn.textContent = i;
+                if (i === pagina) btn.classList.add("active");
+                btn.onclick = () => carregarCursos(i);
+                paginacao.appendChild(btn);
+            }
+
+            if (pagina < totalPaginas) {
+                const btnProx = document.createElement("button");
+                btnProx.textContent = "Próxima";
+                btnProx.onclick = () => carregarCursos(pagina + 1);
+                paginacao.appendChild(btnProx);
+            }
+        }
+
+        function editarCurso(id) {
+            window.location.href = `/admin/cursos/${id}/editar`;
+        }
+
+        // Excluir curso com confirmação suave
+        async function excluirCurso(id, btn) {
+            showToast("Clique novamente para confirmar exclusão", "confirm");
+
+            let confirmClick = false;
+            const handler = () => {
+                confirmClick = true;
+                document.removeEventListener('click', handler);
+            };
+            document.addEventListener('click', handler);
+
+            setTimeout(async () => {
+                document.removeEventListener('click', handler);
+                if (confirmClick) {
+                    try {
+                        const response = await fetch(`/api/cursos/${id}`, {
+                            method: "DELETE"
+                        });
+                        const data = await response.json();
+
+                        if (response.ok) {
+                            showToast("Curso excluído com sucesso!", "success");
+                            btn.closest("tr").remove();
+                        } else {
+                            showToast(data.message || "Erro ao excluir o curso.", "error");
+                        }
+                    } catch (error) {
+                        console.error("Erro ao excluir:", error);
+                        showToast("Não foi possível excluir o curso.", "error");
+                    }
+                }
+            }, 3000);
+        }
+
+        carregarCursos();
+    </script>
+</body>
+
+</html>

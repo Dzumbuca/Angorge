@@ -4,9 +4,9 @@
 const navbarHTML = `
 <nav class="navbar">
     <div class="logo">
-        <a href="index.html">
-            <img src="Imagem/brancod.png" alt="ANGORGE LDA" class="logo-img logo-branco" />
-            <img src="Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img logo-preto" />
+        <a href="/">
+            <img src="/Imagem/brancod.png" alt="ANGORGE LDA" class="logo-img logo-branco" />
+            <img src="/Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img logo-preto" />
         </a>
     </div>
 
@@ -15,12 +15,12 @@ const navbarHTML = `
     </div>
 
     <ul class="nav-links" id="navLinks">
-        <li><a href="index.html">Início</a></li>
-        <li><a href="sobre.html">Sobre</a></li>
-        <li><a href="servico.html">Serviços</a></li>
-        <li><a href="fomacao.html">Formação</a></li>
-        <li><a href="artigosfront.html">Blog</a></li>
-        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="/">Início</a></li>
+        <li><a href="/sobre.html">Sobre</a></li>
+        <li><a href="/servico.html">Serviços</a></li>
+        <li><a href="/fomacao.html">Formação</a></li>
+        <li><a href="/artigosfront.html">Blog</a></li>
+        <li><a href="/contacto.html">Contacto</a></li>
     </ul>
 
     <div class="overlay" id="overlay"></div>

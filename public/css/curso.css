@@ -1,0 +1,216 @@
+/* Tabela de Cursos */
+.courses-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.courses-table th {
+    text-align: left;
+    padding: 15px 20px;
+    background: #f8f9fa;
+    font-weight: 500;
+    color: #555;
+    font-size: 14px;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+.courses-table td {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    color: #333;
+    font-size: 14px;
+}
+
+/* Coluna Nome com imagem */
+.courses-table td:first-child {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.course-image-placeholder {
+    width: 40px;
+    height: 40px;
+    background: #e0e0e0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    color: #666;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 500;
+    text-transform: uppercase;
+    display: inline-block;
+}
+
+.status-disponivel {
+    background: #d4f7d4;
+    color: #0a6d0a;
+}
+
+.status-em-breve {
+    background: #fff9d4;
+    color: #8a6d00;
+}
+
+.status-encerrado {
+    background: #e6e6e6;
+    color: #666;
+}
+
+/* Ações (Editar / Excluir) */
+.actions-menu {
+    display: flex;
+    gap: 8px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: #007698;
+    font-size: 16px;
+    padding: 4px;
+    transition: color 0.2s;
+}
+
+.action-btn:hover {
+    color: #005b7a;
+}
+
+/* ========================= */
+/* RESPONSIVO TABELA DE CURSOS */
+
+/* Tablets e telas médias */
+@media (max-width: 1024px) {
+
+    .courses-table th,
+    .courses-table td {
+        padding: 12px 15px;
+        font-size: 13px;
+    }
+
+    .course-image-placeholder {
+        width: 35px;
+        height: 35px;
+        font-size: 11px;
+    }
+
+    .status-badge {
+        padding: 3px 8px;
+        font-size: 11px;
+    }
+
+    .action-btn {
+        font-size: 14px;
+        padding: 3px;
+    }
+}
+
+/* Mobile padrão */
+@media (max-width: 768px) {
+    .courses-table {
+        display: block;
+        /* torna a tabela scrollável */
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    .courses-table th,
+    .courses-table td {
+        padding: 10px 12px;
+        font-size: 12px;
+    }
+
+    .course-image-placeholder {
+        width: 30px;
+        height: 30px;
+        font-size: 10px;
+    }
+
+    .status-badge {
+        padding: 2px 6px;
+        font-size: 10px;
+    }
+
+    .action-btn {
+        font-size: 14px;
+        padding: 2px;
+    }
+}
+
+/* Mobile pequeno */
+@media (max-width: 480px) {
+
+    .courses-table th,
+    .courses-table td {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .course-image-placeholder {
+        width: 25px;
+        height: 25px;
+        font-size: 9px;
+    }
+
+    .status-badge {
+        padding: 2px 5px;
+        font-size: 9px;
+    }
+
+    .action-btn {
+        font-size: 12px;
+        padding: 2px;
+    }
+}
+
+
+
+/* Paginação */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    padding: 10px 0;
+}
+
+.pagination button {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: all 0.2s;
+}
+
+.pagination button.active {
+    background: #007698;
+    color: white;
+    border-color: #007698;
+}
+
+.pagination button:hover:not(.active) {
+    background: #f0f2f5;
+}
+
+@media (max-width: 480px) {
+    .pagination button {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,380 @@
+/* Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+    /* começa fechado */
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+/* Ativo */
+.modal-overlay.active {
+    display: flex;
+}
+
+/* Conteúdo do modal */
+.modal-content {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    width: 400px;
+    max-width: 90%;
+    text-align: center;
+    position: relative;
+}
+
+.password-error {
+    color: #dc3545;
+    display: none;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+/* Botões */
+.modal-actions {
+    margin-top: 15px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-cancel {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-confirm {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* ====================================
+   ESTILOS GERAIS DA PÁGINA PERFIL
+   ==================================== */
+
+.form-wrapper {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    flex: 1;
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.form-group input[type="text"],
+.form-group input[type="email"],
+.form-group input[type="tel"],
+.form-group input[type="password"],
+.form-group select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    /* Garante que o padding não aumente a largura total */
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus,
+.form-group select:focus {
+    border-color: #007698;
+    outline: none;
+    box-shadow: 0 0 0 2px rgba(0, 118, 152, 0.2);
+}
+
+/* Estilo para Rádios de Status */
+.radio-group {
+    display: flex;
+    gap: 25px;
+    padding-top: 5px;
+}
+
+.radio-group label {
+    font-weight: normal;
+    cursor: pointer;
+}
+
+/* --- Botões de Ação --- */
+.action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    /* Alinha botões à direita */
+    gap: 15px;
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.action-buttons button {
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border 0.2s;
+}
+
+/* Botão Salvar (Primário) */
+.btn-save {
+    background-color: #007698;
+    /* Azul Primário */
+    color: white;
+    border: 1px solid #007698;
+}
+
+.btn-save:hover {
+    background-color: #005a73;
+    border-color: #005a73;
+}
+
+/* Botão Alterar Senha (Secundário/Outline) */
+.btn-password {
+    background-color: transparent;
+    color: #007698;
+    border: 2px solid #007698;
+}
+
+.btn-password:hover {
+    background-color: #f0f8ff;
+    /* Fundo levemente azul no hover */
+    color: #00455a;
+    border-color: #00455a;
+}
+
+/* --- Estilos da Imagem de Perfil --- */
+.current-image {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.current-image img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 15px;
+    border: 5px solid #f0f0f0;
+}
+
+.current-image .btn-change {
+    background-color: #f0f0f0;
+    color: #444;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.current-image .btn-change:hover {
+    background-color: #e0e0e0;
+}
+
+
+/* ====================================
+   ESTILOS DO MODAL DE SENHA
+   ==================================== */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    /* Escondido por padrão */
+    justify-content: center;
+    align-items: center;
+    z-index: 1050;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.modal-overlay.active {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-content {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    width: 100%;
+    max-width: 450px;
+    transform: translateY(-50px);
+    transition: transform 0.3s;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-content h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    color: #007698;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* Mensagem de Erro */
+.password-error {
+    color: #dc3545;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    display: none;
+    /* Escondido por padrão no JS */
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.modal-actions .btn-cancel,
+.modal-actions .btn-confirm {
+    padding: 10px 15px;
+    border-radius: 4px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: background-color 0.2s;
+}
+
+.modal-actions .btn-cancel {
+    background-color: #6c757d;
+    /* Cinzento (secundário) */
+    color: white;
+}
+
+.modal-actions .btn-cancel:hover {
+    background-color: #5a6268;
+}
+
+.modal-actions .btn-confirm {
+    background-color: #007698;
+    /* Azul (primário) */
+    color: white;
+}
+
+.modal-actions .btn-confirm:hover {
+    background-color: #005a73;
+}
+
+/* ====================================
+   ESTILOS DO CABEÇALHO (HEADER)
+   ==================================== */
+
+/* O cabeçalho deve ser flexível para alinhar o texto e o perfil do admin */
+.main-content .header {
+    display: flex;
+    justify-content: space-between;
+    /* Espaça o texto e a área do usuário */
+    align-items: center;
+    padding: 20px 30px;
+    margin-bottom: 25px;
+    background-color: #f7f7f7;
+    /* Cor de fundo leve para destaque */
+    border-bottom: 1px solid #eee;
+    border-radius: 8px 8px 0 0;
+    /* Arredonda os cantos superiores se estiver no topo do main-content */
+}
+
+/* Estilo do Texto Principal (Perfil de...) */
+.header-text h1 {
+    font-size: 26px;
+    /* Tamanho maior para o título principal */
+    font-weight: 700;
+    color: #333;
+    /* Cor escura */
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+.header-text p {
+    font-size: 14px;
+    color: #6c757d;
+    /* Texto secundário cinzento */
+    margin-top: 5px;
+    padding: 0;
+}
+
+/* --- Área de Usuário no Cabeçalho (Sino e Foto do Admin) --- */
+
+.user-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    /* Espaço entre sino, foto e nome */
+}
+
+.user-header i.fa-bell {
+    font-size: 20px;
+    color: #007698;
+    /* Azul primário para o sino */
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.user-header i.fa-bell:hover {
+    color: #005a73;
+}
+
+.user-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+}
+
+.user-header span {
+    font-size: 15px;
+    font-weight: 600;
+    color: #555;
+    margin-right: 10px;
+    /* Garante espaço após o nome */
+}
+
+/* Ajuste para garantir que o formulário não cole no cabeçalho */
+.main-content {
+    padding: 20px;
+    /* Adiciona algum padding ao redor do conteúdo */
+}

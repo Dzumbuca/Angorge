@@ -1,43 +1,41 @@
 
-const API_URL = window.location.hostname === "localhost"
-    ? "http://localhost:5000"
-    : "https://angorge-1.onrender.com";
 
 document.addEventListener('DOMContentLoaded', () => {
     const containerArtigos = document.getElementById("containerArtigos");
+    let currentPage = 1;
+    const limit = 5;
+    let loading = false;
+    let totalPages = Infinity;
 
-    if (!containerArtigos) {
-        console.error("❌ Não encontrei #containerArtigos no DOM");
-        return;
-    }
+    async function carregarArtigos(page = 1) {
+        if (loading || page > totalPages) return;
+        loading = true;
 
-    async function carregarArtigos() {
         try {
-            const response = await fetch(`${API_URL}/api/artigos`);
-            const data = await response.json();
-            const artigos = data.artigos || []; // ← agora é 'artigos'
+            const res = await fetch(`/api/artigos?page=${page}&limit=${limit}`);
+            const data = await res.json();
+            totalPages = data.totalPages;
 
-            containerArtigos.innerHTML = ""; // limpa o container
-
+            const artigos = data.artigos || [];
             artigos.forEach(artigo => {
-                if (!artigo._id) return;
-
-                // Verifica se a data é válida
                 const dataFormatada = artigo.dataPublicacao
                     ? new Date(artigo.dataPublicacao).toLocaleDateString('pt-PT')
                     : 'Data não disponível';
+                const imagemSrc = artigo.imagem
+                    ? (artigo.imagem.startsWith('http') ? artigo.imagem : artigo.imagem)
+                    : '/uploads/default.jpg';
 
                 const card = document.createElement("div");
                 card.classList.add("card-artigo");
                 card.innerHTML = `
                     <div class="card-artigo-imagem">
-                        <img src="${API_URL}${artigo.imagem || '/uploads/default.jpg'}" alt="${artigo.titulo}">
+                        <img src="${imagemSrc}" alt="${artigo.titulo}">
                     </div>
                     <div class="card-artigo-conteudo">
                         <span class="card-artigo-categoria">${artigo.categoria || 'Sem categoria'}</span>
                         <h3 class="card-artigo-titulo">${artigo.titulo}</h3>
                         <p class="card-artigo-descricao">${artigo.descricao}</p>
-                        <a class="card-artigo-link" href="artigodetalhe.html?id=${encodeURIComponent(artigo._id)}">Veja mais</a>
+                        <a class="card-artigo-link" href="/artigo/${artigo._id}">Veja mais</a>
                     </div>
                     <div class="card-artigo-rodape">
                         <span class="card-artigo-autor">${artigo.autor || 'Autor desconhecido'}</span>
@@ -49,9 +47,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error("Erro ao carregar artigos:", error);
-            containerArtigos.innerHTML = "<p>Não foi possível carregar os artigos.</p>";
+        } finally {
+            loading = false;
         }
     }
 
-    carregarArtigos();
+    // ✅ Detecta scroll próximo do final da página
+    window.addEventListener('scroll', () => {
+        if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 300) {
+            currentPage++;
+            carregarArtigos(currentPage);
+        }
+    });
+
+    // Carrega a primeira página
+    carregarArtigos(currentPage);
 });
