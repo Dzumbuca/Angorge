@@ -197,6 +197,39 @@ app.get("/logout", (req, res) => {
         res.redirect("/login");
     });
 });
+// ==========================
+// 🛠️ ROTA DE INICIALIZAÇÃO: CRIA PRIMEIRO ADMIN SE NÃO EXISTIR
+// ==========================
+app.post("/primeiro-admin", async (req, res) => {
+    try {
+        // Verifica se já existe algum administrador
+        const existeAdmin = await User.findOne({ perfil: "administrador" });
+        if (existeAdmin) {
+            return res.status(403).json({ error: "Já existe um administrador. Esta rota está desativada." });
+        }
+
+        const { nome, senha } = req.body;
+        if (!nome || !senha) {
+            return res.status(400).json({ error: "Nome e senha são obrigatórios." });
+        }
+
+        const hashedPassword = await bcrypt.hash(senha, 12);
+        const admin = new User({
+            nome,
+            senha: hashedPassword,
+            perfil: "administrador",
+            status: "ativo"
+        });
+
+        await admin.save();
+        console.log("✅ Primeiro administrador criado com sucesso!");
+        res.status(201).json({ message: "Administrador criado com sucesso!" });
+
+    } catch (err) {
+        console.error("Erro ao criar primeiro admin:", err);
+        res.status(500).json({ error: "Erro interno" });
+    }
+});
 
 // ==========================
 // 📌 ROTAS PROTEGIDAS (todos logados)
@@ -299,34 +332,7 @@ app.get("/admin/usuarios", (req, res) => {
 app.get("/admin/usuarios/novo", (req, res) => {
     res.render("AdicionarUsuario", { admin: req.session.user });
 });
-// ==========================
-// 📌 CRIAR NOVO ARTIGO (Admin)
-// ==========================
-app.post("/api/artigos", upload.single("imagem"), async (req, res) => {
-    try {
-        const { titulo, categoria, autor, dataPublicacao, descricao, status } = req.body;
 
-        if (!titulo || !descricao || !categoria) {
-            return res.status(400).json({ message: "Preencha todos os campos obrigatórios" });
-        }
-
-        const novoArtigo = new Artigo({
-            titulo,
-            categoria,
-            autor: autor || req.session.user.nome,
-            createdAt: dataPublicacao ? new Date(dataPublicacao) : new Date(),
-            descricao,
-            status: status.toLowerCase(),
-            imagem: req.file ? `/uploads/usuarios/${req.file.filename}` : null
-        });
-
-        await novoArtigo.save();
-        res.status(201).json({ message: "Artigo criado com sucesso", artigo: novoArtigo });
-    } catch (err) {
-        console.error("Erro ao criar artigo:", err);
-        res.status(500).json({ message: "Erro interno ao criar artigo" });
-    }
-});
 
 
 // ✅ Perfil de outro usuário (só admin)
@@ -347,11 +353,11 @@ app.get("/admin/usuarios/:id/perfil", async (req, res) => {
 });
 
 // Rotas de cursos e artigos (admin)
-app.get("/admin/cursos/novo", (req, res) => {
+app.get("/admin/cursos/novo", requireAuth, (req, res) => {
     res.render("novocurso", { admin: req.session.user });
 });
 
-app.get("/admin/artigos/novo", (req, res) => {
+app.get("/admin/artigos/novo", requireAuth, (req, res) => {
     res.render("AdicionarArtigo", { admin: req.session.user });
 });
 // ✅ Página de edição de artigo (admin)

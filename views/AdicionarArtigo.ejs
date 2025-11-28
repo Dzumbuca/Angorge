@@ -56,9 +56,10 @@
                 </div>
                 <div class="user-header">
                     <i class="fas fa-bell"></i>
-                    <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="<%= admin.nome %>">
+                    <img src="<%= admin ? admin.foto || '/Imagem/default-profile.jpg' : '/Imagem/default-profile.jpg' %>"
+                        alt="<%= admin ? admin.nome : 'Usuário' %>">
                     <span>
-                        <%= admin.nome %>
+                        <%= admin ? admin.nome : 'Usuário' %>
                     </span>
                 </div>
             </header>
@@ -106,7 +107,9 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label>Autor</label>
-                        <input type="text" name="autor" value="<%= admin.nome %>" placeholder="Ex: Joaquim Silva">
+                        <input type="text" name="autor" value="<%= admin ? admin.nome : '' %>"
+                            placeholder="Ex: Joaquim Silva">
+
                     </div>
                     <div class="form-group">
                         <label>Data de Publicação</label>
@@ -199,13 +202,13 @@
             const valor = novaCategoriaInput.value.trim();
             if (valor) {
                 const slug = valor.toLowerCase().replace(/\s+/g, '_');
-                // Evita duplicatas
                 if (!Array.from(categoriaSelect.options).some(opt => opt.value === slug)) {
                     const option = document.createElement("option");
                     option.value = slug;
                     option.textContent = valor;
-                    option.selected = true;
                     categoriaSelect.appendChild(option);
+                    // 👇 Força a seleção da nova opção
+                    categoriaSelect.value = slug;
                 }
                 novaCategoriaInput.value = "";
             }
@@ -219,6 +222,8 @@
             const dataPublicacao = document.querySelector("input[name='dataPublicacao']").value;
             const descricao = document.querySelector("textarea[name='descricao']").value.trim();
             const status = document.querySelector("input[name='status']:checked").value;
+            // 👇 LOG DE DEPURAÇÃO
+            console.log({ titulo, categoria, descricao, autor, dataPublicacao, status });
 
             if (!titulo || !descricao || !categoria) {
                 showToast("Preencha os campos obrigatórios: Título, Descrição e Categoria", "error");
@@ -247,7 +252,8 @@
                     showToast("Artigo publicado com sucesso!", "success");
                     setTimeout(() => window.location.href = "/artigos", 1500);
                 } else {
-                    showToast(data.message || data.error || "Erro ao publicar artigo", "error");
+                    // Mostra o JSON completo de forma legível
+                    showToast(JSON.stringify(data), "error");
                     console.error("Erro do servidor:", data);
                 }
             } catch (err) {
