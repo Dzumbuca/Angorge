@@ -8,15 +8,15 @@ const userSchema = new mongoose.Schema({
     telefone: { type: String },
     perfil: {
         type: String,
-        enum: ["administrador", "editor"],
-        default: "visitante"
+        enum: ["administrador", "editor", "usuario"], // ✅ adicione "usuario"
+        default: "usuario"                            // ✅ valor padrão válido
     },
     status: {
         type: String,
-        enum: ["Ativo", "Inativo"],
-        default: "Ativo"
+        enum: ["ativo", "inativo"], // ✅ use minúsculas para consistência
+        default: "ativo"            // ✅ tudo em minúsculo
     },
-    foto: { type: String } // Para upload de imagem
+    foto: { type: String }
 }, { timestamps: true });
 
 module.exports = mongoose.model("User", userSchema);
