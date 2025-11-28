@@ -139,6 +139,50 @@ app.post("/login", async (req, res) => {
     console.log("✅ Sessão criada:", req.session.user);
     res.redirect("/admin");
 });
+// ==========================
+// 📌 ROTA DE REGISTO PARA FRONT-END
+// ==========================
+app.post("/api/register", async (req, res) => {
+    try {
+        const { nome, senha } = req.body;
+
+        if (!nome || !senha) {
+            return res.status(400).json({ error: "Preencha todos os campos" });
+        }
+
+        // Verifica se já existe
+        const existingUser = await User.findOne({ nome });
+        if (existingUser) {
+            return res.status(400).json({ error: "Usuário já existe" });
+        }
+
+        // Criptografa a senha
+        const hashedPassword = await bcrypt.hash(senha, 10);
+
+        // Cria o usuário
+        const newUser = new User({
+            nome,
+            senha: hashedPassword,
+            perfil: "usuario", // perfil padrão
+            status: "ativo"
+        });
+
+        await newUser.save();
+
+        res.status(201).json({ message: "Registrado com sucesso!" });
+
+    } catch (err) {
+        console.error("Erro ao registrar usuário:", err);
+        res.status(500).json({ error: "Erro interno do servidor" });
+    }
+});
+
+// Página de registo
+app.get("/registo", (req, res) => {
+    res.render("registo", { error: null });
+});
+
+
 
 // ==========================
 // 📌 LOGOUT
