@@ -217,7 +217,7 @@ app.get("/cursos", requireAuth, async (req, res) => {
     }
 });
 
-app.get("/artigos", requireAuth, async (req, res) => {
+app.get("/artigos", async (req, res) => {
     try {
         // ✅ Uso do modelo Artigo importado no topo
         const artigos = await Artigo.find({ status: "publicado" }).sort({ createdAt: -1 });
@@ -260,7 +260,7 @@ app.get("/artigo/:id", async (req, res) => {
     }
 });
 
-app.get("/curso/:id", requireAuth, async (req, res) => {
+app.get("/curso/:id", async (req, res) => {
     try {
         // ✅ Uso do modelo Curso importado no topo
         const curso = await Curso.findById(req.params.id);
@@ -273,7 +273,7 @@ app.get("/curso/:id", requireAuth, async (req, res) => {
 });
 
 // ✅ PRÓPRIO PERFIL (qualquer usuário)
-app.get("/perfil", requireAuth, async (req, res) => {
+app.get("/perfil", async (req, res) => {
     try {
         // ✅ Uso do modelo User importado no topo
         const usuario = await User.findOne({ nome: req.session.user.nome });
@@ -292,17 +292,17 @@ app.get("/perfil", requireAuth, async (req, res) => {
 // ==========================
 // 📌 ROTAS SÓ PARA ADMINISTRADOR
 // ==========================
-app.get("/admin/usuarios", requireAdmin, (req, res) => {
+app.get("/admin/usuarios", (req, res) => {
     res.render("usuarios", { admin: req.session.user });
 });
 
-app.get("/admin/usuarios/novo", requireAdmin, (req, res) => {
+app.get("/admin/usuarios/novo", (req, res) => {
     res.render("AdicionarUsuario", { admin: req.session.user });
 });
 // ==========================
 // 📌 CRIAR NOVO ARTIGO (Admin)
 // ==========================
-app.post("/api/artigos", requireAdmin, upload.single("imagem"), async (req, res) => {
+app.post("/api/artigos", upload.single("imagem"), async (req, res) => {
     try {
         const { titulo, categoria, autor, dataPublicacao, descricao, status } = req.body;
 
@@ -330,7 +330,7 @@ app.post("/api/artigos", requireAdmin, upload.single("imagem"), async (req, res)
 
 
 // ✅ Perfil de outro usuário (só admin)
-app.get("/admin/usuarios/:id/perfil", requireAdmin, async (req, res) => {
+app.get("/admin/usuarios/:id/perfil", async (req, res) => {
     try {
         // ✅ Uso do modelo User importado no topo - CORREÇÃO DE VULNERABILIDADE/PERFORMANCE
         const usuario = await User.findById(req.params.id);
@@ -347,15 +347,15 @@ app.get("/admin/usuarios/:id/perfil", requireAdmin, async (req, res) => {
 });
 
 // Rotas de cursos e artigos (admin)
-app.get("/admin/cursos/novo", requireAdmin, (req, res) => {
+app.get("/admin/cursos/novo", (req, res) => {
     res.render("novocurso", { admin: req.session.user });
 });
 
-app.get("/admin/artigos/novo", requireAdmin, (req, res) => {
+app.get("/admin/artigos/novo", (req, res) => {
     res.render("AdicionarArtigo", { admin: req.session.user });
 });
 // ✅ Página de edição de artigo (admin)
-app.get("/admin/artigos/:id/editar", requireAdmin, async (req, res) => {
+app.get("/admin/artigos/:id/editar", async (req, res) => {
     try {
         const artigo = await Artigo.findById(req.params.id);
         if (!artigo) return res.status(404).send("Artigo não encontrado");
@@ -367,7 +367,7 @@ app.get("/admin/artigos/:id/editar", requireAdmin, async (req, res) => {
 });
 
 
-app.get("/admin/cursos/:id/editar", requireAdmin, async (req, res) => {
+app.get("/admin/cursos/:id/editar", async (req, res) => {
     try {
         // ✅ Uso do modelo Curso importado no topo
         const curso = await Curso.findById(req.params.id);
