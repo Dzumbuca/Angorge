@@ -104,20 +104,7 @@
                     </div>
                 </div>
 
-                <!-- Status -->
-                <div class="form-group">
-                    <label>Status</label>
-                    <div class="radio-group">
-                        <label>
-                            <input type="radio" name="status" value="Ativo" <%=(user.status !=='Inativo' ) ? 'checked'
-                                : '' %>> Ativo
-                        </label>
-                        <label>
-                            <input type="radio" name="status" value="Inativo" <%=(user.status==='Inativo' ) ? 'checked'
-                                : '' %>> Inativo
-                        </label>
-                    </div>
-                </div>
+
 
                 <!-- Botões de Ação -->
                 <div class="action-buttons">
@@ -257,8 +244,7 @@
                 nome: document.getElementById("nome").value,
                 perfil: document.getElementById("perfil").value,
                 email: document.getElementById("email").value,
-                telefone: document.getElementById("telefone").value,
-                status: document.querySelector("input[name='status']:checked").value
+                telefone: document.getElementById("telefone").value
             };
 
             try {
@@ -271,9 +257,8 @@
 
                 if (res.ok) {
                     showToast("Perfil atualizado com sucesso!", "success");
-
                     setTimeout(() => {
-                        window.location.href = "/admin/usuarios";
+                        window.location.href = isOtherUser ? "/admin/usuarios" : "/perfil";
                     }, 1500);
                 } else {
                     const data = await res.json();
