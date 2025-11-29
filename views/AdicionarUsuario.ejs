@@ -98,13 +98,7 @@
                         <input type="password" id="confirmarSenha" placeholder="Repita a senha" required>
                     </div>
 
-                    <div class="form-group">
-                        <label>Status</label>
-                        <div class="radio-group">
-                            <label><input type="radio" name="status" value="Ativo" checked> Ativo</label>
-                            <label><input type="radio" name="status" value="Inativo"> Inativo</label>
-                        </div>
-                    </div>
+
 
                     <div class="action-buttons">
                         <button type="button" class="btn-save">Criar Usuário</button>
@@ -236,7 +230,7 @@
             const perfil = document.getElementById("perfil");
             const senha = document.getElementById("senha");
             const confirmarSenha = document.getElementById("confirmarSenha");
-            const status = document.querySelector("input[name='status']:checked").value;
+            const status = "ativo"; // ✅ valor padrão, em minúsculas, compatível com seu schema
 
             let valid = true;
 
@@ -280,7 +274,7 @@
             formData.append("nome", nome.value.trim());
             formData.append("perfil", perfil.value.trim());
             formData.append("senha", senha.value);
-            formData.append("status", status);
+            formData.append("status", "ativo");
 
             // Adiciona a imagem se houver ficheiro selecionado
             if (fileInput.files.length > 0) {

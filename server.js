@@ -164,7 +164,7 @@ app.post("/api/register", async (req, res) => {
             nome,
             senha: hashedPassword,
             perfil: "usuario", // perfil padrão
-            status: "ativo"
+
         });
 
         await newUser.save();
@@ -218,7 +218,7 @@ app.post("/primeiro-admin", async (req, res) => {
             nome,
             senha: hashedPassword,
             perfil: "administrador",
-            status: "ativo"
+
         });
 
         await admin.save();
@@ -329,10 +329,9 @@ app.get("/admin/usuarios", (req, res) => {
     res.render("usuarios", { admin: req.session.user });
 });
 
-app.get("/admin/usuarios/novo", (req, res) => {
+app.get("/admin/usuarios/novo", requireAdmin, (req, res) => {
     res.render("AdicionarUsuario", { admin: req.session.user });
 });
-
 
 
 // ✅ Perfil de outro usuário (só admin)

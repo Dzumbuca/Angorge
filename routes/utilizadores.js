@@ -99,7 +99,7 @@ router.post("/usuarios", requireAuth, upload.single("fotoPerfil"), async (req, r
             nome,
             senha: hashedPassword,
             perfil,
-            status: status || "Ativo",
+
             ...(email && { email }),
             ...(telefone && { telefone }),
             ...(fotoPath && { foto: fotoPath }) // ✅ Inclui o caminho da foto
