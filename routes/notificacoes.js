@@ -47,6 +47,13 @@ router.get("/notificacoes", async (req, res) => {
         console.error("Erro ao buscar notificações:", error);
         res.status(500).json({ error: "Erro ao buscar notificações" });
     }
+    // Marcar todas as notificações como lidas
+    router.post("/notificacoes/ler", (req, res) => {
+        // Como você não tem um modelo Notification,
+        // a "leitura" é só limpar do lado do cliente.
+        // Mas se quiser persistir, precisaria de um modelo.
+        res.json({ success: true });
+    });
 });
 
 module.exports = router;

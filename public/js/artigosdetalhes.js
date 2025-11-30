@@ -222,7 +222,7 @@ async function carregarComentarios(artigoId) {
     }
 
     try {
-        const response = await fetch(`/api/artigos/${artigoId}/comentarios`);
+        const response = await fetch(`/api/comentarios?artigoId=${artigoId}`);
         if (!response.ok) throw new Error(`Status: ${response.status}`);
 
         const comentarios = await response.json();

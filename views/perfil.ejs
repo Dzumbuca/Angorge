@@ -43,9 +43,10 @@
                 </div>
                 <div class="user-header">
                     <i class="fas fa-bell"></i>
-                    <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Foto de Perfil do Admin">
+                    <img src="<%= (admin && admin.foto) || '/Imagem/default-profile.jpg' %>"
+                        alt="Foto de Perfil do Admin">
                     <span>
-                        <%= admin.nome %>
+                        <%= admin ? admin.nome : 'Usuário' %>
                     </span>
                 </div>
             </header>
@@ -56,15 +57,17 @@
 
             <div class="form-wrapper">
                 <!-- Foto de Perfil -->
+                <!-- Foto de Perfil -->
                 <div class="current-image">
-                    <img id="previewImg"
-                        src="<%= user.imagem || user.foto || 'https://via.placeholder.com/300x300?text=Sem+Foto' %>"
-                        alt="Foto de Perfil">
-                    <button type="button" class="btn-change">Alterar Foto</button>
-                    <div class="upload-area">
-                        <p>Formatos aceitos: JPG, PNG, WEBP | Recomendado: 300x300px</p>
-                    </div>
-                    <input type="file" id="fotoPerfil" accept="image/*" hidden>
+                    <% const fotoUrl=user.foto ? (user.foto.startsWith('http') ? user.foto : '/uploads/usuarios/' +
+                        user.foto) : 'https://via.placeholder.com/300x300?text=Sem+Foto  ' ; %>
+                        <img id="previewImg" src="<%= fotoUrl %>" alt="Foto de Perfil">
+                        <button type="button" class="btn-change">Alterar Foto</button>
+                        <div class="upload-area">
+                            <p>Formatos aceitos: JPG, PNG, WEBP | Recomendado: 300x300px</p>
+                        </div>
+                        <input type="file" id="fotoPerfil" accept="image/*"
+                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10;">
                 </div>
 
                 <!-- Linha 1: Nome + Perfil -->
@@ -240,19 +243,24 @@
         // Alterar perfil
         // ------------------------------
         document.querySelector(".btn-save").addEventListener("click", async () => {
-            const formData = {
-                nome: document.getElementById("nome").value,
-                perfil: document.getElementById("perfil").value,
-                email: document.getElementById("email").value,
-                telefone: document.getElementById("telefone").value
-            };
+            const formData = new FormData();
+            formData.append("nome", document.getElementById("nome").value);
+            formData.append("perfil", document.getElementById("perfil").value);
+            formData.append("email", document.getElementById("email").value);
+            formData.append("telefone", document.getElementById("telefone").value);
+
+            // Adiciona a foto se houver
+            const fileInput = document.getElementById("fotoPerfil");
+            if (fileInput.files.length > 0) {
+                formData.append("fotoPerfil", fileInput.files[0]);
+            }
 
             try {
                 const url = isOtherUser ? `/api/usuarios/${userId}` : "/api/perfil";
                 const res = await fetch(url, {
                     method: "PUT",
-                    headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify(formData)
+                    body: formData
+                    // ⚠️ NÃO defina Content-Type! O browser define automaticamente
                 });
 
                 if (res.ok) {
@@ -269,12 +277,16 @@
                 showToast("Erro de conexão", "error");
             }
         });
-
         // ------------------------------
         // Alterar foto
         // ------------------------------
-        document.querySelector(".btn-change").addEventListener("click", () => {
-            document.getElementById('fotoPerfil').click();
+        // Corrigido:
+        document.querySelector(".btn-change").addEventListener("click", function (e) {
+            e.preventDefault(); // Evita comportamento padrão
+            const fileInput = document.getElementById('fotoPerfil');
+            if (fileInput) {
+                fileInput.click();
+            }
         });
 
         // Pré-visualização da imagem

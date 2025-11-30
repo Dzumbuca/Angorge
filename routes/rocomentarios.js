@@ -194,5 +194,56 @@ router.get("/admin", async (req, res) => {
         res.status(500).json({ error: "Erro ao carregar comentários" });
     }
 });
+// 📌 POST / — Criar novo comentário | URL: /api/comentarios
+router.post("/", async (req, res) => {
+    try {
+        const { autor, texto, artigoId } = req.body;
+
+        // Validação
+        if (!autor || !texto || !artigoId) {
+            return res.status(400).json({ error: "Campos 'autor', 'texto' e 'artigoId' são obrigatórios." });
+        }
+
+        // Valida se artigoId é um ObjectId válido
+        if (!mongoose.Types.ObjectId.isValid(artigoId)) {
+            return res.status(400).json({ error: "ID do artigo inválido." });
+        }
+
+        // Cria o comentário
+        const novoComentario = new Comentario({
+            autor: autor.trim(),
+            texto: texto.trim(),
+            artigoId: new mongoose.Types.ObjectId(artigoId)
+        });
+
+        await novoComentario.save();
+        res.status(201).json(novoComentario);
+    } catch (error) {
+        console.error("Erro ao criar comentário:", error);
+        res.status(500).json({ error: "Erro ao salvar comentário." });
+    }
+});
+// 📌 GET / — Listar comentários por artigoId | URL: /api/comentarios?artigoId=...
+router.get("/", async (req, res) => {
+    try {
+        const { artigoId } = req.query;
+
+        if (!artigoId) {
+            return res.status(400).json({ error: "Parâmetro 'artigoId' é obrigatório." });
+        }
+
+        if (!mongoose.Types.ObjectId.isValid(artigoId)) {
+            return res.status(400).json({ error: "ID do artigo inválido." });
+        }
+
+        const comentarios = await Comentario.find({ artigoId })
+            .sort({ data: 1 }); // do mais antigo ao mais novo
+
+        res.json(comentarios);
+    } catch (error) {
+        console.error("Erro ao buscar comentários por artigo:", error);
+        res.status(500).json({ error: "Erro ao carregar comentários." });
+    }
+});
 
 module.exports = router;

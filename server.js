@@ -325,14 +325,34 @@ app.get("/perfil", async (req, res) => {
 // ==========================
 // 📌 ROTAS SÓ PARA ADMINISTRADOR
 // ==========================
-app.get("/admin/usuarios", (req, res) => {
+app.get("/admin/usuarios", requireAdmin, (req, res) => {
     res.render("usuarios", { admin: req.session.user });
 });
 
 app.get("/admin/usuarios/novo", requireAdmin, (req, res) => {
     res.render("AdicionarUsuario", { admin: req.session.user });
 });
+// ==========================
+// 📌 ROTAS PARA DASHBORD (contagem)
+// ==========================
+app.get("/api/dashbord/contagens", requireAuth, async (req, res) => {
+    try {
+        const [cursos, artigos, inscritos] = await Promise.all([
+            Curso.countDocuments({ status: "publicado" }),
+            Artigo.countDocuments({ status: "publicado" }),
+            Inscricao.countDocuments() // ou User.countDocuments({ perfil: "usuario" }) se for "usuários"
+        ]);
 
+        res.json({
+            cursosPublicados: cursos,
+            artigosPublicados: artigos,
+            inscritos: inscritos
+        });
+    } catch (err) {
+        console.error("Erro ao buscar contagens:", err);
+        res.status(500).json({ error: "Erro ao carregar dados do dashboard" });
+    }
+});
 
 // ✅ Perfil de outro usuário (só admin)
 app.get("/admin/usuarios/:id/perfil", async (req, res) => {

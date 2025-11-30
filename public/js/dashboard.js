@@ -1,8 +1,30 @@
+// ==========================
+// 📊 CARREGAR DADOS DO DASHBOARD
+// ==========================
+async function carregarContagensDashboard() {
+    try {
+        const res = await fetch("/api/dashbord/contagens");
+        if (!res.ok) throw new Error("Falha ao carregar contagens");
+        const dados = await res.json();
+
+        document.getElementById("cursos-count").textContent = dados.cursosPublicados;
+        document.getElementById("artigos-count").textContent = dados.artigosPublicados;
+        document.getElementById("inscritos-count").textContent = dados.inscritos;
+    } catch (err) {
+        console.error("Erro ao carregar dashboard:", err);
+        // Opcional: mostre "–" ou mantenha 0
+    }
+}
+
+
+
 
 
 document.addEventListener("DOMContentLoaded", async () => {
+    await carregarContagensDashboard();
     // Dados do utilizador logado (usa o nome que já existe no header)
     const currentUser = (document.querySelector('.user-name')?.textContent || 'Admin').trim();
+    setInterval(carregarContagensDashboard, 30000);
 
     // --- Notificações (mantive a tua lógica, sem mexer muito) ---
     // --- Notificações Melhoradas ---
@@ -21,24 +43,12 @@ document.addEventListener("DOMContentLoaded", async () => {
             if (!res.ok) throw new Error("Falha ao buscar notificações");
             const dados = await res.json();
 
-            // Garante que é um array de objetos com tipo
-            const formatted = (Array.isArray(dados) ? dados : []).map(n => {
-                let tipo = n.tipo || (n.texto?.includes('inscrição') ? 'inscricao' : 'comentario');
-                return {
-                    texto: n.texto || n,
-                    tipo: tipo,
-                    data: n.data || new Date(),
-                    // ✅ Inclua os IDs essenciais
-                    artigoId: n.artigoId,
-                    comentarioId: n.comentarioId,
-                    cursoId: n.cursoId
-                };
-            });
+            const newNotifications = Array.isArray(dados) ? dados : [];
+            const newCount = newNotifications.length;
 
             // Só atualiza se houver mudança
-            const newCount = formatted.length;
             if (isInitialLoad || newCount !== lastNotificationCount) {
-                notifications = formatted;
+                notifications = newNotifications;
                 renderNotifications();
                 lastNotificationCount = newCount;
                 isInitialLoad = false;
@@ -46,6 +56,14 @@ document.addEventListener("DOMContentLoaded", async () => {
         } catch (err) {
             console.error("Erro ao buscar notificações:", err);
         }
+    }
+    function escapeXml(str = '') {
+        return String(str)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
     }
 
     function renderNotifications() {
@@ -57,33 +75,84 @@ document.addEventListener("DOMContentLoaded", async () => {
             return;
         }
 
-        const unreadCount = notifications.length;
-        countBadge.textContent = unreadCount;
-        countBadge.style.display = unreadCount > 0 ? 'inline-block' : 'none';
+        // ✅ Carrega IDs já lidos do localStorage
+        const lidos = new Set(JSON.parse(localStorage.getItem('notificacoesLidas') || '[]'));
+        let novasNaoLidas = 0;
 
-        list.innerHTML = notifications.map(n => {
+        const items = notifications.map(n => {
+            // Cria um ID único para cada notificação
+            const notifId = `${n.tipo}-${n.data}`;
+            const estaLida = lidos.has(notifId);
+
+            if (!estaLida) {
+                novasNaoLidas++;
+            }
+
             let icon = '💬';
             let iconClass = 'comentario';
             let url = '#';
+            let textoFormatado = '';
 
-            // Define o link com base no tipo
             if (n.tipo === 'comentario' && n.artigoId) {
-                // Link para o artigo + foca no comentário (ex: com âncora)
-                url = `/artigodetalhe?id=${encodeURIComponent(n.artigoId)}#comentario-${n.comentarioId}`;
-            } else if (n.tipo === 'inscricao' && n.cursoId) {
-                // Link para página de inscritos ou curso
-                url = `./cursos.html`; // ou `./inscricoes.html?curso=${n.cursoId}`
+                icon = '💬';
+                iconClass = 'comentario';
+                url = `/artigo/${n.artigoId}#comentario-${n.comentarioId}`;
+                const autor = escapeHtml(n.autor || 'Alguém');
+                const titulo = escapeXml(escapeHtml(n.artigoTitulo || 'um artigo'));
+                textoFormatado = `${autor} comentou no artigo<br><strong>"${titulo}"</strong>`;
+            }
+            else if (n.tipo === 'inscricao' && n.cursoId) {
+                icon = '🎓';
+                iconClass = 'inscricao';
+                url = `/curso/${n.cursoId}`;
+                const autor = escapeHtml(n.autor || 'Alguém');
+                const titulo = escapeXml(escapeHtml(n.cursoTitulo || 'um curso'));
+                textoFormatado = `${autor} se inscreveu no curso<br><strong>"${titulo}"</strong>`;
+            }
+            else {
+                textoFormatado = escapeHtml(n.texto || 'Nova atividade');
             }
 
+            const dataFormatada = formatarData(n.data);
+            const classeLida = estaLida ? '' : 'unread';
+
             return `
-            <li class="unread">
-                <a href="${url}" style="text-decoration: none; color: inherit; display: flex; gap: 12px; width: 100%;">
-                    <span class="notification-icon ${iconClass}">${icon}</span>
-                    <div class="notification-text">${escapeHtml(n.texto)}</div>
-                </a>
-            </li>
+        <li class="${classeLida}" data-notif-id="${notifId}">
+            <a href="${url}" style="text-decoration: none; color: inherit; display: flex; gap: 12px; width: 100%;">
+                <span class="notification-icon ${iconClass}">${icon}</span>
+                <div class="notification-text" style="line-height: 1.4;">
+                    ${textoFormatado}
+                    <div style="font-size: 0.85em; color: #888; margin-top: 4px;">
+                        ${dataFormatada}
+                    </div>
+                </div>
+            </a>
+        </li>
         `;
         }).join('');
+
+        list.innerHTML = items;
+        countBadge.textContent = novasNaoLidas;
+        countBadge.style.display = novasNaoLidas > 0 ? 'inline-block' : 'none';
+
+        // ✅ Marca como lida ao clicar no link
+        list.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                const li = link.closest('li');
+                const notifId = li?.dataset.notifId;
+                if (notifId) {
+                    lidos.add(notifId);
+                    localStorage.setItem('notificacoesLidas', JSON.stringify(Array.from(lidos)));
+                    li.classList.remove('unread');
+                    // Atualiza contador
+                    const restantes = list.querySelectorAll('li.unread').length;
+                    countBadge.textContent = restantes;
+                    if (restantes === 0) countBadge.style.display = 'none';
+                }
+            });
+        });
+
+
     }
 
     function escapeHtml(str = '') {
@@ -101,11 +170,15 @@ document.addEventListener("DOMContentLoaded", async () => {
         dropdown?.classList.toggle("show");
 
         if (dropdown?.classList.contains("show")) {
-            // Marca todas como lidas visualmente (remove bolinha)
-            document.querySelectorAll('.notification-dropdown .unread').forEach(el => {
-                el.classList.remove('unread');
+            // ✅ Marca todas como lidas ao abrir
+            const lidos = new Set(JSON.parse(localStorage.getItem('notificacoesLidas') || '[]'));
+            notifications.forEach(n => {
+                lidos.add(`${n.tipo}-${n.data}`);
             });
+            localStorage.setItem('notificacoesLidas', JSON.stringify(Array.from(lidos)));
             countBadge.style.display = 'none';
+
+            renderNotifications();
         }
     });
 

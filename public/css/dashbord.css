@@ -219,19 +219,23 @@ s .user-header span {
 }
 
 .notification-count {
-    /* Manter estilos, garante que o balão seja visível */
     position: absolute;
-    top: -5px;
-    right: -8px;
+    top: -2px;
+    right: -6px;
     background: #E8AD21;
     color: white;
-    border-radius: 50%;
+    border-radius: 10px;
+    /* mais alongado se tiver 2 dígitos */
     padding: 2px 5px;
     font-size: 11px;
-    line-height: 1.2;
-    font-weight: bold;
     display: none;
-    /* Mantido 'none' pois é controlado por JS */
+    min-width: 16px;
+    height: 16px;
+    text-align: center;
+    font-weight: bold;
+    line-height: 1;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    z-index: 10;
 }
 
 /* === RESPONSIVO HEADER === */
@@ -323,7 +327,7 @@ s .user-header span {
 }
 
 .card.active {
-    background: #E8AD21;
+    background: #ffffff;
     /* Amarelo de destaque */
     color: #333;
     /* Texto preto para contraste no amarelo */
@@ -1599,12 +1603,13 @@ s .user-header span {
     display: inline-block;
     margin-right: 10px;
     cursor: pointer;
+    /* ✅ já está certo */
 }
 
 .notification-count {
     position: absolute;
     top: -5px;
-    right: -5px;
+    right: 20px;
     background: #E8AD21;
     /* amarelo do seu site */
     color: white;
@@ -1886,12 +1891,12 @@ s .user-header span {
 }
 
 .bg-laranja {
-    background-color: #E8AD21 !important;
+    background-color: #fdfeff !important;
     color: white !important;
 }
 
 .bg-cinza {
-    background-color: #E8AD21 !important;
+    background-color: #ffffff !important;
     color: #ffffff !important;
 }
 
