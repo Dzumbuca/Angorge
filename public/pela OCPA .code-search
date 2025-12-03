@@ -1,0 +1,59 @@
+# Query: pela OCPA 
+# ContextLines: 1
+
+12 results - 8 files
+
+public\artigosfront.html:
+  63                  <img src="Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img">
+  64:                 <p class="company-info">Empresa certificada pela OCPCA com mais de 10 anos de experiência</p>
+  65              </div>
+
+public\contacto.html:
+   41                  <h2>A nossa equipa de especialistas</h2>
+   42:                 <p>Profissionais certificados pela OCPCA com mais de 10 anos de experiência</p>
+   43              </div>
+
+  117                  <img src="Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img">
+  118:                 <p class="company-info">Empresa certificada pela OCPCA com mais de 10 anos de experiência</p>
+  119              </div>
+
+public\Cursodetalhe.html:
+  161                  <img src="Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img">
+  162:                 <p class="company-info">Empresa certificada pela OCPCA com mais de 10 anos de experiência</p>
+  163              </div>
+
+public\fomacao.html:
+  54                  <img src="Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img">
+  55:                 <p class="company-info">Empresa certificada pela OCPCA com mais de 10 anos de experiência</p>
+  56              </div>
+
+public\index.html:
+  247                  <h2>A nossa equipa de especialistas</h2>
+  248:                 <p class="experts-bg-subtitle">Profissionais certificados pela OCPCA com mais de 10 anos de experiência
+  249                  </p>
+
+  281                  <img src="Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img">
+  282:                 <p class="company-info">Empresa certificada pela OCPCA com mais de 10 anos de experiência</p>
+  283              </div>
+
+public\servico.html:
+  170                          class="highlight-blue">situações</span></h2>
+  171:                 <p class="desc-team-right">Profissionais certificados pela OCPCA com mais de 10 anos de experiência.
+  172                      Estamos prontos para apoiar Pequenas, Médias e Grandes Empresas com soluções personalizadas em
+  173                      contabilidade, fiscalidade, RH e formação profissional.</p>
+  174:                 <p class="desc-team-right">Nossa equipa de profissionais certificados pela OCPCA está pronta para apoiar
+  175                      Pequenas, Médias e Grandes Empresas com soluções personalizadas em contabilidade, fiscalidade, RH e
+
+  250                  <img src="Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img">
+  251:                 <p class="company-info">Empresa certificada pela OCPCA com mais de 10 anos de experiência</p>
+  252              </div>
+
+public\sobre.html:
+  220                  <img src="Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img">
+  221:                 <p class="company-info">Empresa certificada pela OCPCA com mais de 10 anos de experiência</p>
+  222              </div>
+
+views\DetalheArtigo.ejs:
+  85                  <img src="/Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img">
+  86:                 <p class="company-info">Empresa certificada pela OCPCA com mais de 10 anos de experiência</p>
+  87              </div>
