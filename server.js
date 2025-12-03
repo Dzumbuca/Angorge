@@ -388,7 +388,8 @@ app.get("/admin/artigos/:id/editar", async (req, res) => {
     try {
         const artigo = await Artigo.findById(req.params.id);
         if (!artigo) return res.status(404).send("Artigo não encontrado");
-        res.render("editarArtigo", { admin: req.session.user, artigo });
+        res.render("EditarArtigo", { admin: req.session.user, artigo });
+
     } catch (err) {
         console.error(err);
         res.status(500).send("Erro ao carregar artigo para edição");
