@@ -8,6 +8,9 @@
     <link rel="stylesheet" href="/style.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <link rel="stylesheet" href="/css/dashbord.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
 </head>
 
 <body>
@@ -26,11 +29,9 @@
                 <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
                 <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
                 <% if (admin && admin.perfil==="administrador" ) { %>
-                    <% if (admin && admin.perfil==="administrador" ) { %>
-                        <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
-                        <% } %>
-                            <% } %>
-                                <a href="/logout" class="nav-item"><i class="fas fa-sign-out-alt"></i></a>
+                    <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
+                    <% } %>
+                        <a href="/logout" class="nav-item"><i class="fas fa-sign-out-alt"></i></a>
             </nav>
         </aside>
 
@@ -51,55 +52,67 @@
                             <ul id="notification-list"></ul>
                         </div>
                     </div>
-                    <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Joaquim">
+                    <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Foto de perfil">
                     <span>
                         <%= admin.nome %>
                     </span>
                 </div>
-
-
             </header>
 
             <!-- Dashboard Cards -->
             <div class="dashboard-cards">
-                <div class="card" id="cursos-card">
-                    <h3>CURSOS PUBLICADOS</h3>
-                    <p class="number" id="cursos-count">0</p>
-                </div>
-                <div class="card active" id="artigos-card">
-                    <h3>ARTIGOS PUBLICADOS</h3>
-                    <p class="number" id="artigos-count">0</p>
-                </div>
-                <div class="card" id="inscritos-card">
-                    <h3>INSCRITOS</h3>
-                    <p class="number" id="inscritos-count">0</p>
-                </div>
+                <a href="/admin/cursos" class="dashboard-card-link" title="Gerir cursos">
+                    <div class="card" id="cursos-card">
+                        <div class="card-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>CURSOS PUBLICADOS</h3>
+                        <p class="number" id="cursos-count">⋯</p>
+                    </div>
+                </a>
+
+                <a href="/admin/artigos" class="dashboard-card-link" title="Gerir artigos">
+                    <div class="card active" id="artigos-card">
+                        <div class="card-icon">
+                            <i class="fas fa-file-alt"></i>
+                        </div>
+                        <h3>ARTIGOS PUBLICADOS</h3>
+                        <p class="number" id="artigos-count">⋯</p>
+                    </div>
+                </a>
+
+                <a href="/admin/usuarios" class="dashboard-card-link" title="Ver inscritos">
+                    <div class="card" id="inscritos-card">
+                        <div class="card-icon">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3>INSCRITOS</h3>
+                        <p class="number" id="inscritos-count">⋯</p>
+                    </div>
+                </a>
             </div>
+            <section class="dashboard-charts">
+                <h2>Gráficos</h2>
+                <div class="charts-container">
+                    <canvas id="cursosChart"></canvas>
+                    <canvas id="artigosChart"></canvas>
+                    <canvas id="inscritosChart"></canvas>
+                </div>
+            </section>
+
 
             <!-- 🔹 Nova seção estática -->
             <section class="secao-estatica">
                 <h2>Comentários</h2>
                 <div class="comentarios-container" id="comentarios-container">
-
+                    <!-- Comentários carregados via JS -->
                 </div>
-
-
+            </section>
+        </main>
     </div>
-
-
-    </section>
-
-
-
-    </main>
-    </div>
-
 
     <script src="/js/navbar.js"></script>
     <script src="/js/dashboard.js"></script>
-
-
-
 </body>
 
 </html>

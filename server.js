@@ -338,8 +338,12 @@ app.get("/admin/usuarios/novo", requireAdmin, (req, res) => {
 app.get("/api/dashbord/contagens", requireAuth, async (req, res) => {
     try {
         const [cursos, artigos, inscritos] = await Promise.all([
-            Curso.countDocuments({ status: "publicado" }),
-            Artigo.countDocuments({ status: "publicado" }),
+            Curso.countDocuments({
+                $or: [
+                    { status: "publicado" },
+                    { status: "Disponível Agora" }
+                ]
+            }), Artigo.countDocuments({ status: "publicado" }),
             Inscricao.countDocuments() // ou User.countDocuments({ perfil: "usuario" }) se for "usuários"
         ]);
 
