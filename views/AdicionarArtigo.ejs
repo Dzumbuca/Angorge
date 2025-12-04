@@ -15,25 +15,10 @@
     <!-- Layout -->
     <div class="admin-layout">
         <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="meu-logo">
-                <a href="/" target="_blank">
-                    <img src="/Icone/Ativo 1 2.png" alt="ANGORGE LDA">
-                </a>
-            </div>
-            <nav class="nav-menu">
-                <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
-                <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
-                <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
-                <% if (admin && admin.perfil==="administrador" ) { %>
-                    <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
-                    <% } %>
-                        <a href="/logout" class="nav-item"><i class="fas fa-sign-out-alt"></i></a>
-            </nav>
-        </aside>
+        <%- include('./partials/sidebar.ejs', { admin }) %>
 
-        <!-- Toast para notificações -->
-        <div id="toast-notification" style="
+            <!-- Toast para notificações -->
+            <div id="toast-notification" style="
             position: fixed;
             top: 20px;
             right: 20px;
@@ -47,97 +32,98 @@
             transition: opacity 0.3s, transform 0.3s;
         "></div>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <header class="header">
-                <div class="header-text">
-                    <h1>Adicionar Novo Artigo</h1>
-                    <p>Preencha os campos abaixo para publicar um novo artigo.</p>
-                </div>
-                <div class="user-header">
-                    <i class="fas fa-bell"></i>
-                    <img src="<%= admin ? admin.foto || '/Imagem/default-profile.jpg' : '/Imagem/default-profile.jpg' %>"
-                        alt="<%= admin ? admin.nome : 'Usuário' %>">
-                    <span>
-                        <%= admin ? admin.nome : 'Usuário' %>
-                    </span>
-                </div>
-            </header>
+            <!-- Main Content -->
+            <main class="main-content">
+                <header class="header">
+                    <div class="header-text">
+                        <h1>Adicionar Novo Artigo</h1>
+                        <p>Preencha os campos abaixo para publicar um novo artigo.</p>
+                    </div>
+                    <div class="user-header">
+                        <i class="fas fa-bell"></i>
+                        <img src="<%= admin ? admin.foto || '/Imagem/default-profile.jpg' : '/Imagem/default-profile.jpg' %>"
+                            alt="<%= admin ? admin.nome : 'Usuário' %>">
+                        <span>
+                            <%= admin ? admin.nome : 'Usuário' %>
+                        </span>
+                    </div>
+                </header>
 
-            <div class="form-wrapper">
-                <!-- Upload de Imagem -->
-                <div class="upload-section">
-                    <label>Imagem do Artigo</label>
-                    <div class="upload-area" id="upload-preview">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>Arraste ou clique para enviar</p>
-                        <small>Formatos aceitos: JPG, PNG, WebP | Recomendado: 800x500px</small>
-                        <input type="file" name="imagem" accept="image/*" hidden>
-                    </div>
-                </div>
-
-                <!-- Linha 1: Título + Categoria -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Título do Artigo</label>
-                        <input type="text" name="titulo" placeholder="Ex: Como Criar um Plano de Negócios Eficiente">
-                    </div>
-                    <div class="form-group">
-                        <label>Categoria</label>
-                        <select name="categoria" id="categoria">
-                            <option value="">Selecione uma categoria</option>
-                            <option value="gestao">Gestão</option>
-                            <option value="marketing">Marketing</option>
-                            <option value="financas">Finanças</option>
-                            <option value="tecnologia">Tecnologia</option>
-                            <option value="educacao">Educação</option>
-                            <option value="outros">Outros</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>Adicionar Categoria</label>
-                        <div style="display:flex; gap:8px;">
-                            <input type="text" id="nova-categoria" placeholder="Cole aqui a categoria">
-                            <button type="button" id="adicionar-categoria" class="btn-save">Adicionar</button>
+                <div class="form-wrapper">
+                    <!-- Upload de Imagem -->
+                    <div class="upload-section">
+                        <label>Imagem do Artigo</label>
+                        <div class="upload-area" id="upload-preview">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Arraste ou clique para enviar</p>
+                            <small>Formatos aceitos: JPG, PNG, WebP | Recomendado: 800x500px</small>
+                            <input type="file" name="imagem" accept="image/*" hidden>
                         </div>
                     </div>
-                </div>
 
-                <!-- Linha 2: Autor + Data de Publicação -->
-                <div class="form-row">
+                    <!-- Linha 1: Título + Categoria -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Título do Artigo</label>
+                            <input type="text" name="titulo"
+                                placeholder="Ex: Como Criar um Plano de Negócios Eficiente">
+                        </div>
+                        <div class="form-group">
+                            <label>Categoria</label>
+                            <select name="categoria" id="categoria">
+                                <option value="">Selecione uma categoria</option>
+                                <option value="gestao">Gestão</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="financas">Finanças</option>
+                                <option value="tecnologia">Tecnologia</option>
+                                <option value="educacao">Educação</option>
+                                <option value="outros">Outros</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Adicionar Categoria</label>
+                            <div style="display:flex; gap:8px;">
+                                <input type="text" id="nova-categoria" placeholder="Cole aqui a categoria">
+                                <button type="button" id="adicionar-categoria" class="btn-save">Adicionar</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Linha 2: Autor + Data de Publicação -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Autor</label>
+                            <input type="text" name="autor" value="<%= admin ? admin.nome : '' %>"
+                                placeholder="Ex: Joaquim Silva">
+
+                        </div>
+                        <div class="form-group">
+                            <label>Data de Publicação</label>
+                            <input type="date" name="dataPublicacao" id="data-publicacao">
+                        </div>
+                    </div>
+
+                    <!-- Descrição -->
                     <div class="form-group">
-                        <label>Autor</label>
-                        <input type="text" name="autor" value="<%= admin ? admin.nome : '' %>"
-                            placeholder="Ex: Joaquim Silva">
-
+                        <label>Descrição</label>
+                        <textarea name="descricao" rows="6"
+                            placeholder="Escreva aqui o conteúdo do seu artigo..."></textarea>
                     </div>
+
+                    <!-- Status -->
                     <div class="form-group">
-                        <label>Data de Publicação</label>
-                        <input type="date" name="dataPublicacao" id="data-publicacao">
+                        <label>Status</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="status" value="publicado" checked> Publicado</label>
+                            <label><input type="radio" name="status" value="rascunho"> Rascunho</label>
+                            <label><input type="radio" name="status" value="agendado"> Agendado</label>
+                        </div>
                     </div>
-                </div>
 
-                <!-- Descrição -->
-                <div class="form-group">
-                    <label>Descrição</label>
-                    <textarea name="descricao" rows="6"
-                        placeholder="Escreva aqui o conteúdo do seu artigo..."></textarea>
+                    <!-- Botão Publicar -->
+                    <button class="btn-publish">Publicar Artigo</button>
                 </div>
-
-                <!-- Status -->
-                <div class="form-group">
-                    <label>Status</label>
-                    <div class="radio-group">
-                        <label><input type="radio" name="status" value="publicado" checked> Publicado</label>
-                        <label><input type="radio" name="status" value="rascunho"> Rascunho</label>
-                        <label><input type="radio" name="status" value="agendado"> Agendado</label>
-                    </div>
-                </div>
-
-                <!-- Botão Publicar -->
-                <button class="btn-publish">Publicar Artigo</button>
-            </div>
-        </main>
+            </main>
     </div>
 
     <script>

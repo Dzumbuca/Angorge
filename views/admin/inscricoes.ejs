@@ -1,0 +1,314 @@
+<!-- views/admin/inscricoes.ejs -->
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inscrições - Área de Administração</title>
+    <link rel="stylesheet" href="/style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="/css/dashbord.css">
+</head>
+
+<body>
+    <div class="admin-layout">
+        <!-- Sidebar -->
+        <%- include('../partials/sidebar.ejs', { admin }) %>
+
+            <main class="main-content">
+                <header class="header">
+                    <div class="header-text">
+                        <h2>Inscrições</h2>
+                        <p>Todas as inscrições recebidas nos cursos.</p>
+                    </div>
+                    <div class="user-header">
+                        <i class="fas fa-bell"></i>
+                        <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Foto de Perfil">
+                        <span>
+                            <%= admin.nome %>
+                        </span>
+                    </div>
+                </header>
+
+                <div id="toast-notification"
+                    style="position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 6px; color: white; font-weight: bold; z-index: 1000; opacity: 0; transform: translateY(-20px); transition: opacity 0.3s, transform 0.3s;">
+                </div>
+
+                <div class="content-wrapper">
+                    <!-- Tabela de Inscrições -->
+                    <div class="table-container">
+                        <table class="courses-table">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>E-mail</th>
+                                    <th>Telefone</th>
+                                    <th>Curso</th>
+                                    <th>Data</th>
+                                    <th>Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody id="inscricoes-tbody">
+                                <!-- Será preenchido via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="pagination" id="pagination"></div>
+                </div>
+            </main>
+    </div>
+
+    <!-- Modal de Edição -->
+    <div id="modalEdicao" style="
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,0.6);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+    ">
+        <div style="
+            background: white;
+            padding: 24px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        ">
+            <h3 style="margin-top: 0;">Editar Inscrição</h3>
+            <form id="formEdicao">
+                <input type="hidden" id="editId">
+                <div style="margin-bottom: 12px;">
+                    <label>Nome</label>
+                    <input type="text" id="editNome" style="width: 100%; padding: 8px; margin-top: 4px;" required>
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <label>E-mail</label>
+                    <input type="email" id="editEmail" style="width: 100%; padding: 8px; margin-top: 4px;" required>
+                </div>
+                <div style="margin-bottom: 12px;">
+                    <label>Telefone</label>
+                    <input type="text" id="editTelefone" style="width: 100%; padding: 8px; margin-top: 4px;" required>
+                </div>
+                <div style="display: flex; gap: 10px; justify-content: flex-end;">
+                    <!-- ✅ Botão Cancelar com ID (sem onclick) -->
+                    <button type="button" id="btnCancelarModal" style="padding: 8px 16px;">Cancelar</button>
+                    <button type="submit"
+                        style="padding: 8px 16px; background: #007bff; color: white; border: none; border-radius: 4px;">Salvar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let paginaAtual = 1;
+            const limite = 10;
+
+            function showToast(message, type = 'info') {
+                const toast = document.getElementById('toast-notification');
+                if (!toast) return;
+                const bgColor = type === 'success' ? '#28a745' :
+                    type === 'error' ? '#dc3545' : '#17a2b8';
+                toast.textContent = message;
+                toast.style.backgroundColor = bgColor;
+                toast.style.opacity = '1';
+                toast.style.transform = 'translateY(0)';
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateY(-20px)';
+                }, 2500);
+            }
+
+            function formatarData(dataStr) {
+                const data = new Date(dataStr);
+                return data.toLocaleDateString('pt-BR') + ' ' +
+                    data.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+            }
+
+            async function eliminarInscricao(id) {
+                if (!confirm("Tem certeza que deseja eliminar esta inscrição? Esta ação não pode ser desfeita.")) {
+                    return;
+                }
+
+                try {
+                    const res = await fetch(`/admin/inscricoes/${id}`, {
+                        method: "DELETE",
+                        headers: { "Content-Type": "application/json" }
+                    });
+
+                    if (res.ok) {
+                        showToast("Inscrição eliminada com sucesso!", "success");
+                        const paginaAtual = parseInt(document.querySelector("#pagination .active")?.textContent) || 1;
+                        carregarInscricoes(paginaAtual);
+                    } else {
+                        const data = await res.json();
+                        showToast(data.error || "Erro ao eliminar inscrição.", "error");
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showToast("Erro de conexão ao eliminar.", "error");
+                }
+            }
+
+            async function carregarInscricoes(page = 1) {
+                try {
+                    const res = await fetch(`/admin/inscricoes/api?page=${page}&limit=${limite}`);
+                    const { inscricoes, page: pagina, totalPages } = await res.json();
+
+                    const tbody = document.getElementById("inscricoes-tbody");
+                    tbody.innerHTML = "";
+
+                    if (inscricoes.length === 0) {
+                        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 20px;">Nenhuma inscrição encontrada.</td></tr>`;
+                        document.getElementById("pagination").innerHTML = "";
+                        return;
+                    }
+
+                    inscricoes.forEach(insc => {
+                        const row = document.createElement("tr");
+                        row.dataset.inscricaoId = insc._id;
+                        row.innerHTML = `
+                            <td>${insc.nome || '—'}</td>
+                            <td><a href="mailto:${insc.email}">${insc.email || '—'}</a></td>
+                            <td><a href="tel:${insc.telefone}">${insc.telefone || '—'}</a></td>
+                            <td>${insc.cursoTitulo || '—'}</td>
+                            <td>${formatarData(insc.data)}</td>
+                            <td>
+                                <div class="actions-menu">
+                                    <button class="action-btn btn-editar" title="Editar inscrição">
+                                        <i class="fas fa-edit" style="color: #007bff;"></i>
+                                    </button>
+                                    <button class="action-btn btn-eliminar" title="Eliminar inscrição" data-id="${insc._id}">
+                                        <i class="fas fa-trash" style="color: #dc3545;"></i>
+                                    </button>
+                                    <button class="action-btn" title="Exportar" onclick="alert('Exportar em desenvolvimento')">
+                                        <i class="fas fa-download"></i>
+                                    </button>
+                                </div>
+                            </td>
+                        `;
+                        row.dataset.inscricaoData = JSON.stringify(insc);
+                        tbody.appendChild(row);
+                    });
+
+                    // 👇 Listeners: Editar
+                    document.querySelectorAll(".btn-editar").forEach(btn => {
+                        btn.addEventListener("click", (e) => {
+                            const row = e.target.closest("tr");
+                            const id = row.dataset.inscricaoId;
+                            const dados = JSON.parse(row.dataset.inscricaoData);
+                            abrirModalEdicao(id, dados);
+                        });
+                    });
+
+                    // 👇 Listeners: Eliminar
+                    document.querySelectorAll(".btn-eliminar").forEach(btn => {
+                        btn.addEventListener("click", (e) => {
+                            const id = btn.dataset.id;
+                            eliminarInscricao(id);
+                        });
+                    });
+
+                    renderizarPaginacao(pagina, totalPages);
+                } catch (err) {
+                    console.error(err);
+                    showToast("Erro ao carregar inscrições.", "error");
+                }
+            }
+
+            function renderizarPaginacao(pagina, totalPaginas) {
+                const container = document.getElementById("pagination");
+                container.innerHTML = "";
+
+                if (pagina > 1) {
+                    const btn = document.createElement("button");
+                    btn.textContent = "Anterior";
+                    btn.onclick = () => carregarInscricoes(pagina - 1);
+                    container.appendChild(btn);
+                }
+
+                for (let i = 1; i <= totalPaginas; i++) {
+                    const btn = document.createElement("button");
+                    btn.textContent = i.toString().padStart(2, '0');
+                    if (i === pagina) btn.classList.add("active");
+                    btn.onclick = () => carregarInscricoes(i);
+                    container.appendChild(btn);
+                }
+
+                if (pagina < totalPaginas) {
+                    const btn = document.createElement("button");
+                    btn.textContent = "Próxima";
+                    btn.onclick = () => carregarInscricoes(pagina + 1);
+                    container.appendChild(btn);
+                }
+            }
+
+            function abrirModalEdicao(id, dados) {
+                document.getElementById("editId").value = id;
+                document.getElementById("editNome").value = dados.nome || "";
+                document.getElementById("editEmail").value = dados.email || "";
+                document.getElementById("editTelefone").value = dados.telefone || "";
+                document.getElementById("modalEdicao").style.display = "flex";
+            }
+
+            function fecharModalEdicao() {
+                document.getElementById("modalEdicao").style.display = "none";
+            }
+
+            // 👇 Fecha modal ao clicar fora
+            document.getElementById("modalEdicao").addEventListener("click", (e) => {
+                if (e.target.id === "modalEdicao") fecharModalEdicao();
+            });
+
+            // 👇 Fecha modal com botão "Cancelar" (agora com ID válido)
+            document.getElementById("btnCancelarModal").addEventListener("click", fecharModalEdicao);
+
+            // 👇 Salvar edição
+            document.getElementById("formEdicao").addEventListener("submit", async (e) => {
+                e.preventDefault();
+                const id = document.getElementById("editId").value;
+                const dados = {
+                    nome: document.getElementById("editNome").value.trim(),
+                    email: document.getElementById("editEmail").value.trim(),
+                    telefone: document.getElementById("editTelefone").value.trim()
+                };
+
+                if (!dados.nome || !dados.email || !dados.telefone) {
+                    showToast("Preencha todos os campos.", "error");
+                    return;
+                }
+
+                try {
+                    const res = await fetch(`/admin/inscricoes/${id}`, {
+                        method: "PUT",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify(dados)
+                    });
+
+                    if (res.ok) {
+                        showToast("Inscrição atualizada com sucesso!", "success");
+                        fecharModalEdicao();
+                        const paginaAtual = parseInt(document.querySelector("#pagination .active")?.textContent) || 1;
+                        carregarInscricoes(paginaAtual);
+                    } else {
+                        const data = await res.json();
+                        showToast(data.error || "Erro ao salvar.", "error");
+                    }
+                } catch (err) {
+                    console.error(err);
+                    showToast("Erro de conexão.", "error");
+                }
+            });
+
+            // ✅ Inicia tudo
+            carregarInscricoes();
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+<aside class="sidebar">
+    <div class="meu-logo">
+        <a href="/" target="_blank">
+            <img src="/Icone/Ativo 1 2.png" alt="ANGORGE LDA">
+        </a>
+    </div>
+    <nav class="nav-menu">
+        <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
+        <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
+        <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
+        <% if (admin && admin.perfil==="administrador" ) { %>
+            <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
+            <a href="/admin/inscricoes" class="nav-item"><i class="fas fa-list"></i></a>
+            <% } %>
+                <a href="/logout" class="nav-item"><i class="fas fa-sign-out-alt"></i></a>
+    </nav>
+</aside>

@@ -4,6 +4,7 @@
 
 const API_URL = "";
 const WHATSAPP_EMPRESA = "244937555618"; // número da empresa
+let cursoAtual = null; // 
 
 document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
@@ -34,6 +35,7 @@ async function carregarDetalhesCurso(id) {
 
 function preencherEstrutura(curso) {
     if (!curso || typeof curso !== "object") return;
+    cursoAtual = curso;
 
     // ---------- Banner ----------
     const tituloEl = document.querySelector(".treinamento-titulo");
@@ -151,6 +153,14 @@ function fecharModal() {
 document.getElementById("formInscricao").addEventListener("submit", async (e) => {
     e.preventDefault();
     const form = e.target;
+    const cursoId = form.cursoId.value;
+
+    // ✅ Validação: ObjectID tem 24 caracteres hexadecimais
+    if (!/^[0-9a-fA-F]{24}$/.test(cursoId)) {
+        alert("⚠️ ID do curso inválido. Não foi possível processar sua inscrição.");
+        console.error("ID do curso inválido:", cursoId);
+        return;
+    }
     const data = {
         nome: form.nome.value,
         email: form.email.value,
@@ -175,8 +185,9 @@ document.getElementById("formInscricao").addEventListener("submit", async (e) =>
         console.error("❌ Erro ao enviar inscrição para o servidor:", err);
     }
 
-    // 2️⃣ Abre WhatsApp do usuário com a mensagem pronta
-    const mensagem = `Nova inscrição:\nNome: ${data.nome}\nEmail: ${data.email}\nTelefone: ${data.telefone}\nCurso: ${data.cursoId}`;
+    // 2️⃣ Abre WhatsApp com título do curso (se disponível)
+    const tituloCurso = cursoAtual?.titulo || "Curso não informado";
+    const mensagem = `Nova inscrição:\nNome: ${data.nome}\nEmail: ${data.email}\nTelefone: ${data.telefone}\nCurso: ${tituloCurso}`;
     const urlWhatsApp = `https://wa.me/${WHATSAPP_EMPRESA}?text=${encodeURIComponent(mensagem)}`;
     window.open(urlWhatsApp, "_blank");
 });

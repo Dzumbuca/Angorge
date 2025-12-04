@@ -16,53 +16,7 @@
 <body>
     <!-- Layout -->
     <div class="admin-layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="meu-logo">
-                <a href="index.html" target="_blank">
-                    <img src="/Icone/Ativo 1 2.png" alt="ANGORGE LDA">
-                </a>
-            </div>
-            <nav class="nav-menu">
-                <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
-                <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
-                <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
-                <% if (admin && admin.perfil==="administrador" ) { %>
-                    <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
-                    <% } %>
-                        <a href="/logout" class="nav-item"><i class="fas fa-sign-out-alt"></i></a>
-            </nav>
-        </aside>
-        <!-- ✅ Container para notificações suaves -->
-        <div id="toast-notification" style="
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    padding: 12px 20px;
-    border-radius: 6px;
-    color: white;
-    font-weight: bold;
-    z-index: 1000;
-    opacity: 0;
-    transform: translateY(-20px);
-    transition: opacity 0.3s, transform 0.3s;
-"></div>
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Header -->
-            <header class="header">
-                <div class="header-text">
-
-                </div>
-                <div class="user-header">
-                    <i class="fas fa-bell"></i>
-                    <img src="<%= admin ? admin.foto || '/Imagem/default-profile.jpg' : '/Imagem/default-profile.jpg' %>"
-                        alt="Foto de Perfil">
-                    <span>
-                        <%= admin ? admin.nome : 'Visitante' %>
-                    </span>
-                </div>
-            </header>
+        <%- include('./partials/sidebar.ejs', { admin }) %>
             <!-- ✅ Container para notificações suaves -->
             <div id="toast-notification" style="
     position: fixed;
@@ -77,58 +31,88 @@
     transform: translateY(-20px);
     transition: opacity 0.3s, transform 0.3s;
 "></div>
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Header -->
+                <header class="header">
+                    <div class="header-text">
 
-            <!-- Conteúdo Principal -->
-            <div class="content-wrapper">
-                <div class="content-header">
-                    <div>
-                        <h2>Artigos</h2>
-                        <p>Gerencie todos os artigos disponíveis no site.</p>
                     </div>
-                    <a href="/admin/artigos/novo" class="btn-add">
-                        <i class="fas fa-plus"></i> ADICIONAR
-                    </a>
+                    <div class="user-header">
+                        <i class="fas fa-bell"></i>
+                        <img src="<%= admin ? admin.foto || '/Imagem/default-profile.jpg' : '/Imagem/default-profile.jpg' %>"
+                            alt="Foto de Perfil">
+                        <span>
+                            <%= admin ? admin.nome : 'Visitante' %>
+                        </span>
+                    </div>
+                </header>
+                <!-- ✅ Container para notificações suaves -->
+                <div id="toast-notification" style="
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 12px 20px;
+    border-radius: 6px;
+    color: white;
+    font-weight: bold;
+    z-index: 1000;
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 0.3s, transform 0.3s;
+"></div>
+
+                <!-- Conteúdo Principal -->
+                <div class="content-wrapper">
+                    <div class="content-header">
+                        <div>
+                            <h2>Artigos</h2>
+                            <p>Gerencie todos os artigos disponíveis no site.</p>
+                        </div>
+                        <a href="/admin/artigos/novo" class="btn-add">
+                            <i class="fas fa-plus"></i> ADICIONAR
+                        </a>
+                    </div>
+
+                    <!-- Tabela de Artigos -->
+                    <table class="articles-table">
+                        <thead>
+                            <tr>
+                                <th>Nome do Artigo</th>
+                                <th>Categoria</th>
+                                <th>Data de Publicação</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody id="articles-tbody">
+                            <tr>
+                                <td>Exemplo de Artigo</td>
+                                <td>Categoria X</td>
+                                <td>24/09/2025</td>
+                                <td>Publicado</td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <button class="btn-save" title="Editar">
+                                            <i class="fas fa-edit"></i> Editar
+                                        </button>
+                                        <button class="btn-delete" title="Excluir">
+                                            <i class="fas fa-trash"></i> Eliminar
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <!-- Outras linhas de artigos podem ser adicionadas aqui -->
+                        </tbody>
+                    </table>
+
+
+                    <!-- Paginação -->
+                    <div class="pagination" id="pagination-container">
+                        <!-- Botões de paginação serão gerados aqui -->
+                    </div>
                 </div>
-
-                <!-- Tabela de Artigos -->
-                <table class="articles-table">
-                    <thead>
-                        <tr>
-                            <th>Nome do Artigo</th>
-                            <th>Categoria</th>
-                            <th>Data de Publicação</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody id="articles-tbody">
-                        <tr>
-                            <td>Exemplo de Artigo</td>
-                            <td>Categoria X</td>
-                            <td>24/09/2025</td>
-                            <td>Publicado</td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="btn-save" title="Editar">
-                                        <i class="fas fa-edit"></i> Editar
-                                    </button>
-                                    <button class="btn-delete" title="Excluir">
-                                        <i class="fas fa-trash"></i> Eliminar
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <!-- Outras linhas de artigos podem ser adicionadas aqui -->
-                    </tbody>
-                </table>
-
-
-                <!-- Paginação -->
-                <div class="pagination" id="pagination-container">
-                    <!-- Botões de paginação serão gerados aqui -->
-                </div>
-            </div>
-        </main>
+            </main>
     </div>
 
 

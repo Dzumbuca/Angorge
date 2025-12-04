@@ -15,23 +15,9 @@
 <body>
     <div class="admin-layout">
         <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="meu-logo">
-                <a href="/" target="_blank">
-                    <img src="/Icone/Ativo 1 2.png" alt="ANGORGE LDA">
-                </a>
-            </div>
-            <nav class="nav-menu">
-                <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
-                <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
-                <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
-                <% if (admin && admin.perfil==="administrador" ) { %>
-                    <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
-                    <% } %>
-            </nav>
-        </aside>
-        <!-- ✅ Container para notificações suaves -->
-        <div id="toast-notification" style="
+        <%- include('./partials/sidebar.ejs', { admin }) %>
+            <!-- ✅ Container para notificações suaves -->
+            <div id="toast-notification" style="
     position: fixed;
     top: 20px;
     right: 20px;
@@ -45,81 +31,82 @@
     transition: opacity 0.3s, transform 0.3s;
 "></div>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <header class="header">
-                <div class="header-text">
-                    <h1>Editar Artigo</h1>
-                    <p>Atualize as informações do artigo abaixo.</p>
-                </div>
-                <div class="user-header">
-                    <i class="fas fa-bell"></i>
-                    <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Usuário">
-                    <span class="user-name">Usuário</span> <!-- ✅ CLASSE CORRETA -->
-                </div>
-            </header>
+            <!-- Main Content -->
+            <main class="main-content">
+                <header class="header">
+                    <div class="header-text">
+                        <h1>Editar Artigo</h1>
+                        <p>Atualize as informações do artigo abaixo.</p>
+                    </div>
+                    <div class="user-header">
+                        <i class="fas fa-bell"></i>
+                        <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Usuário">
+                        <span class="user-name">Usuário</span> <!-- ✅ CLASSE CORRETA -->
+                    </div>
+                </header>
 
-            <div class="form-wrapper">
-                <div class="current-image">
-                    <a href="" target="_blank" id="linkImagem">
-                        <img id="previewImg" src="https://via.placeholder.com/800x500?text=Artigo" alt="Imagem Atual">
-                    </a>
-                    <button class="btn-change">Trocar Imagem</button>
-                    <input type="file" id="imagemArtigo" accept="image/*" hidden>
-                </div>
+                <div class="form-wrapper">
+                    <div class="current-image">
+                        <a href="" target="_blank" id="linkImagem">
+                            <img id="previewImg" src="https://via.placeholder.com/800x500?text=Artigo"
+                                alt="Imagem Atual">
+                        </a>
+                        <button class="btn-change">Trocar Imagem</button>
+                        <input type="file" id="imagemArtigo" accept="image/*" hidden>
+                    </div>
 
-                <div class="form-row">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Título</label>
+                            <input type="text" id="titulo">
+                        </div>
+                        <div class="form-group">
+                            <label>Categoria</label>
+                            <select id="categoria" name="categoria">
+                                <option value="">Selecione</option>
+                                <option value="gestao">Gestão</option>
+                                <option value="marketing">Marketing</option>
+                                <option value="financas">Finanças</option>
+                                <option value="tecnologia">Tecnologia</option>
+                                <option value="educacao">Educação</option>
+                                <option value="outros">Outros</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Autor</label>
+                            <input type="text" id="autor" name="autor">
+                        </div>
+                        <div class="form-group">
+                            <label>Data de Publicação</label>
+                            <input type="date" id="dataPublicacao" name="data">
+                        </div>
+                    </div>
+
                     <div class="form-group">
-                        <label>Título</label>
-                        <input type="text" id="titulo">
+                        <label>Descrição</label>
+                        <textarea id="descricao" rows="6"></textarea>
                     </div>
+
                     <div class="form-group">
-                        <label>Categoria</label>
-                        <select id="categoria" name="categoria">
-                            <option value="">Selecione</option>
-                            <option value="gestao">Gestão</option>
-                            <option value="marketing">Marketing</option>
-                            <option value="financas">Finanças</option>
-                            <option value="tecnologia">Tecnologia</option>
-                            <option value="educacao">Educação</option>
-                            <option value="outros">Outros</option>
-                        </select>
+                        <label>Status</label>
+                        <div class="radio-group">
+                            <label><input type="radio" name="status" value="publicado"> Publicado</label>
+                            <label><input type="radio" name="status" value="rascunho"> Rascunho</label>
+                            <label><input type="radio" name="status" value="agendado"> Agendado</label>
+                        </div>
+                    </div>
+                    <div id="artigo-message" class="message-box"></div>
+
+                    <div class="action-buttons">
+                        <button id="btn-salvar-artigo" class="btn-save">Salvar Alterações</button>
+                        <button class="btn-cancel">Cancelar</button>
+                        <button class="btn-delete">Excluir</button>
                     </div>
                 </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Autor</label>
-                        <input type="text" id="autor" name="autor">
-                    </div>
-                    <div class="form-group">
-                        <label>Data de Publicação</label>
-                        <input type="date" id="dataPublicacao" name="data">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Descrição</label>
-                    <textarea id="descricao" rows="6"></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Status</label>
-                    <div class="radio-group">
-                        <label><input type="radio" name="status" value="publicado"> Publicado</label>
-                        <label><input type="radio" name="status" value="rascunho"> Rascunho</label>
-                        <label><input type="radio" name="status" value="agendado"> Agendado</label>
-                    </div>
-                </div>
-                <div id="artigo-message" class="message-box"></div>
-
-                <div class="action-buttons">
-                    <button id="btn-salvar-artigo" class="btn-save">Salvar Alterações</button>
-                    <button class="btn-cancel">Cancelar</button>
-                    <button class="btn-delete">Excluir</button>
-                </div>
-            </div>
-        </main>
+            </main>
     </div>
 
     <script>

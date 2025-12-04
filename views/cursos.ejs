@@ -16,42 +16,26 @@
 <body>
     <!-- Layout -->
     <div class="admin-layout">
-        <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="meu-logo">
-                <a href="/" target="_blank">
-                    <img src="Icone/Ativo 1 2.png" alt="ANGORGE LDA">
-                </a>
-            </div>
-            <nav class="nav-menu">
-                <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
-                <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
-                <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
-                <% if (admin && admin.perfil==="administrador" ) { %>
-                    <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
-                    <% } %>
-                        <a href="/logout" class="nav-item"><i class="fas fa-sign-out-alt"></i></a>
-            </nav>
-        </aside>
+        <%- include('./partials/sidebar.ejs', { admin }) %>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <!-- Header -->
-            <header class="header">
-                <div class="header-text">
+            <!-- Main Content -->
+            <main class="main-content">
+                <!-- Header -->
+                <header class="header">
+                    <div class="header-text">
 
-                </div>
-                <div class="user-header">
-                    <i class="fas fa-bell"></i>
-                    <img src="<%= admin ? admin.foto || '/Imagem/default-profile.jpg' : '/Imagem/default-profile.jpg' %>"
-                        alt="Foto de Perfil">
-                    <span>
-                        <%= admin ? admin.nome : 'Visitante' %>
-                    </span>
-                </div>
-            </header>
-            <!-- ✅ Container para notificações suaves -->
-            <div id="toast-notification" style="
+                    </div>
+                    <div class="user-header">
+                        <i class="fas fa-bell"></i>
+                        <img src="<%= admin ? admin.foto || '/Imagem/default-profile.jpg' : '/Imagem/default-profile.jpg' %>"
+                            alt="Foto de Perfil">
+                        <span>
+                            <%= admin ? admin.nome : 'Visitante' %>
+                        </span>
+                    </div>
+                </header>
+                <!-- ✅ Container para notificações suaves -->
+                <div id="toast-notification" style="
     position: fixed;
     top: 20px;
     right: 20px;
@@ -65,107 +49,107 @@
     transition: opacity 0.3s, transform 0.3s;
 "></div>
 
-            <!-- Conteúdo Principal -->
-            <div class="content-wrapper">
-                <div class="content-header">
-                    <div>
-                        <h2>Cursos</h2>
-                        <p>Gerencie todos os cursos disponíveis no site.</p>
+                <!-- Conteúdo Principal -->
+                <div class="content-wrapper">
+                    <div class="content-header">
+                        <div>
+                            <h2>Cursos</h2>
+                            <p>Gerencie todos os cursos disponíveis no site.</p>
+                        </div>
+                        <a href="/admin/cursos/novo" class="btn-add">
+                            <i class="fas fa-plus"></i> ADICIONAR
+                        </a>
                     </div>
-                    <a href="/admin/cursos/novo" class="btn-add">
-                        <i class="fas fa-plus"></i> ADICIONAR
-                    </a>
-                </div>
 
-                <!-- Tabela de Cursos -->
-                <table class="courses-table">
-                    <thead>
-                        <tr>
-                            <th>Nome do Curso</th>
-                            <th>Categoria</th>
-                            <th>Duração</th>
-                            <th>Tipo</th>
-                            <th>Status</th>
-                            <th>Ações</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <div class="course-image-placeholder">C</div>
-                                Contabilidade Geral e Analítica
-                            </td>
-                            <td>Contabilidade</td>
-                            <td>40 horas</td>
-                            <td>Online</td>
-                            <td><span class="status-badge status-disponivel">Disponível Agora</span></td>
-                            <td>
-                                <div class="actions-menu">
-                                    <button class="action-btn" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn" title="Excluir">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="course-image-placeholder">M</div>
-                                Marketing Digital para Iniciantes
-                            </td>
-                            <td>Marketing</td>
-                            <td>30 horas</td>
-                            <td>Online</td>
-                            <td><span class="status-badge status-em-breve">Em Breve</span></td>
-                            <td>
-                                <div class="actions-menu">
-                                    <button class="action-btn" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn" title="Excluir">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>
-                                <div class="course-image-placeholder">T</div>
-                                Introdução ao JavaScript
-                            </td>
-                            <td>Tecnologia</td>
-                            <td>25 horas</td>
-                            <td>Online</td>
-                            <td><span class="status-badge status-encerrado">Encerrado</span></td>
-                            <td>
-                                <div class="actions-menu">
-                                    <button class="action-btn" title="Editar">
-                                        <i class="fas fa-edit"></i>
-                                    </button>
-                                    <button class="action-btn" title="Excluir">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                    <!-- Tabela de Cursos -->
+                    <table class="courses-table">
+                        <thead>
+                            <tr>
+                                <th>Nome do Curso</th>
+                                <th>Categoria</th>
+                                <th>Duração</th>
+                                <th>Tipo</th>
+                                <th>Status</th>
+                                <th>Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <div class="course-image-placeholder">C</div>
+                                    Contabilidade Geral e Analítica
+                                </td>
+                                <td>Contabilidade</td>
+                                <td>40 horas</td>
+                                <td>Online</td>
+                                <td><span class="status-badge status-disponivel">Disponível Agora</span></td>
+                                <td>
+                                    <div class="actions-menu">
+                                        <button class="action-btn" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" title="Excluir">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="course-image-placeholder">M</div>
+                                    Marketing Digital para Iniciantes
+                                </td>
+                                <td>Marketing</td>
+                                <td>30 horas</td>
+                                <td>Online</td>
+                                <td><span class="status-badge status-em-breve">Em Breve</span></td>
+                                <td>
+                                    <div class="actions-menu">
+                                        <button class="action-btn" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" title="Excluir">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <div class="course-image-placeholder">T</div>
+                                    Introdução ao JavaScript
+                                </td>
+                                <td>Tecnologia</td>
+                                <td>25 horas</td>
+                                <td>Online</td>
+                                <td><span class="status-badge status-encerrado">Encerrado</span></td>
+                                <td>
+                                    <div class="actions-menu">
+                                        <button class="action-btn" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="action-btn" title="Excluir">
+                                            <i class="fas fa-trash"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
 
-                <!-- Paginação -->
-                <div class="pagination">
-                    <button>Anterior</button>
-                    <button>01</button>
-                    <button>02</button>
-                    <button class="active">03</button>
-                    <button>04</button>
-                    <button>...</button>
-                    <button>10</button>
-                    <button>Próxima</button>
+                    <!-- Paginação -->
+                    <div class="pagination">
+                        <button>Anterior</button>
+                        <button>01</button>
+                        <button>02</button>
+                        <button class="active">03</button>
+                        <button>04</button>
+                        <button>...</button>
+                        <button>10</button>
+                        <button>Próxima</button>
+                    </div>
                 </div>
-            </div>
-        </main>
+            </main>
     </div>
 
     <script>

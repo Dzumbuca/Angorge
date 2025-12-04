@@ -28,67 +28,50 @@
     "></div>
 
     <div class="admin-layout">
-        <aside class="sidebar">
-            <div class="meu-logo">
-                <a href="/" target="_blank">
-                    <img src="/Icone/Ativo 1 2.png" alt="ANGORGE LDA">
-                </a>
-            </div>
-            <nav class="nav-menu">
-                <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
-                <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
-                <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
-                <% if (admin && admin.perfil==="administrador" ) { %>
-                    <% if (admin && admin.perfil==="administrador" ) { %>
-                        <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
-                        <% } %>
-                            <% } %>
-                                <a href="/logout" class="nav-item"><i class="fas fa-sign-out-alt"></i></a>
-            </nav>
-        </aside>
+        <%- include('./partials/sidebar.ejs', { admin }) %>
 
-        <main class="main-content">
-            <header class="header">
-                <div class="header-text"></div>
-                <div class="user-header">
-                    <i class="fas fa-bell"></i>
-                    <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Foto de Perfil do Admin">
-                    <span>
-                        <%= admin.nome %>
-                    </span>
-                </div>
-            </header>
-
-            <div class="content-wrapper">
-                <div class="content-header">
-                    <div>
-                        <h2>Usuários</h2>
-                        <p>Gerencie todos os usuários do sistema.</p>
+            <main class="main-content">
+                <header class="header">
+                    <div class="header-text"></div>
+                    <div class="user-header">
+                        <i class="fas fa-bell"></i>
+                        <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Foto de Perfil do Admin">
+                        <span>
+                            <%= admin.nome %>
+                        </span>
                     </div>
-                    <a href="/admin/usuarios/novo" class="btn-add">
-                        <i class="fas fa-plus"></i> ADICIONAR
-                    </a>
+                </header>
+
+                <div class="content-wrapper">
+                    <div class="content-header">
+                        <div>
+                            <h2>Usuários</h2>
+                            <p>Gerencie todos os usuários do sistema.</p>
+                        </div>
+                        <a href="/admin/usuarios/novo" class="btn-add">
+                            <i class="fas fa-plus"></i> ADICIONAR
+                        </a>
+                    </div>
+
+                    <table class="articles-table">
+                        <thead>
+                            <tr>
+                                <th>NOME</th>
+                                <th>PERFIL</th>
+                                <th>STATUS</th>
+                                <th>AÇÕES</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usuarios-tbody">
+                        </tbody>
+
+                    </table>
+
+                    <div class="pagination" id="pagination-container">
+                        <!-- Paginação será gerada aqui -->
+                    </div>
                 </div>
-
-                <table class="articles-table">
-                    <thead>
-                        <tr>
-                            <th>NOME</th>
-                            <th>PERFIL</th>
-                            <th>STATUS</th>
-                            <th>AÇÕES</th>
-                        </tr>
-                    </thead>
-                    <tbody id="usuarios-tbody">
-                    </tbody>
-
-                </table>
-
-                <div class="pagination" id="pagination-container">
-                    <!-- Paginação será gerada aqui -->
-                </div>
-            </div>
-        </main>
+            </main>
     </div>
 
     <script>

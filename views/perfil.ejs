@@ -16,106 +16,93 @@
 <body>
     <div class="admin-layout">
         <!-- Sidebar -->
-        <aside class="sidebar">
-            <div class="meu-logo">
-                <a href="/" target="_blank">
-                    <img src="/Icone/Ativo 1 2.png" alt="ANGORGE LDA">
-                </a>
-            </div>
-            <nav class="nav-menu">
-                <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
-                <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
-                <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
-                <% if (admin && admin.perfil==="administrador" ) { %>
-                    <a href="/admin/usuarios" class="nav-item"><i class="fas fa-users"></i></a>
-                    <% } %>
-                        <a href="/logout" class="nav-item"><i class="fas fa-sign-out-alt"></i></a>
-            </nav>
-        </aside>
+        <%- include('./partials/sidebar.ejs', { admin }) %>
 
-        <!-- Main Content -->
-        <main class="main-content">
-            <header class="header">
-                <div class="header-text">
-                    <h1>Perfil de <%= user.nome %>
-                    </h1>
-                    <p>Visualize e atualize as informações deste usuário.</p>
+            <!-- Main Content -->
+            <main class="main-content">
+                <header class="header">
+                    <div class="header-text">
+                        <h1>Perfil de <%= user.nome %>
+                        </h1>
+                        <p>Visualize e atualize as informações deste usuário.</p>
+                    </div>
+                    <div class="user-header">
+                        <i class="fas fa-bell"></i>
+                        <img src="<%= (admin && admin.foto) || '/Imagem/default-profile.jpg' %>"
+                            alt="Foto de Perfil do Admin">
+                        <span>
+                            <%= admin ? admin.nome : 'Usuário' %>
+                        </span>
+                    </div>
+                </header>
+
+                <div id="toast-notification"
+                    style="position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 6px; color: white; font-weight: bold; z-index: 1000; opacity: 0; transform: translateY(-20px); transition: opacity 0.3s, transform 0.3s;">
                 </div>
-                <div class="user-header">
-                    <i class="fas fa-bell"></i>
-                    <img src="<%= (admin && admin.foto) || '/Imagem/default-profile.jpg' %>"
-                        alt="Foto de Perfil do Admin">
-                    <span>
-                        <%= admin ? admin.nome : 'Usuário' %>
-                    </span>
-                </div>
-            </header>
 
-            <div id="toast-notification"
-                style="position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 6px; color: white; font-weight: bold; z-index: 1000; opacity: 0; transform: translateY(-20px); transition: opacity 0.3s, transform 0.3s;">
-            </div>
+                <div class="form-wrapper">
+                    <!-- Foto de Perfil -->
+                    <!-- Foto de Perfil -->
+                    <div class="current-image">
+                        <% const fotoUrl=user.foto ? (user.foto.startsWith('http') ? user.foto : '/uploads/usuarios/' +
+                            user.foto) : 'https://via.placeholder.com/300x300?text=Sem+Foto  ' ; %>
+                            <img id="previewImg" src="<%= fotoUrl %>" alt="Foto de Perfil">
+                            <button type="button" class="btn-change">Alterar Foto</button>
+                            <div class="upload-area">
+                                <p>Formatos aceitos: JPG, PNG, WEBP | Recomendado: 300x300px</p>
+                            </div>
+                            <input type="file" id="fotoPerfil" accept="image/*"
+                                style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10;">
+                    </div>
 
-            <div class="form-wrapper">
-                <!-- Foto de Perfil -->
-                <!-- Foto de Perfil -->
-                <div class="current-image">
-                    <% const fotoUrl=user.foto ? (user.foto.startsWith('http') ? user.foto : '/uploads/usuarios/' +
-                        user.foto) : 'https://via.placeholder.com/300x300?text=Sem+Foto  ' ; %>
-                        <img id="previewImg" src="<%= fotoUrl %>" alt="Foto de Perfil">
-                        <button type="button" class="btn-change">Alterar Foto</button>
-                        <div class="upload-area">
-                            <p>Formatos aceitos: JPG, PNG, WEBP | Recomendado: 300x300px</p>
+                    <!-- Linha 1: Nome + Perfil -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nome Completo</label>
+                            <input type="text" id="nome" value="<%= user.nome %>">
                         </div>
-                        <input type="file" id="fotoPerfil" accept="image/*"
-                            style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; z-index: 10;">
-                </div>
-
-                <!-- Linha 1: Nome + Perfil -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Nome Completo</label>
-                        <input type="text" id="nome" value="<%= user.nome %>">
+                        <div class="form-group">
+                            <label>Perfil</label>
+                            <% if (!isOwnProfile && admin.perfil==="administrador" ) { %>
+                                <!-- Só admin editando outro usuário pode mudar o perfil -->
+                                <select id="perfil">
+                                    <option value="administrador" <%=(user.perfil==='administrador' ) ? 'selected' : ''
+                                        %>
+                                        >Administrador</option>
+                                    <option value="editor" <%=(user.perfil==='editor' ) ? 'selected' : '' %>>Editor
+                                    </option>
+                                </select>
+                                <% } else { %>
+                                    <!-- Qualquer outro caso: campo desabilitado (próprio perfil ou editor vendo outro) -->
+                                    <input type="text"
+                                        value="<%= user.perfil === 'administrador' ? 'Administrador' : 'Editor' %>"
+                                        disabled>
+                                    <input type="hidden" id="perfil" value="<%= user.perfil %>">
+                                    <% } %>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>Perfil</label>
-                        <% if (!isOwnProfile && admin.perfil==="administrador" ) { %>
-                            <!-- Só admin editando outro usuário pode mudar o perfil -->
-                            <select id="perfil">
-                                <option value="administrador" <%=(user.perfil==='administrador' ) ? 'selected' : '' %>
-                                    >Administrador</option>
-                                <option value="editor" <%=(user.perfil==='editor' ) ? 'selected' : '' %>>Editor</option>
-                            </select>
-                            <% } else { %>
-                                <!-- Qualquer outro caso: campo desabilitado (próprio perfil ou editor vendo outro) -->
-                                <input type="text"
-                                    value="<%= user.perfil === 'administrador' ? 'Administrador' : 'Editor' %>"
-                                    disabled>
-                                <input type="hidden" id="perfil" value="<%= user.perfil %>">
-                                <% } %>
+
+                    <!-- Linha 2: Email + Telefone -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Email</label>
+                            <input type="email" id="email" value="<%= user.email || '' %>">
+                        </div>
+                        <div class="form-group">
+                            <label>Telefone</label>
+                            <input type="tel" id="telefone" value="<%= user.telefone || '' %>">
+                        </div>
+                    </div>
+
+
+
+                    <!-- Botões de Ação -->
+                    <div class="action-buttons">
+                        <button class="btn-save">Salvar Alterações</button>
+                        <button class="btn-password">Alterar Senha</button>
                     </div>
                 </div>
-
-                <!-- Linha 2: Email + Telefone -->
-                <div class="form-row">
-                    <div class="form-group">
-                        <label>Email</label>
-                        <input type="email" id="email" value="<%= user.email || '' %>">
-                    </div>
-                    <div class="form-group">
-                        <label>Telefone</label>
-                        <input type="tel" id="telefone" value="<%= user.telefone || '' %>">
-                    </div>
-                </div>
-
-
-
-                <!-- Botões de Ação -->
-                <div class="action-buttons">
-                    <button class="btn-save">Salvar Alterações</button>
-                    <button class="btn-password">Alterar Senha</button>
-                </div>
-            </div>
-        </main>
+            </main>
     </div>
 
     <!-- Modal de alteração de senha -->

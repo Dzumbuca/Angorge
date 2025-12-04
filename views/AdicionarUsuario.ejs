@@ -13,37 +13,24 @@
 
 <body>
     <div class="admin-layout">
-        <aside class="sidebar">
-            <div class="meu-logo">
-                <a href="/" target="_blank">
-                    <img src="/Icone/Ativo 1 2.png" alt="ANGORGE LDA">
-                </a>
-            </div>
-            <nav class="nav-menu">
-                <a href="/admin" class="nav-item"><i class="fas fa-home"></i></a>
-                <a href="/cursos" class="nav-item"><i class="fas fa-graduation-cap"></i></a>
-                <a href="/artigos" class="nav-item"><i class="fas fa-file-alt"></i></a>
-                <a href="/admin/usuarios" class="nav-item active"><i class="fas fa-users"></i></a>
-                <a href="/logout" class="nav-item"><i class="fas fa-sign-out-alt"></i></a>
-            </nav>
-        </aside>
+        <%- include('./partials/sidebar.ejs', { admin }) %>
 
-        <main class="main-content">
-            <header class="header">
-                <div class="header-text">
-                    <h1>Adicionar Novo Usuário</h1>
-                    <p>Preencha os campos abaixo para criar um novo usuário no sistema.</p>
-                </div>
-                <div class="user-header">
-                    <i class="fas fa-bell"></i>
-                    <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Foto de Perfil do Admin">
-                    <span>
-                        <%= admin.nome %>
-                    </span>
-                </div>
-            </header>
+            <main class="main-content">
+                <header class="header">
+                    <div class="header-text">
+                        <h1>Adicionar Novo Usuário</h1>
+                        <p>Preencha os campos abaixo para criar um novo usuário no sistema.</p>
+                    </div>
+                    <div class="user-header">
+                        <i class="fas fa-bell"></i>
+                        <img src="<%= admin.foto || '/Imagem/default-profile.jpg' %>" alt="Foto de Perfil do Admin">
+                        <span>
+                            <%= admin.nome %>
+                        </span>
+                    </div>
+                </header>
 
-            <div id="toast-notification" style="
+                <div id="toast-notification" style="
                 position: fixed;
                 top: 20px;
                 right: 20px;
@@ -57,56 +44,56 @@
                 transition: opacity 0.3s, transform 0.3s;
             "></div>
 
-            <div class="form-wrapper">
-                <form id="user-form">
-                    <div class="current-image" id="upload-container">
-                        <img id="previewImg"
-                            src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlMGUwZTAiLz4gIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjBweCIgZmlsbD0iIzc1NzU3NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hYW50LWJhc2VsaW5lPSJtaWRkbGUiPlNlbSBGb3RvPC90ZXh0Pjwvc3ZnPg=="
-                            alt="Foto de Perfil">
-                        <button type="button" class="btn-change"><i class="fas fa-camera"></i></button>
+                <div class="form-wrapper">
+                    <form id="user-form">
+                        <div class="current-image" id="upload-container">
+                            <img id="previewImg"
+                                src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4gIDxyZWN0IHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9IiNlMGUwZTAiLz4gIDx0ZXh0IHg9IjUwJSIgeT0iNTAlIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iMjBweCIgZmlsbD0iIzc1NzU3NSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hYW50LWJhc2VsaW5lPSJtaWRkbGUiPlNlbSBGb3RvPC90ZXh0Pjwvc3ZnPg=="
+                                alt="Foto de Perfil">
+                            <button type="button" class="btn-change"><i class="fas fa-camera"></i></button>
 
-                        <input type="file" id="fotoPerfil" accept="image/*" hidden>
+                            <input type="file" id="fotoPerfil" accept="image/*" hidden>
 
-                        <div class="upload-area" id="upload-area-hidden">
-                            <p>Arraste ou clique para enviar imagem</p>
-                            <small>Formatos: JPG, PNG, WEBP | Tamanho: 300x300px</small>
+                            <div class="upload-area" id="upload-area-hidden">
+                                <p>Arraste ou clique para enviar imagem</p>
+                                <small>Formatos: JPG, PNG, WEBP | Tamanho: 300x300px</small>
+                            </div>
                         </div>
-                    </div>
 
-                    <div class="form-row">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nome">Nome Completo</label>
+                                <input type="text" id="nome" placeholder="Ex: João Silva" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="perfil">Perfil / Cargo</label>
+                                <select id="perfil" required>
+                                    <option value="">Selecione um perfil</option>
+                                    <option value="administrador">Administrador</option>
+                                    <option value="editor">Editor</option>
+                                </select>
+                            </div>
+                        </div>
+
                         <div class="form-group">
-                            <label for="nome">Nome Completo</label>
-                            <input type="text" id="nome" placeholder="Ex: João Silva" required>
+                            <label for="senha">Senha</label>
+                            <input type="password" id="senha" placeholder="Digite uma senha segura" required>
                         </div>
+
                         <div class="form-group">
-                            <label for="perfil">Perfil / Cargo</label>
-                            <select id="perfil" required>
-                                <option value="">Selecione um perfil</option>
-                                <option value="administrador">Administrador</option>
-                                <option value="editor">Editor</option>
-                            </select>
+                            <label for="confirmarSenha">Confirmar Senha</label>
+                            <input type="password" id="confirmarSenha" placeholder="Repita a senha" required>
                         </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="senha">Senha</label>
-                        <input type="password" id="senha" placeholder="Digite uma senha segura" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="confirmarSenha">Confirmar Senha</label>
-                        <input type="password" id="confirmarSenha" placeholder="Repita a senha" required>
-                    </div>
 
 
 
-                    <div class="action-buttons">
-                        <button type="button" class="btn-save">Criar Usuário</button>
-                        <button type="button" class="btn-cancel">Cancelar</button>
-                    </div>
-                </form>
-            </div>
-        </main>
+                        <div class="action-buttons">
+                            <button type="button" class="btn-save">Criar Usuário</button>
+                            <button type="button" class="btn-cancel">Cancelar</button>
+                        </div>
+                    </form>
+                </div>
+            </main>
     </div>
     <script>
         // Função para notificações suaves

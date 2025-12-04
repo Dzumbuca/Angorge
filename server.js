@@ -15,6 +15,7 @@ const Inscricao = require("./models/Inscricao");
 const User = require("./models/modelsUser"); // Mover para o topo
 const Artigo = require("./models/Artigo");   // Mover para o topo
 const Curso = require("./models/Curso");     // Mover para o topo
+const adminInscricoesRoutes = require("./routes/adminInscricoes");
 
 // Configuração do Multer para upload de imagens de usuário
 const storage = multer.diskStorage({
@@ -110,7 +111,8 @@ app.use("/api/cursos", require("./routes/rocursos"));
 app.use("/api", require("./routes/admin"));
 app.use("/api", require("./routes/notificacoes"));
 
-
+// Monte a rota com prefixo
+app.use("/admin/inscricoes", adminInscricoesRoutes);
 // ==========================
 // 📌 ROTAS PÚBLICAS
 // ==========================
@@ -332,6 +334,7 @@ app.get("/admin/usuarios", requireAdmin, (req, res) => {
 app.get("/admin/usuarios/novo", requireAdmin, (req, res) => {
     res.render("AdicionarUsuario", { admin: req.session.user });
 });
+
 // ==========================
 // 📌 ROTAS PARA DASHBORD (contagem)
 // ==========================
