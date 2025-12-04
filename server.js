@@ -241,7 +241,7 @@ app.get("/admin", requireAuth, (req, res) => {
     res.render("dashbord", { admin: req.session.user });
 });
 
-app.get("/cursos", requireAuth, async (req, res) => {
+app.get("/cursos", async (req, res) => {
     try {
         // ✅ Uso do modelo Curso importado no topo
         const cursos = await Curso.find({ status: "publicado" }).sort({ createdAt: -1 });

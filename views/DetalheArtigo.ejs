@@ -83,7 +83,7 @@
         <div class="footer-content">
             <div class="footer-logo">
                 <img src="/Imagem/Ativo 1.svg" alt="ANGORGE LDA" class="logo-img">
-                <p class="company-info">Empresa certificada pela OCPCA com mais de 10 anos de experiência</p>
+                <p class="company-info">Empresa certificada pela OCPA com mais de 10 anos de experiência</p>
             </div>
             <div class="footer-info">
                 <div class="footer-address">
@@ -102,27 +102,17 @@
         </div>
     </footer>
 
-    <script src="https://accounts.google.com/gsi/client" async defer></script>
-
     <script>
-        window.ARTIGO_ID = "<%= artigo._id %>";
-
+        /* EJS: não formate esta linha */
+        window.CURRENT_USER =<%- user && user.nome ? JSON.stringify(user.nome) : 'null' %>;
+        window.ARTIGO_ID =<%- artigo && artigo._id ? JSON.stringify(artigo._id.toString()) : 'null'%> ;
     </script>
 
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
     <script src="/script.js"></script>
-    <script src="/js/artigosdetalhes.js"></script>
     <script src="/js/navbar.js"></script>
-
-    <div id="confirm-modal" class="confirm-overlay" style="display:none;">
-        <div class="confirm-box">
-            <p id="confirm-message">Tem certeza?</p>
-            <div class="confirm-buttons">
-                <button id="confirm-yes">Eliminar</button>
-                <button id="confirm-no">Cancelar</button>
-            </div>
-        </div>
-    </div>
-
-</body>
+    <script src="/js/artigosdetalhes.js"></script>
 
 </html>

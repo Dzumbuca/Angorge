@@ -1,34 +1,78 @@
-document.addEventListener("DOMContentLoaded", () => {
-    // ✅ Obtém o ID diretamente do servidor (injetado no HTML via EJS)
-    const artigoId = window.ARTIGO_ID;
 
-    if (!artigoId || artigoId.length !== 24) {
-        if (document.getElementById("artigo-titulo")) {
-            document.getElementById("artigo-titulo").textContent = "Erro: ID do artigo inválido.";
-        }
+
+// Garante que CURRENT_USER esteja definida (fallback)
+const CURRENT_USER = window.CURRENT_USER || null;
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    // ✅ Pega o usuário e ID do artigo
+    const CURRENT_USER = window.CURRENT_USER || null;
+    const ARTIGO_ID = window.ARTIGO_ID || null;
+
+    // Evita continuar se artigo inválido
+    if (!ARTIGO_ID || ARTIGO_ID.length !== 24) {
+        const titulo = document.getElementById("artigo-titulo");
+        if (titulo) titulo.textContent = "Erro: ID do artigo inválido.";
         return;
     }
 
-    // ✅ Não carrega detalhes aqui (já estão no HTML via EJS)
-    // ❌ REMOVIDO: carregarDetalhesArtigo(artigoId);
+    // Carrega comentários e categorias
+    carregarComentarios(ARTIGO_ID);
+    carregarCategorias();
+    carregarListaArtigos(ARTIGO_ID); // ← ADICIONE ESSA LINHA!
 
-    // ✅ Carrega apenas o que é dinâmico (comentários, navegação, categorias)
-    carregarComentarios(artigoId);
-    carregarListaArtigos(artigoId);
+    // Formulário de comentário
+    const formComentario = document.getElementById("form-comentario-principal");
+    formComentario.addEventListener("submit", async (e) => {
+        e.preventDefault();
 
-    if (document.getElementById("categorias-lista")) {
-        carregarCategorias();
-    }
+        // ✅ Check login
+        if (!CURRENT_USER || CURRENT_USER === "null") {
+            alert("⚠️ Precisas estar logado para comentar");
+            return;
+        }
 
-    // Evento de submissão do formulário de comentário
-    const formComentarioPrincipal = document.getElementById("form-comentario-principal");
-    if (formComentarioPrincipal) {
-        formComentarioPrincipal.addEventListener("submit", (e) => {
-            e.preventDefault();
-            enviarComentarioPrincipal(formComentarioPrincipal, artigoId);
-        });
-    }
+        const textarea = formComentario.querySelector("textarea[name='texto']");
+        const texto = textarea.value.trim();
+        if (!texto) {
+            alert("Escreva algo antes de enviar.");
+            return;
+        }
+
+        try {
+        const res = await fetch("/api/comentarios", {
+  method: "POST",
+  credentials: "include", // ← obrigatório para enviar a sessão
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ texto, artigoId: ARTIGO_ID }) // ← sem "autor"
 });
+
+            if (res.ok) {
+                textarea.value = "";
+                mostrarNotificacao("Comentário publicado!");
+                carregarComentarios(ARTIGO_ID);
+            } else {
+                const data = await res.json();
+                alert(data.error || "Erro ao publicar comentário.");
+            }
+        } catch (err) {
+            console.error(err);
+            alert("Falha na operação.");
+        }
+    });
+});
+
+// Função simples de notificação
+function mostrarNotificacao(msg) {
+    const toast = document.createElement("div");
+    toast.className = "toast";
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.remove(), 3000);
+}
+
+
 
 // Variável global para navegação
 let listaArtigosOrdenados = [];
@@ -226,7 +270,7 @@ async function carregarComentarios(artigoId) {
         if (!response.ok) throw new Error(`Status: ${response.status}`);
 
         const comentarios = await response.json();
-        const currentUser = localStorage.getItem("user") || "Anónimo";
+        const currentUser = CURRENT_USER || "Anónimo";
 
         if (comentarios.length === 0) {
             container.innerHTML = "<p>Nenhum comentário ainda. Seja o primeiro!</p>";
@@ -361,7 +405,7 @@ async function carregarComentarios(artigoId) {
 
 async function enviarComentarioPrincipal(formEl, artigoId) {
     const texto = formEl.querySelector('textarea[name="texto"]').value.trim();
-    const currentUser = localStorage.getItem("user") || "Anónimo";
+    const currentUser = CURRENT_USER || "Anónimo";
 
     if (!texto) {
         showToast("Escreva algo antes de enviar o comentário.");
@@ -414,7 +458,7 @@ function mostrarNotificacao(mensagem) {
 async function alternarLike(btn, artigoId) {
     const commentId = btn.dataset.id;
     const isLiked = btn.dataset.liked === "true";
-    const currentUser = localStorage.getItem("user") || "Anónimo";
+    const currentUser = CURRENT_USER || "Anónimo";
 
     if (!currentUser || currentUser === "Anónimo") {
         showToast("Faça login para curtir comentários.");
@@ -446,7 +490,7 @@ async function alternarLike(btn, artigoId) {
 
 async function enviarResposta(commentId, formEl, artigoId) {
     const texto = formEl.querySelector("textarea").value.trim();
-    const currentUser = localStorage.getItem("user") || "Anónimo";
+    const currentUser = CURRENT_USER || "Anónimo";
 
     if (!texto) {
         showToast("Escreva algo antes de enviar.");
@@ -479,7 +523,7 @@ async function enviarResposta(commentId, formEl, artigoId) {
 }
 
 async function apagarComentario(commentId, artigoId) {
-    const currentUser = localStorage.getItem("user") || "Anónimo";
+    const currentUser = CURRENT_USER || "Anónimo";
     const isAdmin = ["Joaquim", "Admin", "ANGORGE", "Equipe ANGORGE"].includes(currentUser);
 
     try {
@@ -502,7 +546,7 @@ async function apagarComentario(commentId, artigoId) {
 }
 
 async function apagarResposta(commentId, replyId, artigoId) {
-    const currentUser = localStorage.getItem("user") || "Anónimo";
+    const currentUser = CURRENT_USER || "Anónimo";
     const isAdmin = ["Joaquim", "Admin", "ANGORGE", "Equipe ANGORGE"].includes(currentUser);
 
     try {

@@ -195,13 +195,25 @@ router.get("/admin", async (req, res) => {
     }
 });
 // 📌 POST / — Criar novo comentário | URL: /api/comentarios
+// rocomentarios.js - Rota POST / — Criar novo comentário | URL: /api/comentarios
+// 📌 POST / — Criar novo comentário | URL: /api/comentarios
 router.post("/", async (req, res) => {
-    try {
-        const { autor, texto, artigoId } = req.body;
+    // 🔍 DEBUG: Verificar se a sessão está chegando corretamente
+    console.log("➡️ Sessão recebida no backend:", req.session.user);
+    console.log("➡️ Corpo da requisição:", req.body);
 
+    // ✅ Obter autor da sessão, NÃO do corpo (req.body)
+    if (!req.session.user || !req.session.user.nome) {
+        return res.status(401).json({ error: "Precisa estar logado para comentar." });
+    }
+    const autor = req.session.user.nome; // Usa o autor da sessão
+
+    const { texto, artigoId } = req.body; // Pega o texto e artigoId do corpo
+
+    try {
         // Validação
-        if (!autor || !texto || !artigoId) {
-            return res.status(400).json({ error: "Campos 'autor', 'texto' e 'artigoId' são obrigatórios." });
+        if (!texto || !artigoId) { // Autor já é garantido pela sessão
+            return res.status(400).json({ error: "Campos 'texto' e 'artigoId' são obrigatórios." });
         }
 
         // Valida se artigoId é um ObjectId válido
@@ -211,7 +223,7 @@ router.post("/", async (req, res) => {
 
         // Cria o comentário
         const novoComentario = new Comentario({
-            autor: autor.trim(),
+            autor: autor.trim(), // Usa o nome da sessão
             texto: texto.trim(),
             artigoId: new mongoose.Types.ObjectId(artigoId)
         });
