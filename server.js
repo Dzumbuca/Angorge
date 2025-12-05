@@ -11,6 +11,7 @@ console.log("GOOGLE_CLIENT_SECRET carregado:", !!process.env.GOOGLE_CLIENT_SECRE
 console.log("SESSION_SECRET carregado:", !!process.env.SESSION_SECRET);
 console.log("CLIENT ID:", process.env.GOOGLE_CLIENT_ID);
 
+const { default: MongoStore } = require('connect-mongo');
 
 const express = require("express");
 const mongoose = require("mongoose");
@@ -69,15 +70,14 @@ const app = express();
 const SESSION_SECRET = process.env.SESSION_SECRET || "c9e167270f97ef7bad4f432823c11a3118b89fbe40409195adddd00f22d4c67522efbab473127e0f7dd58df12a3361cdd09cbfc478d6c10ad239234d9e92bd32a2fb";
 
 
-app.use(session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false } // true só com HTTPS
-}));
 
-
-
+// ==========================
+// 📌 CONEXÃO COM MONGODB
+// ==========================
+const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/teuBanco";
+mongoose.connect(MONGODB_URI)
+    .then(() => console.log("✅ Conectado ao MongoDB"))
+    .catch(err => console.error("❌ Erro ao conectar:", err));
 
 // ===
 
@@ -112,14 +112,18 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: false,
+    cookie: { secure: false },
+    store: MongoStore.create({
+        mongoUrl: MONGODB_URI,
+        autoRemove: 'native',
+        touchAfter: 24 * 3600
+    })
+}));
 
-// ==========================
-// 📌 CONEXÃO COM MONGODB
-// ==========================
-const MONGODB_URI = process.env.MONGODB_URI || "mongodb://localhost:27017/teuBanco";
-mongoose.connect(MONGODB_URI)
-    .then(() => console.log("✅ Conectado ao MongoDB"))
-    .catch(err => console.error("❌ Erro ao conectar:", err));
 
 // ==========================
 // 📌 ROTAS DE API
