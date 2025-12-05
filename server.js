@@ -1,6 +1,17 @@
 // ==========================
 // 📌 IMPORTS
 // ==========================
+require("dotenv").config(); // <--- tem de estar antes de usar process.env
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+
+console.log("GOOGLE_CLIENT_ID carregado:", !!process.env.GOOGLE_CLIENT_ID);
+console.log("GOOGLE_CLIENT_SECRET carregado:", !!process.env.GOOGLE_CLIENT_SECRET);
+console.log("SESSION_SECRET carregado:", !!process.env.SESSION_SECRET);
+console.log("CLIENT ID:", process.env.GOOGLE_CLIENT_ID);
+
+
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -9,6 +20,9 @@ const session = require("express-session");
 const multer = require("multer");
 const bcrypt = require("bcrypt");
 
+
+
+
 // ✅ IMPORTAÇÕES DE MODELOS PARA CONSISTÊNCIA E SEGURANÇA
 const Comentario = require("./models/Comentario");
 const Inscricao = require("./models/Inscricao");
@@ -16,6 +30,7 @@ const User = require("./models/modelsUser"); // Mover para o topo
 const Artigo = require("./models/Artigo");   // Mover para o topo
 const Curso = require("./models/Curso");     // Mover para o topo
 const adminInscricoesRoutes = require("./routes/adminInscricoes");
+
 
 // Configuração do Multer para upload de imagens de usuário
 const storage = multer.diskStorage({
@@ -51,14 +66,20 @@ const app = express();
 // ==========================
 // 📌 CONFIGURAÇÃO DE SEGURANÇA E SESSÃO
 // ==========================
-const SESSION_SECRET = process.env.SESSION_SECRET || "segredoSuperFortePadraoParaDesenvolvimento";
+const SESSION_SECRET = process.env.SESSION_SECRET || "c9e167270f97ef7bad4f432823c11a3118b89fbe40409195adddd00f22d4c67522efbab473127e0f7dd58df12a3361cdd09cbfc478d6c10ad239234d9e92bd32a2fb";
+
 
 app.use(session({
-    secret: SESSION_SECRET,
+    secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 60 * 24 } // 1 dia
+    saveUninitialized: true,
+    cookie: { secure: false } // true só com HTTPS
 }));
+
+
+
+
+// ===
 
 // ==========================
 // 🛡️ MIDDLEWARES DE AUTORIZAÇÃO
@@ -110,6 +131,58 @@ app.use("/api/inscricoes", require("./routes/roinscricoes"));
 app.use("/api/cursos", require("./routes/rocursos"));
 app.use("/api", require("./routes/admin"));
 app.use("/api", require("./routes/notificacoes"));
+
+app.post("/auth/google/verify", async (req, res) => {
+    try {
+        const { credential } = req.body;
+        if (!credential) {
+            return res.status(400).json({ error: "Credencial ausente" });
+        }
+
+        const ticket = await client.verifyIdToken({
+            idToken: credential,
+            audience: process.env.GOOGLE_CLIENT_ID,
+        });
+
+        const payload = ticket.getPayload();
+        if (!payload) {
+            return res.status(400).json({ error: "Payload inválido" });
+        }
+
+        const { sub: googleId, name: nome, email, picture: foto } = payload;
+
+        // ✅ Procurar ou criar usuário no banco (opcional, mas recomendado)
+        let user = await User.findOne({ googleId });
+        if (!user) {
+            // Cria usuário com Google ID (sem senha)
+            user = new User({
+                googleId,
+                nome,
+                email,
+                foto,
+                perfil: "usuario" // ou lógica para primeiro admin?
+            });
+            await user.save();
+        }
+
+        // ✅ Salvar na sessão (igual ao login tradicional)
+        req.session.user = {
+            nome: user.nome,
+            email: user.email,
+            perfil: user.perfil,
+            foto: user.foto || foto,
+            googleId: user.googleId
+        };
+
+        console.log("✅ Login com Google bem-sucedido:", req.session.user.nome);
+        res.json({ success: true, user: req.session.user });
+
+    } catch (err) {
+        console.error("Erro na verificação Google:", err);
+        res.status(400).json({ error: "Falha na autenticação com Google" });
+    }
+});
+
 
 // Monte a rota com prefixo
 app.use("/admin/inscricoes", adminInscricoesRoutes);

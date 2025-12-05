@@ -102,12 +102,11 @@
         </div>
     </footer>
 
-    <script>
-        /* EJS: não formate esta linha */
-        window.CURRENT_USER =<%- user && user.nome ? JSON.stringify(user.nome) : 'null' %>;
-        window.ARTIGO_ID =<%- artigo && artigo._id ? JSON.stringify(artigo._id.toString()) : 'null'%> ;
-    </script>
-
+</body>
+<script>
+    window.CURRENT_USER = <%- user && user.nome ? JSON.stringify(user.nome) : 'null' %>;
+    window.ARTIGO_ID = <%- artigo && artigo._id ? JSON.stringify(artigo._id.toString()) : 'null' %>;
+</script>
 
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 

@@ -244,14 +244,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 document.addEventListener("DOMContentLoaded", function () {
-    fetch("navbar.html")
-        .then(response => response.text())
-        .then(data => {
-            document.getElementById("navbar-placeholder").innerHTML = data;
+    const navbarPlaceholder = document.getElementById("navbar-placeholder");
+    if (!navbarPlaceholder) return; // ✅ Saída silenciosa se não for uma página com navbar
 
-            // Depois de o menu estar no DOM, carrega o JS do menu
+    fetch("/navbar.html")
+        .then(response => {
+            if (!response.ok) throw new Error("Falha ao carregar navbar.html");
+            return response.text();
+        })
+        .then(data => {
+            navbarPlaceholder.innerHTML = data;
+
+            // Carrega o JS do navbar apenas se necessário
             const script = document.createElement("script");
-            script.src = "js/navbar.js";
+            script.src = "/js/navbar.js"; // ✅ caminho absoluto (evita problemas em rotas profundas)
+            script.onload = () => console.log("Navbar script carregado");
+            script.onerror = () => console.error("Falha ao carregar navbar.js");
             document.body.appendChild(script);
         })
         .catch(error => console.error("Erro ao carregar o menu:", error));

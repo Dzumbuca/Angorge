@@ -37,9 +37,16 @@
 /* ==================================== */
 .card-artigo-imagem img {
     width: 100%;
-    height: 200px;
+    height: 150px; /* ← reduzido para mobile */
     object-fit: cover;
     display: block;
+}
+
+/* Ajuste para telas maiores */
+@media (min-width: 769px) {
+    .card-artigo-imagem img {
+        height: 200px;
+    }
 }
 
 /* ==================================== */
@@ -151,5 +158,21 @@
 
     .card-artigo-conteudo {
         padding: 15px;
+    }
+}
+
+/* Mobile: 1 coluna */
+@media (max-width: 768px) {
+    .container-artigos {
+        grid-template-columns: 1fr; /* ← apenas 1 coluna em mobile */
+        padding: 20px;
+    }
+}
+
+/* Tablet: 2 colunas */
+@media (max-width: 992px) and (min-width: 769px) {
+    .container-artigos {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas em tablet */
+        padding: 25px;
     }
 }

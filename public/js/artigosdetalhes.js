@@ -1,69 +1,65 @@
+// ==============================
+// FUNÇÕES DE LOGIN COM GOOGLE
+// ==============================
 
+function tratarLoginGoogle(response) {
+    if (response && response.credential) {
+        fetch("/auth/google/verify", {
+            method: "POST",
+            credentials: "include",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ credential: response.credential }) // ← note: "credential", não "token"
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.success) {
+                location.reload();
+            } else {
+                alert("Erro ao fazer login com Google: " + (data.error || "Desconhecido"));
+            }
+        })
+        .catch(err => {
+            console.error("Erro no login:", err);
+            alert("Falha na autenticação.");
+        });
+    } else {
+        alert("Nenhuma conta selecionada.");
+    }
+}
 
-// Garante que CURRENT_USER esteja definida (fallback)
-const CURRENT_USER = window.CURRENT_USER || null;
-
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    // ✅ Pega o usuário e ID do artigo
-    const CURRENT_USER = window.CURRENT_USER || null;
-    const ARTIGO_ID = window.ARTIGO_ID || null;
-
-    // Evita continuar se artigo inválido
-    if (!ARTIGO_ID || ARTIGO_ID.length !== 24) {
-        const titulo = document.getElementById("artigo-titulo");
-        if (titulo) titulo.textContent = "Erro: ID do artigo inválido.";
+function inicializarGoogleLogin() {
+    if (!window.google || !window.google.accounts) {
+        console.warn("Google Identity Services não carregado.");
         return;
     }
 
-    // Carrega comentários e categorias
-    carregarComentarios(ARTIGO_ID);
-    carregarCategorias();
-    carregarListaArtigos(ARTIGO_ID); // ← ADICIONE ESSA LINHA!
+    const container = document.getElementById("google-login-button");
+    if (!container) return;
 
-    // Formulário de comentário
-    const formComentario = document.getElementById("form-comentario-principal");
-    formComentario.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    container.innerHTML = "";
 
-        // ✅ Check login
-        if (!CURRENT_USER || CURRENT_USER === "null") {
-            alert("⚠️ Precisas estar logado para comentar");
-            return;
-        }
-
-        const textarea = formComentario.querySelector("textarea[name='texto']");
-        const texto = textarea.value.trim();
-        if (!texto) {
-            alert("Escreva algo antes de enviar.");
-            return;
-        }
-
-        try {
-        const res = await fetch("/api/comentarios", {
-  method: "POST",
-  credentials: "include", // ← obrigatório para enviar a sessão
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ texto, artigoId: ARTIGO_ID }) // ← sem "autor"
-});
-
-            if (res.ok) {
-                textarea.value = "";
-                mostrarNotificacao("Comentário publicado!");
-                carregarComentarios(ARTIGO_ID);
-            } else {
-                const data = await res.json();
-                alert(data.error || "Erro ao publicar comentário.");
-            }
-        } catch (err) {
-            console.error(err);
-            alert("Falha na operação.");
-        }
+    window.google.accounts.id.initialize({
+        client_id: "1009980155883-2cagssgbaieoiro5r1a8pp2p79g8rsqh.apps.googleusercontent.com", // ← 🔴 SUBSTITUA POR SEU CLIENT ID!
+        callback: tratarLoginGoogle,
+        auto_select: false
     });
-});
 
-// Função simples de notificação
+    window.google.accounts.id.renderButton(
+        container,
+        { theme: "outline", size: "large", width: "300" }
+    );
+}
+
+// ==============================
+// VARIÁVEIS GLOBAIS
+// ==============================
+let listaArtigosOrdenados = [];
+let indiceArtigoAtual = -1;
+
+// ==============================
+// UTILITÁRIOS
+// ==============================
+
 function mostrarNotificacao(msg) {
     const toast = document.createElement("div");
     toast.className = "toast";
@@ -72,66 +68,131 @@ function mostrarNotificacao(msg) {
     setTimeout(() => toast.remove(), 3000);
 }
 
+function showToast(message, type = "success") {
+    const toast = document.createElement("div");
+    toast.className = `toast ${type}`;
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    setTimeout(() => toast.classList.add("show"), 50);
+    setTimeout(() => {
+        toast.classList.remove("show");
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
 
+function customConfirm(message) {
+    return new Promise(resolve => {
+        const modal = document.getElementById("confirm-modal");
+        const msg = document.getElementById("confirm-message");
+        const yesBtn = document.getElementById("confirm-yes");
+        const noBtn = document.getElementById("confirm-no");
 
-// Variável global para navegação
-let listaArtigosOrdenados = [];
-let indiceArtigoAtual = -1;
+        if (!modal || !msg || !yesBtn || !noBtn) {
+            resolve(window.confirm(message)); // fallback
+            return;
+        }
 
-// ==========================================
-// FUNÇÕES DE CARREGAMENTO
-// ==========================================
+        msg.textContent = message;
+        modal.style.display = "flex";
 
-// ⚠️ Esta função agora é usada APENAS na navegação dinâmica (Anterior/Próximo)
-async function carregarDetalhesArtigo(artigoId) {
-    if (!artigoId) {
-        document.getElementById("artigo-titulo").textContent = "Erro: ID do artigo não especificado";
+        yesBtn.onclick = () => {
+            modal.style.display = "none";
+            resolve(true);
+        };
+        noBtn.onclick = () => {
+            modal.style.display = "none";
+            resolve(false);
+        };
+    });
+}
+
+function formatarData(data) {
+    const d = new Date(data);
+    const hoje = new Date();
+    if (d.toDateString() === hoje.toDateString()) {
+        return `Hoje • ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+    }
+    return d.toLocaleDateString('pt-PT') + ` • ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
+}
+
+// ==============================
+// CARREGAMENTO INICIAL
+// ==============================
+
+document.addEventListener("DOMContentLoaded", () => {
+    const CURRENT_USER = window.CURRENT_USER || null;
+    const ARTIGO_ID = window.ARTIGO_ID || null;
+
+    if (!ARTIGO_ID || ARTIGO_ID.length !== 24) {
+        const titulo = document.getElementById("artigo-titulo");
+        if (titulo) titulo.textContent = "Erro: ID do artigo inválido.";
         return;
     }
 
-    try {
-        const response = await fetch(`/api/artigos/${artigoId}`);
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    // Carrega dados principais
+    carregarComentarios(ARTIGO_ID);
+    carregarCategorias();
+    carregarListaArtigos(ARTIGO_ID);
 
-        const artigo = await response.json();
-
-        // Atualiza campo oculto
-        const artigoIdInput = document.getElementById("input-artigo-id");
-        if (artigoIdInput) {
-            artigoIdInput.value = artigoId;
+    // Inicializa login do Google se não logado
+    if (!CURRENT_USER || CURRENT_USER === "null") {
+        if (window.google && window.google.accounts) {
+            inicializarGoogleLogin();
+        } else {
+            const checkGoogle = setInterval(() => {
+                if (window.google && window.google.accounts) {
+                    clearInterval(checkGoogle);
+                    inicializarGoogleLogin();
+                }
+            }, 300);
         }
-
-        // Atualiza metadados
-        document.getElementById("artigo-titulo").textContent = artigo.titulo || "Sem título";
-        document.getElementById("artigo-autor").textContent = artigo.autor || "Autor desconhecido";
-        document.getElementById("artigo-categoria").textContent = artigo.categoria || "Geral";
-        document.getElementById("artigo-categoria-meta").textContent = artigo.categoria || "Geral";
-        document.getElementById("artigo-data").textContent =
-            artigo.dataPublicacao
-                ? new Date(artigo.dataPublicacao).toLocaleDateString("pt-PT")
-                : "—";
-
-        // Atualiza conteúdo
-        const conteudoEl = document.getElementById("artigo-conteudo");
-        if (conteudoEl) {
-            conteudoEl.innerHTML = artigo.descricao || "<p>Conteúdo não disponível.</p>";
-        }
-
-        // Atualiza imagem
-        const bannerImg = document.querySelector(".artigo-banner-image img");
-        if (bannerImg && artigo.imagem) {
-            let src = artigo.imagem.trim();
-            if (!src.startsWith("http") && !src.startsWith("/")) {
-                src = "/" + src;
-            }
-            bannerImg.src = src;
-        }
-
-    } catch (error) {
-        console.error("Erro ao carregar artigo:", error);
-        document.getElementById("artigo-titulo").textContent = "Erro ao carregar artigo";
     }
-}
+
+    // Formulário de comentário
+    const formComentario = document.getElementById("form-comentario-principal");
+    if (formComentario) {
+        formComentario.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            if (!CURRENT_USER || CURRENT_USER === "null") {
+                alert("⚠️ Precisas estar logado para comentar");
+                return;
+            }
+
+            const textarea = formComentario.querySelector("textarea[name='texto']");
+            const texto = textarea?.value.trim();
+            if (!texto) {
+                alert("Escreva algo antes de enviar.");
+                return;
+            }
+
+            try {
+                const res = await fetch("/api/comentarios", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ texto, artigoId: ARTIGO_ID })
+                });
+
+                if (res.ok) {
+                    textarea.value = "";
+                    mostrarNotificacao("Comentário publicado!");
+                    carregarComentarios(ARTIGO_ID);
+                } else {
+                    const data = await res.json();
+                    alert(data.error || "Erro ao publicar comentário.");
+                }
+            } catch (err) {
+                console.error(err);
+                alert("Falha na operação.");
+            }
+        });
+    }
+});
+
+// ==============================
+// CARREGAMENTO DE DADOS
+// ==============================
 
 async function carregarListaArtigos(artigoIdAtual) {
     try {
@@ -147,12 +208,58 @@ async function carregarListaArtigos(artigoIdAtual) {
 
         listaArtigosOrdenados = artigos;
         indiceArtigoAtual = artigos.findIndex(a => a._id === artigoIdAtual);
-
         atualizarBotoesNavegacao();
     } catch (err) {
         console.error("Erro ao carregar lista de artigos:", err);
     }
 }
+
+async function carregarCategorias() {
+    try {
+        const response = await fetch("/api/artigos");
+        const data = await response.json();
+        const artigos = data.artigos || [];
+
+        const categorias = [...new Set(
+            artigos.map(art => art.categoria).filter(cat => cat?.trim())
+        )].sort();
+
+        const lista = document.getElementById("categorias-lista");
+        if (!lista) return;
+
+        if (categorias.length === 0) {
+            lista.innerHTML = "<li><em>Nenhuma categoria disponível</em></li>";
+            return;
+        }
+
+        const nomeAmigavel = {
+            "gestao": "Gestão",
+            "financas": "Finanças",
+            "contabilidade": "Contabilidade",
+            "fiscalidade": "Fiscalidade",
+            "tecnologia": "Tecnologia",
+            "educacao": "Educação",
+            "marketing": "Marketing",
+            "outros": "Outros"
+        };
+
+        lista.innerHTML = categorias.map(cat => {
+            const total = artigos.filter(a => a.categoria === cat).length;
+            const nomeExibicao = nomeAmigavel[cat] || cat.charAt(0).toUpperCase() + cat.slice(1);
+            return `<li><span class="categoria-box">${nomeExibicao} <span>(${total})</span></span></li>`;
+        }).join("");
+    } catch (error) {
+        console.error("Erro ao carregar categorias:", error);
+        const lista = document.getElementById("categorias-lista");
+        if (lista) {
+            lista.innerHTML = "<li><em>Erro ao carregar categorias</em></li>";
+        }
+    }
+}
+
+// ==============================
+// NAVEGAÇÃO ENTRE ARTIGOS
+// ==============================
 
 function atualizarBotoesNavegacao() {
     const btnAnterior = document.querySelector(".btn-anterior");
@@ -201,58 +308,57 @@ function carregarArtigoPorIndice() {
     history.pushState({ id: artigo._id }, "", novaUrl);
     window.scrollTo(0, 0);
 
-    // ✅ Aqui SIM usamos carregarDetalhesArtigo, pois mudamos de artigo dinamicamente
     carregarDetalhesArtigo(artigo._id);
     carregarComentarios(artigo._id);
     atualizarBotoesNavegacao();
 }
 
-async function carregarCategorias() {
+async function carregarDetalhesArtigo(artigoId) {
+    if (!artigoId) {
+        document.getElementById("artigo-titulo").textContent = "Erro: ID do artigo não especificado";
+        return;
+    }
+
     try {
-        const response = await fetch("/api/artigos");
-        const data = await response.json();
-        const artigos = data.artigos || [];
+        const response = await fetch(`/api/artigos/${artigoId}`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
 
-        const categorias = [...new Set(
-            artigos.map(art => art.categoria).filter(cat => cat?.trim())
-        )].sort();
+        const artigo = await response.json();
 
-        const lista = document.getElementById("categorias-lista");
-        if (!lista) return;
+        const artigoIdInput = document.getElementById("input-artigo-id");
+        if (artigoIdInput) artigoIdInput.value = artigoId;
 
-        if (categorias.length === 0) {
-            lista.innerHTML = "<li><em>Nenhuma categoria disponível</em></li>";
-            return;
+        document.getElementById("artigo-titulo").textContent = artigo.titulo || "Sem título";
+        document.getElementById("artigo-autor").textContent = artigo.autor || "Autor desconhecido";
+        document.getElementById("artigo-categoria").textContent = artigo.categoria || "Geral";
+        document.getElementById("artigo-categoria-meta").textContent = artigo.categoria || "Geral";
+        document.getElementById("artigo-data").textContent =
+            artigo.dataPublicacao
+                ? new Date(artigo.dataPublicacao).toLocaleDateString("pt-PT")
+                : "—";
+
+        const conteudoEl = document.getElementById("artigo-conteudo");
+        if (conteudoEl) {
+            conteudoEl.innerHTML = artigo.descricao || "<p>Conteúdo não disponível.</p>";
         }
 
-        const nomeAmigavel = {
-            "gestao": "Gestão",
-            "financas": "Finanças",
-            "contabilidade": "Contabilidade",
-            "fiscalidade": "Fiscalidade",
-            "tecnologia": "Tecnologia",
-            "educacao": "Educação",
-            "marketing": "Marketing",
-            "outros": "Outros"
-        };
-
-        lista.innerHTML = categorias.map(cat => {
-            const total = artigos.filter(a => a.categoria === cat).length;
-            const nomeExibicao = nomeAmigavel[cat] || cat.charAt(0).toUpperCase() + cat.slice(1);
-            return `<li><span class="categoria-box">${nomeExibicao} <span>(${total})</span></span></li>`;
-        }).join("");
+        const bannerImg = document.querySelector(".artigo-banner-image img");
+        if (bannerImg && artigo.imagem) {
+            let src = artigo.imagem.trim();
+            if (!src.startsWith("http") && !src.startsWith("/")) {
+                src = "/" + src;
+            }
+            bannerImg.src = src;
+        }
     } catch (error) {
-        console.error("Erro ao carregar categorias:", error);
-        const lista = document.getElementById("categorias-lista");
-        if (lista) {
-            lista.innerHTML = "<li><em>Erro ao carregar categorias</em></li>";
-        }
+        console.error("Erro ao carregar artigo:", error);
+        document.getElementById("artigo-titulo").textContent = "Erro ao carregar artigo";
     }
 }
 
-// ==========================================
-// FUNÇÕES DE COMENTÁRIOS (sem alterações)
-// ==========================================
+// ==============================
+// COMENTÁRIOS
+// ==============================
 
 async function carregarComentarios(artigoId) {
     const container = document.getElementById("lista-comentarios");
@@ -270,7 +376,7 @@ async function carregarComentarios(artigoId) {
         if (!response.ok) throw new Error(`Status: ${response.status}`);
 
         const comentarios = await response.json();
-        const currentUser = CURRENT_USER || "Anónimo";
+        const currentUser = window.CURRENT_USER || "Anónimo";
 
         if (comentarios.length === 0) {
             container.innerHTML = "<p>Nenhum comentário ainda. Seja o primeiro!</p>";
@@ -290,7 +396,6 @@ async function carregarComentarios(artigoId) {
                         <span style="font-size: 13px; color: #666;">${formatarData(com.data)}</span>
                     </div>
                     <p style="margin: 8px 0;">${com.texto}</p>
-
                     <div class="comentario-acoes" style="margin-top: 10px; display: flex; gap: 12px; align-items: center;">
                         <button class="btn-like" 
                             data-id="${com._id}" 
@@ -312,7 +417,6 @@ async function carregarComentarios(artigoId) {
                             </button>
                         ` : ''}
                     </div>
-
                     ${respostas.length > 0 ? `
                         <div class="respostas" style="margin-top: 12px; padding-left: 20px; border-left: 2px solid #f0f0f0;">
                         ${respostas.map(r => {
@@ -327,10 +431,10 @@ async function carregarComentarios(artigoId) {
                                     <p>${r.texto}</p>
                                     ${rPodeApagar ? `
                                         <button class="btn-eliminar-resposta" 
-                                                    data-comment-id="${com._id}" 
-                                                    data-reply-id="${r._id}"
-                                                    style="background: none; border: none; color: #d9534f; font-size: 12px; margin-top: 4px;">
-                                                    Eliminar resposta
+                                            data-comment-id="${com._id}" 
+                                            data-reply-id="${r._id}"
+                                            style="background: none; border: none; color: #d9534f; font-size: 12px; margin-top: 4px;">
+                                            Eliminar resposta
                                         </button>
                                     ` : ''}
                                 </div>
@@ -358,12 +462,12 @@ async function carregarComentarios(artigoId) {
                 form.innerHTML = `
                     <textarea placeholder="Escreva sua resposta..." rows="3" style="width: 100%; margin: 8px 0; padding: 8px; border: 1px solid #ddd; border-radius: 4px;"></textarea>
                     <button type="button" class="btn-enviar-resposta" 
-                                data-comment-id="${commentId}" 
-                                style="background: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-right: 8px;">
+                        data-comment-id="${commentId}" 
+                        style="background: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; margin-right: 8px;">
                         Enviar
                     </button>
                     <button type="button" class="btn-cancelar-resposta" 
-                                style="background: #6c757d; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">
+                        style="background: #6c757d; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer;">
                         Cancelar
                     </button>
                 `;
@@ -377,7 +481,6 @@ async function carregarComentarios(artigoId) {
         container.querySelectorAll(".btn-eliminar").forEach(btn => {
             btn.addEventListener("click", async () => {
                 if (!(await customConfirm("Tem certeza que deseja eliminar este comentário?"))) return;
-
                 const commentId = btn.dataset.id;
                 await apagarComentario(commentId, artigoId);
             });
@@ -386,7 +489,6 @@ async function carregarComentarios(artigoId) {
         container.querySelectorAll(".btn-eliminar-resposta").forEach(btn => {
             btn.addEventListener("click", async () => {
                 if (!(await customConfirm("Tem certeza que deseja eliminar este comentário?"))) return;
-
                 const commentId = btn.dataset.commentId;
                 const replyId = btn.dataset.replyId;
                 await apagarResposta(commentId, replyId, artigoId);
@@ -399,66 +501,14 @@ async function carregarComentarios(artigoId) {
     }
 }
 
-// ==========================================
-// FUNÇÕES DE AÇÃO (sem alterações)
-// ==========================================
-
-async function enviarComentarioPrincipal(formEl, artigoId) {
-    const texto = formEl.querySelector('textarea[name="texto"]').value.trim();
-    const currentUser = CURRENT_USER || "Anónimo";
-
-    if (!texto) {
-        showToast("Escreva algo antes de enviar o comentário.");
-        return;
-    }
-    if (!currentUser || currentUser === "Anónimo") {
-        showToast("Faça login para comentar.");
-        return;
-    }
-    if (!artigoId || artigoId.length !== 24) {
-        showToast("Erro interno: ID do artigo ausente/inválido.");
-        return;
-    }
-
-    try {
-        const res = await fetch(`/api/artigos/${artigoId}/comentarios`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ autor: currentUser, texto })
-        });
-
-        if (res.ok) {
-            formEl.querySelector('textarea').value = '';
-            mostrarNotificacao("Comentário publicado!");
-            await carregarComentarios(artigoId);
-        } else {
-            const data = await res.json();
-            showToast(data.error || "Erro ao publicar comentário.");
-        }
-    } catch (err) {
-        console.error("Erro ao enviar comentário:", err);
-        showToast("Falha na operação.");
-    }
-}
-
-function formatarData(data) {
-    const d = new Date(data);
-    const hoje = new Date();
-    if (d.toDateString() === hoje.toDateString()) {
-        return `Hoje • ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
-    }
-    return d.toLocaleDateString('pt-PT') + ` • ${d.getHours().toString().padStart(2, '0')}:${d.getMinutes().toString().padStart(2, '0')}`;
-}
-
-function mostrarNotificacao(mensagem) {
-    console.log(`[NOTIFICAÇÃO]: ${mensagem}`);
-    // Você pode implementar um toast real aqui depois
-}
+// ==============================
+// AÇÕES DE COMENTÁRIO
+// ==============================
 
 async function alternarLike(btn, artigoId) {
     const commentId = btn.dataset.id;
     const isLiked = btn.dataset.liked === "true";
-    const currentUser = CURRENT_USER || "Anónimo";
+    const currentUser = window.CURRENT_USER || "Anónimo";
 
     if (!currentUser || currentUser === "Anónimo") {
         showToast("Faça login para curtir comentários.");
@@ -490,7 +540,7 @@ async function alternarLike(btn, artigoId) {
 
 async function enviarResposta(commentId, formEl, artigoId) {
     const texto = formEl.querySelector("textarea").value.trim();
-    const currentUser = CURRENT_USER || "Anónimo";
+    const currentUser = window.CURRENT_USER || "Anónimo";
 
     if (!texto) {
         showToast("Escreva algo antes de enviar.");
@@ -523,7 +573,7 @@ async function enviarResposta(commentId, formEl, artigoId) {
 }
 
 async function apagarComentario(commentId, artigoId) {
-    const currentUser = CURRENT_USER || "Anónimo";
+    const currentUser = window.CURRENT_USER || "Anónimo";
     const isAdmin = ["Joaquim", "Admin", "ANGORGE", "Equipe ANGORGE"].includes(currentUser);
 
     try {
@@ -546,7 +596,7 @@ async function apagarComentario(commentId, artigoId) {
 }
 
 async function apagarResposta(commentId, replyId, artigoId) {
-    const currentUser = CURRENT_USER || "Anónimo";
+    const currentUser = window.CURRENT_USER || "Anónimo";
     const isAdmin = ["Joaquim", "Admin", "ANGORGE", "Equipe ANGORGE"].includes(currentUser);
 
     try {
@@ -568,9 +618,9 @@ async function apagarResposta(commentId, replyId, artigoId) {
     }
 }
 
-// ==========================================
-// NAVEGAÇÃO DO BROWSER (sem alterações)
-// ==========================================
+// ==============================
+// NAVEGAÇÃO DO NAVEGADOR
+// ==============================
 
 window.addEventListener("popstate", (e) => {
     const pathSegments = window.location.pathname.split('/');
@@ -584,41 +634,3 @@ window.addEventListener("popstate", (e) => {
         }
     }
 });
-
-
-function showToast(message, type = "success") {
-    const toast = document.createElement("div");
-    toast.className = `toast ${type}`;
-    toast.textContent = message;
-
-    document.body.appendChild(toast);
-
-    setTimeout(() => toast.classList.add("show"), 50);
-    setTimeout(() => {
-        toast.classList.remove("show");
-        setTimeout(() => toast.remove(), 300);
-    }, 3000);
-}
-
-
-function customConfirm(message) {
-    return new Promise(resolve => {
-        const modal = document.getElementById("confirm-modal");
-        const msg = document.getElementById("confirm-message");
-        const yesBtn = document.getElementById("confirm-yes");
-        const noBtn = document.getElementById("confirm-no");
-
-        msg.textContent = message;
-        modal.style.display = "flex";
-
-        yesBtn.onclick = () => {
-            modal.style.display = "none";
-            resolve(true);
-        };
-
-        noBtn.onclick = () => {
-            modal.style.display = "none";
-            resolve(false);
-        };
-    });
-}
