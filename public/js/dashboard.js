@@ -376,55 +376,60 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     }
 
-    async function toggleAccordion(commentId, btn) {
-        const wrapper = document.getElementById(`respostas-${commentId}`);
-        if (!wrapper) return;
-        const isExpanded = wrapper.classList.contains('expanded');
+ async function toggleAccordion(commentId, btn) {
+    const wrapper = document.getElementById(`respostas-${commentId}`);
+    if (!wrapper) return;
+    const isExpanded = wrapper.classList.contains('expanded');
 
-        if (isExpanded) {
-            wrapper.classList.remove('expanded');
-            btn.innerHTML = btn.innerHTML.replace('▾', '▸');
-            return;
-        }
-
-        try {
-            const res = await fetch("/api/comentarios/admin/comentarios");
-            if (!res.ok) throw new Error("Erro ao buscar respostas");
-            const dados = await res.json();
-            const respostas = Array.isArray(dados) ? dados : (dados.respostas || []);
-
-            wrapper.innerHTML = respostas.map((r, idx) => `
-                <div class="resposta-item">
-                    <div class="resposta-meta">${escapeHtml(r.autor || currentUser)} <span class="data-badge">${escapeHtml(formatarData(r.data || r.createdAt || Date.now()))}</span></div>
-                    <div class="resposta-texto">${escapeHtml(r.texto || '')}</div>
-                    <div style="margin-top:6px;">
-                        <button class="btn-acao btn-eliminar-resposta" data-comment-id="${commentId}" data-reply-id="${r._id}">
-                            Eliminar resposta
-                        </button>
-                    </div>
-                </div>
-            `).join('') + `<div style="margin-top:8px;" class="responder-box-inline"></div>`;
-
-            wrapper.querySelectorAll('.btn-eliminar-resposta').forEach(b => {
-                b.addEventListener('click', async (e) => {
-                    const replyIndex = b.getAttribute('data-reply-index');
-                    if (!confirm("Eliminar esta resposta?")) return;
-                    await eliminarResposta(commentId, replyIndex);
-                });
-            });
-
-            const inlineBox = wrapper.querySelector('.responder-box-inline');
-            inlineBox.innerHTML = '';
-            inlineBox.appendChild(criarBoxRespostaDom(commentId));
-            wrapper.classList.add('expanded');
-            btn.innerHTML = btn.innerHTML.replace('▸', '▾');
-        } catch (err) {
-            console.error("Erro ao buscar respostas:", err);
-            wrapper.innerHTML = `<p>⚠️ Não foi possível carregar respostas.</p>`;
-            wrapper.classList.add('expanded');
-        }
+    if (isExpanded) {
+        wrapper.classList.remove('expanded');
+        btn.innerHTML = btn.innerHTML.replace('▾', '▸');
+        return;
     }
 
+    // ✅ Buscar o comentário já carregado (sem fazer nova requisição)
+    const comentario = listaComentarios.find(c => c._id === commentId);
+    if (!comentario) {
+        wrapper.innerHTML = `<p>⚠️ Comentário não encontrado.</p>`;
+        wrapper.classList.add('expanded');
+        return;
+    }
+
+    const respostas = Array.isArray(comentario.respostas) ? comentario.respostas : [];
+    if (respostas.length === 0) {
+        wrapper.innerHTML = `<p>Nenhuma resposta.</p>`;
+        wrapper.classList.add('expanded');
+        return;
+    }
+
+    wrapper.innerHTML = respostas.map((r, idx) => `
+        <div class="resposta-item">
+            <div class="resposta-meta">${escapeHtml(r.autor || currentUser)} <span class="data-badge">${escapeHtml(formatarData(r.data || r.createdAt || Date.now()))}</span></div>
+            <div class="resposta-texto">${escapeHtml(r.texto || '')}</div>
+            <div style="margin-top:6px;">
+                <button class="btn-acao btn-eliminar-resposta" data-comment-id="${commentId}" data-reply-id="${r._id}">
+                    Eliminar resposta
+                </button>
+            </div>
+        </div>
+    `).join('') + `<div style="margin-top:8px;" class="responder-box-inline"></div>`;
+
+    // Reanexar eventos
+    wrapper.querySelectorAll('.btn-eliminar-resposta').forEach(b => {
+        b.addEventListener('click', async (e) => {
+            const replyId = b.getAttribute('data-reply-id');
+            if (!confirm("Eliminar esta resposta?")) return;
+            await eliminarResposta(commentId, replyId);
+        });
+    });
+
+    const inlineBox = wrapper.querySelector('.responder-box-inline');
+    inlineBox.innerHTML = '';
+    inlineBox.appendChild(criarBoxRespostaDom(commentId));
+
+    wrapper.classList.add('expanded');
+    btn.innerHTML = btn.innerHTML.replace('▸', '▾');
+}
     function criarBoxRespostaDom(commentId) {
         const wrapper = document.createElement('div');
         wrapper.classList.add('responder-box');
